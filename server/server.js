@@ -2,8 +2,17 @@
 import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
+import helmet from "helmet"
 import { connectDatabase } from "./config/connectDatabase.js"
 import cookieParser from "cookie-parser"
+
+
+// import routes
+import authRoutes from "./routes/authRoutes.js"
+
+// import port
+const PORT = process.env.PORT || 5000
+
 
 // config dotenv
 dotenv.config()
@@ -21,11 +30,14 @@ app.use(cors({
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(helmet())
+
+// all routes
+app.use("/api/auth", authRoutes)
 
 
 
-// import port
-const PORT = process.env.PORT || 5000
+
 
 // default get req
 app.get("/", (req, res) => {

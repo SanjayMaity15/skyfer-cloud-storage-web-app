@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
 	{
@@ -8,10 +9,12 @@ const userSchema = new Schema(
 		},
 		email: {
 			type: String,
+			unique: true,
 			required: true,
 		},
 		password: {
 			type: String,
+			default: null,
 		},
 		profilePic: {
 			type: String,
@@ -33,6 +36,16 @@ const userSchema = new Schema(
 		optimisticConcurrency: true,
 	},
 );
+
+userSchema.pre("save", async function () {
+	try {
+		if (!this.isModified("password")) return;
+
+		this.password = await bcrypt.hash(this.password, 14);
+	} catch (error) {
+		console.log(error);
+	}
+});
 
 const User = model("User", userSchema);
 export default User;

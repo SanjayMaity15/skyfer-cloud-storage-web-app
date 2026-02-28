@@ -12,7 +12,7 @@ const directorySchema = new Schema({
 	},
 	parentDirId: {
 		type: Schema.Types.ObjectId,
-		required: true,
+		ref: "Directory",
 		default: null,
 	},
 }, {

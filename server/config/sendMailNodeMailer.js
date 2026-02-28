@@ -5,9 +5,7 @@ dotenv.config();
 // Create a transporter using Ethereal test credentials.
 // For production, replace with your actual SMTP server details.
 const transporter = nodemailer.createTransport({
-	host: "smtp.ethereal.email",
-	port: 587,
-	secure: false, // Use true for port 465, false for port 587
+	host: "smtp.gmail.com",
 	auth: {
 		user: process.env.EMAIL_USER,
 		pass: process.env.EMAIL_APP_PASS,
@@ -23,6 +21,4 @@ export const sendMailUsingNodeMailer = async (email, subject, otp = null) => {
 		subject: subject,
 		html: `<p>Your registration <b>OTP : ${otp}</b> for Skyfer</p>`,
 	});
-
-	console.log("Message sent:", info.messageId);
 };
