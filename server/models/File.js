@@ -21,6 +21,9 @@ const fileSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Directory",
 	},
+}, {
+    timestamps: true,
+    optimisticConcurrency: true
 });
 
 const File = model("File", fileSchema);

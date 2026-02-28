@@ -15,6 +15,9 @@ const directorySchema = new Schema({
 		required: true,
 		default: null,
 	},
+}, {
+    timestamps: true,
+    optimisticConcurrency: true
 });
 
 const Directory = model("Directory", directorySchema);

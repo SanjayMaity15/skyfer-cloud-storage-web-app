@@ -10,6 +10,9 @@ const sessionSchema = new Schema({
 		type: Date,
 		createdAt: Date.now,
 	},
+}, {
+    timestamps: true,
+    optimisticConcurrency: true
 });
 
 // creating TTL(Time to live) index
