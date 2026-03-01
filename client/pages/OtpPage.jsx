@@ -70,7 +70,7 @@ const OtpPage = () => {
 				</h3>
 				<div className="flex flex-col items-center text-sm text-gray-500 mt-2">
 					<p>Enter OTP send to your </p>
-					<p> {"sanjay@gmail.com"}</p>
+					<p> {registrationData.email}</p>
 				</div>
 
 				<div className="flex justify-center gap-4 mt-6">
@@ -98,7 +98,7 @@ const OtpPage = () => {
 						onClick={handleVerifyOTPandRegister}
 						disabled={loading}
 					>
-						{loading ? <ButtonLoader /> : "Verify OTP"}
+						{loading ? <ButtonLoader text="Verifying"/> : "Verify OTP"}
 					</button>
 				</div>
 			</div>

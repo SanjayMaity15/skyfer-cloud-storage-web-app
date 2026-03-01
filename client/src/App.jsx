@@ -15,6 +15,7 @@ import ProtectedRoutes from "../components/UI/ProtectedRoutes";
 import Starred from "../components/UI/Starred";
 import Profile from "../components/UI/Profile";
 import Popup from "../components/UI/Popup";
+import ForgotPassword from "../components/UI/ForgotPassword";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -82,6 +83,10 @@ const App = () => {
 		{
 			path: "/profile",
 			element: <Profile />,
+		},
+		{
+			path: "/reset-password",
+			element: <ForgotPassword />,
 		},
 
 	]);

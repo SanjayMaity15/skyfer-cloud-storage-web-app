@@ -125,13 +125,21 @@ const LoginPage = () => {
 							)}
 						</div>
 
+						<div className="flex justify-end mr-2 text-xs text-primary">
+							<Link to="/reset-password" className="hover:underline" title="Click to reset password">Forgot password</Link>
+						</div>
+
 						{/* Button */}
 						<button
 							type="submit"
 							className="w-full py-4 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer "
 							disabled={loading}
 						>
-							{loading ? <ButtonLoader /> : "Login"}
+							{loading ? (
+								<ButtonLoader text="Please wait" />
+							) : (
+								"Login"
+							)}
 						</button>
 					</form>
 

@@ -145,7 +145,7 @@ const RegisterPage = () => {
 							className="w-full py-4 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer"
 							disabled={loading}
 						>
-							{loading ? <ButtonLoader /> : "Create Account"}
+							{loading ? <ButtonLoader text="Please wait"/> : "Create Account"}
 						</button>
 					</form>
 
