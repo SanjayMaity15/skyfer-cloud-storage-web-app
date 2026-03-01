@@ -5,6 +5,7 @@ import { registrationSchema } from "../validators/authValidator";
 import { useState } from "react";
 import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -40,7 +41,8 @@ const RegisterPage = () => {
 		try {
 			setLoading(true)
 			const { email } = data;
-			const result = await api.post("/auth/send-otp", { email }, {withCredentials: true});
+			const result = await api.post("/auth/send-otp", { email }, { withCredentials: true });
+			toast.success(result?.data?.message)
 			navigate("/otp", { state: data })
 			setLoading(false)
 		} catch (error) {

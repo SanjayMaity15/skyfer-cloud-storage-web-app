@@ -130,6 +130,16 @@ export const login = async (req, res) => {
 
 		const session = await Session.create({ userId: user._id });
 
+		// send user details to frontend
+		const userDetails = {
+			_id: user._id,
+			userName: user.userName,
+			email: user.email,
+			profilePic: user.profilePic,
+			role: user.role,	
+			rootDirId: user.rootDirId
+		}
+
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
 			httpOnly: true,
@@ -139,7 +149,7 @@ export const login = async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			message: "Login successfull",
-			user
+			user:userDetails
 		});
 	} catch (error) {}
 };

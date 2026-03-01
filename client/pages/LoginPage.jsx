@@ -6,6 +6,8 @@ import { useState } from "react";
 import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { useDispatch } from "react-redux";
+import { setUser } from "../src/features/userSlice";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -41,6 +43,8 @@ const LoginPage = () => {
 			const result = await api.post("/auth/login", loginData, {
 				withCredentials: true,
 			});
+			toast.success(result?.data?.message)
+			dispatch(setUser(result?.data?.user))
 			navigate("/dashboard");	
 			setLoading(false);
 		} catch (error) {
