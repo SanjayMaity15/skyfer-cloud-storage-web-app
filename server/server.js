@@ -47,5 +47,5 @@ app.get("/", (req, res) => {
 // server listen
 app.listen(PORT, async() => {
     await connectDatabase()
-    console.log(`SERVER IS RUNNING AT PORT ${PORT}`);
+    console.log(`---SERVER IS RUNNING AT PORT ${PORT}---`);
 })

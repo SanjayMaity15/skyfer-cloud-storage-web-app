@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../src/utils/getImageUrl";
 import { loginSchema } from "../validators/authValidator";
 import { useState } from "react";
+import { api } from "../api/axiosInstance";
+import ButtonLoader from "../components/UI/ButtonLoader";
+import { useDispatch } from "react-redux";
 
 const LoginPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -12,10 +15,15 @@ const LoginPage = () => {
 		},
 	});
 
+	const dispatch = useDispatch()
+
+	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+
 	// login errors
 	const [errors, setErrors] = useState({});
 
-	const handleLoginForm = (loginData) => {
+	const handleLoginForm = async (loginData) => {
 		const { success, data, error } = loginSchema.safeParse(loginData);
 
 		if (!success) {
@@ -26,6 +34,18 @@ const LoginPage = () => {
 			);
 
 			setErrors(loginErrors);
+		}
+
+		try {
+			setLoading(true);
+			const result = await api.post("/auth/login", loginData, {
+				withCredentials: true,
+			});
+			navigate("/dashboard");	
+			setLoading(false);
+		} catch (error) {
+			console.log(error);
+			setLoading(false);
 		}
 	};
 
@@ -81,10 +101,10 @@ const LoginPage = () => {
 								{...register("email")}
 							/>
 							{errors.email && (
-                                <p className="text-red-500 pl-4 text-sm mt-1">
-                                    {errors.email}
-                                </p>
-                            )}
+								<p className="text-red-500 pl-4 text-sm mt-1">
+									{errors.email}
+								</p>
+							)}
 						</div>
 
 						<div>
@@ -95,18 +115,19 @@ const LoginPage = () => {
 								{...register("password")}
 							/>
 							{errors.password && (
-                                <p className="text-red-500 pl-4 text-sm mt-1">
-                                    {errors.password}
-                                </p>
-                            )}
+								<p className="text-red-500 pl-4 text-sm mt-1">
+									{errors.password}
+								</p>
+							)}
 						</div>
 
 						{/* Button */}
 						<button
 							type="submit"
 							className="w-full py-4 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer "
+							disabled={loading}
 						>
-							Login
+							{loading ? <ButtonLoader /> : "Login"}
 						</button>
 					</form>
 

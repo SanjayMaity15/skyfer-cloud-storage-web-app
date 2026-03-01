@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../src/utils/getImageUrl";
 import { registrationSchema } from "../validators/authValidator";
 import { useState } from "react";
+import { api } from "../api/axiosInstance";
+import ButtonLoader from "../components/UI/ButtonLoader";
 
 const RegisterPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -13,21 +15,38 @@ const RegisterPage = () => {
 		},
 	});
 
-	// Error state
-	const [errors, setErrors] = useState({})
+	const [loading, setLoading] = useState(false)
 
-	const handleRegisterForm = (registrationData) => {
+	// naviagte
+	const navigate = useNavigate()
+
+	// Error state
+	const [errors, setErrors] = useState({});
+
+	const handleRegisterForm = async (registrationData) => {
 		const { success, data, error } =
 			registrationSchema.safeParse(registrationData);
 
 		if (!success) {
 			const regFormError = {};
 
-			error.issues.forEach((err) => regFormError[err.path[0]] = err.message)
-			
-			setErrors(regFormError)
+			error.issues.forEach(
+				(err) => (regFormError[err.path[0]] = err.message),
+			);
+
+			setErrors(regFormError);
 		}
 
+		try {
+			setLoading(true)
+			const { email } = data;
+			const result = await api.post("/auth/send-otp", { email }, {withCredentials: true});
+			navigate("/otp", { state: data })
+			setLoading(false)
+		} catch (error) {
+			console.log(error);
+			setLoading(false)
+		}
 	};
 
 	console.log(errors);
@@ -122,8 +141,9 @@ const RegisterPage = () => {
 						<button
 							type="submit"
 							className="w-full py-4 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer"
+							disabled={loading}
 						>
-							Create Account
+							{loading ? <ButtonLoader /> : "Create Account"}
 						</button>
 					</form>
 

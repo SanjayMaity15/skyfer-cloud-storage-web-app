@@ -1,12 +1,19 @@
-import  { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { OTP_LENGTH } from "../constant/constant";
+import { useLocation, useNavigate } from "react-router-dom";
+import { api } from "../api/axiosInstance";
+import ButtonLoader from "../components/UI/ButtonLoader";
 
 const OtpPage = () => {
+	const [loading, setLoading] = useState(false)
+	const location = useLocation();
+	const registrationData = location.state;
+	const navigate = useNavigate()
 	const [otpInputBox, setOtpInputBox] = useState(
 		new Array(OTP_LENGTH).fill(""),
-    );
-    
-    const [focusIndex, setFocusIndex] = useState(null)
+	);
+
+	const [focusIndex, setFocusIndex] = useState(null);
 
 	const otpRef = useRef([]);
 
@@ -41,7 +48,19 @@ const OtpPage = () => {
 		}
 	};
 
-	console.log(focusIndex);
+	const handleVerifyOTPandRegister = async () => {
+		setLoading(true)
+		try {
+			registrationData.otp = otpInputBox.join("");
+			const result = await api.post("/auth/register", registrationData, {withCredentials: true})
+			console.log(result);
+			navigate("/login")
+			setLoading(false)
+		} catch (error) {
+			console.log(error);
+			setLoading(false)
+		}
+	};
 
 	return (
 		<div className="h-screen flex justify-center items-center">
@@ -61,8 +80,8 @@ const OtpPage = () => {
 							type="text"
 							maxLength={1}
 							value={el}
-                            className={`md:w-10 md:h-10 w-8 h-8 outline-none border-none ring-2 ring-gray-500 rounded-sm text-center text-2xl ${focusIndex === index &&  "ring-primary ring-2"}`}
-                            onFocus={() => setFocusIndex(index)}
+							className={`md:w-10 md:h-10 w-8 h-8 outline-none border-none ring-2 ring-gray-500 rounded-sm text-center text-2xl ${focusIndex === index && "ring-primary ring-2"}`}
+							onFocus={() => setFocusIndex(index)}
 							ref={(el) => (otpRef.current[index] = el)}
 							autoFocus={index === 0}
 							onChange={(e) =>
@@ -74,8 +93,12 @@ const OtpPage = () => {
 				</div>
 
 				<div className="mt-6 flex justify-center">
-					<button className="px-8 py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white w-[70%] cursor-pointer">
-						Verify OTP
+					<button
+						className="px-8 py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white w-[70%] cursor-pointer"
+						onClick={handleVerifyOTPandRegister}
+						disabled={loading}
+					>
+						{loading ? <ButtonLoader /> : "Verify OTP"}
 					</button>
 				</div>
 			</div>

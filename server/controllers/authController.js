@@ -123,7 +123,13 @@ export const login = async (req, res) => {
 			});
 		}
 
+		const existingSession = await Session.findOne({ userId: user._id });
+		if (existingSession) {
+			await existingSession.deleteOne();
+		}
+
 		const session = await Session.create({ userId: user._id });
+
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
 			httpOnly: true,
@@ -133,7 +139,7 @@ export const login = async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			message: "Login successfull",
-			user,
+			user
 		});
 	} catch (error) {}
 };
@@ -161,10 +167,11 @@ export const sendOTP = async (req, res) => {
 
 		const otp = Math.floor(Math.random() * 9000 + 1000);
 
-		await Otp.create({
-			email,
-			otp,
-		});
+		await Otp.findOneAndUpdate(
+			{ email },
+			{ $set: { email, otp } },
+			{ upsert: true, new: true },
+		);
 
 		await sendMailUsingNodeMailer(email, "Registration OTP", otp);
 		return res.status(200).json({
@@ -176,6 +183,54 @@ export const sendOTP = async (req, res) => {
 		return res.status(500).json({
 			success: false,
 			message: error.message || "Failed to send OTP",
+		});
+	}
+};
+
+/*
+=========================================
+
+		Get current user controller
+
+=========================================
+*/
+
+export const getCurrentUser = async (req, res) => {
+	try {
+		return res.status(200).json({
+			success: true,
+			user: req.user,
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Something went wrong",
+		});
+	}
+};
+
+/*
+=========================================
+
+		Logout controller
+
+=========================================
+*/
+
+export const logout = async (req, res) => {
+	try {
+		const session = await Session.findOneAndDelete({
+			userId: req.user._id,
+		});
+		res.clearCookie("SID");
+		return res.status(200).json({
+			success: true,
+			message: "Logout successfully",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Logout failed",
 		});
 	}
 };
