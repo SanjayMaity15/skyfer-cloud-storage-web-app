@@ -1,18 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import { OTP_LENGTH } from "../../constant/constant";
-import { passResetEmailSchema, resetPasswordSchema } from "../../validators/passResetValidators";
+import {
+	passResetEmailSchema,
+	resetPasswordSchema,
+} from "../../validators/passResetValidators";
+import { api } from "../../api/axiosInstance";
+import { toast } from "react-toastify";
+import ButtonLoader from "./ButtonLoader";
 
 const ForgotPassword = () => {
-	const [forgotPassStep, setForgotPassStep] = useState(3);
-    // reset passemail
+	const [forgotPassStep, setForgotPassStep] = useState(1);
+	// reset passemail
+	const [loading, setLoading] = useState(false);
+	const [emailForPassReset, setEmailForPassReset] = useState("");
 
-    const [emailForPassReset, setEmailForPassReset] = useState("")
+	const [newPass, setNewPass] = useState("");
+	const [confirmPass, setConfirmPass] = useState("");
 
-    const [newPass, setNewPass] = useState("")
-    const [confirmPass, setConfirmPass] = useState("")
-
-    const [errors, setErrors] = useState({})
+	const [errors, setErrors] = useState({});
 
 	const navigate = useNavigate();
 	const [otpInputBox, setOtpInputBox] = useState(
@@ -52,46 +58,93 @@ const ForgotPassword = () => {
 				otpRef.current[index - 1].focus();
 			}
 		}
-    };
-    
-    // Handle password reset function first step send OTP
+	};
 
-    const handlePassResetOTP = async () => {
-        const { success, data, error } = passResetEmailSchema.safeParse({emailForPassReset})
-        
-        if (!success) {
-            const passResetError = {}
+	// Handle password reset function first step send OTP
 
-            error.issues.forEach((err) => passResetError[err.path[0]] = err.message)
+	const handlePassResetOTP = async () => {
+		const { success, data, error } = passResetEmailSchema.safeParse({
+			emailForPassReset,
+		});
 
-            setErrors(passResetError)
-        }
-        
-    }
+		if (!success) {
+			const passResetError = {};
 
-    // step 2 otp verification functionality
+			error.issues.forEach(
+				(err) => (passResetError[err.path[0]] = err.message),
+			);
 
-    const handlePassResetOTPVerification = async () => {
-        const formatOTP = otpInputBox.join("")
-        if (formatOTP.length < 4) return
-        
-    }
+			setErrors(passResetError);
+		}
 
-    // Step 3 generate new password and save in DB
-    
-    const handleResetUserPassword = async () => {
-        const { success, data, error } = resetPasswordSchema.safeParse({ newPass, confirmPass })
-        
-        if (!success) {
-            const newResetPassErrors = {}
-            error.issues.forEach((err) => newResetPassErrors[err.path[0]] = err.message)
+		try {
+			setLoading(true);
+			const result = await api.post("/reset/send-otp-pass", data);
+			toast.success(result?.data?.message);
+			setErrors({});
+			setLoading(false);
+			setForgotPassStep(2);
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
 
-            setErrors(newResetPassErrors)
-        }
-    }
+	// step 2 otp verification functionality
 
-    console.log(errors);
+	const handlePassResetOTPVerification = async () => {
+		const formatOTP = otpInputBox.join("");
+		if (formatOTP.length < 4) return;
+		const data = {
+			email: emailForPassReset,
+			otp: formatOTP,
+		};
 
+		try {
+			setLoading(true);
+			const result = await api.post("/reset/verify-otp", data);
+			toast.success(result?.data?.message);
+			setLoading(false);
+			setForgotPassStep(3);
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
+
+	// Step 3 generate new password and save in DB
+
+	const handleResetUserPassword = async () => {
+		const { success, data, error } = resetPasswordSchema.safeParse({
+			newPass,
+			confirmPass,
+		});
+
+		if (!success) {
+			const newResetPassErrors = {};
+			error.issues.forEach(
+				(err) => (newResetPassErrors[err.path[0]] = err.message),
+			);
+
+			setErrors(newResetPassErrors);
+		}
+
+		try {
+			setLoading(true);
+			const newData = {
+				newPass: data.newPass,
+				confirmPass: data.confirmPass,
+				emailForPassReset,
+			};
+			const result = await api.post("/reset/reset-password", newData);
+			toast.success(result?.data?.message);
+			setLoading(false);
+			navigate("/login");
+		} catch (error) {
+			setLoading(false);
+			console.log(error);
+		}
+	};
 
 	return (
 		<section className="h-screen w-full flex justify-center items-center">
@@ -125,8 +178,13 @@ const ForgotPassword = () => {
 							type="submit"
 							className="w-full py-2 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer"
 							onClick={handlePassResetOTP}
+							disabled={loading}
 						>
-							Send OTP
+							{loading ? (
+								<ButtonLoader text="Sending OTP" />
+							) : (
+								"Send OTP"
+							)}
 						</button>
 					</div>
 				</div>
@@ -166,8 +224,13 @@ const ForgotPassword = () => {
 						<button
 							className="px-8 py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white w-[70%] cursor-pointer"
 							onClick={handlePassResetOTPVerification}
+							disabled={loading}
 						>
-							Verify OTP
+							{loading ? (
+								<ButtonLoader text="Verifying" />
+							) : (
+								"Verify OTP"
+							)}
 						</button>
 					</div>
 				</div>
@@ -218,8 +281,13 @@ const ForgotPassword = () => {
 							type="submit"
 							className="w-full py-2 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer "
 							onClick={handleResetUserPassword}
+							disabled={loading}
 						>
-							Reset Password
+							{loading ? (
+								<ButtonLoader text="Resetting password" />
+							) : (
+								"Reset Password"
+							)}
 						</button>
 					</div>
 				</div>
