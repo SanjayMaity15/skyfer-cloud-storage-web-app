@@ -16,10 +16,10 @@ const RegisterPage = () => {
 		},
 	});
 
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 
 	// naviagte
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	// Error state
 	const [errors, setErrors] = useState({});
@@ -39,20 +39,46 @@ const RegisterPage = () => {
 		}
 
 		try {
-			setLoading(true)
+			setLoading(true);
 			const { email } = data;
-			const result = await api.post("/auth/send-otp", { email }, { withCredentials: true });
-			toast.success(result?.data?.message)
-			navigate("/otp", { state: data })
-			setLoading(false)
+			const result = await api.post(
+				"/auth/send-otp",
+				{ email },
+				{ withCredentials: true },
+			);
+			toast.success(result?.data?.message);
+			navigate("/otp", { state: data });
+			setLoading(false);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
-			setLoading(false)
+			setLoading(false);
 		}
 	};
 
-	console.log(errors);
+	// handle registration with google
 
+	const handleRegistrationWithGoogle = async () => {
+		try {
+			const result = window.open(
+				`${import.meta.env.VITE_BASE_URL}/auth/google`,
+				"googleLoginPopup",
+				"width=500,height=600",
+			);
+			console.log(result);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	window.addEventListener("message", (event) => {
+		if (event.origin !== "http://localhost:8000") return;
+
+		if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+			console.log("User data received from popup:", event.data.data);
+		}
+	});
+
+	
 	return (
 		<div className="min-h-screen flex bg-bg-soft">
 			{/* LEFT SIDE */}
@@ -145,7 +171,11 @@ const RegisterPage = () => {
 							className="w-full py-4 rounded-full font-semibold text-white bg-linear-to-r from-primary to-secondary hover:opacity-90 transition cursor-pointer"
 							disabled={loading}
 						>
-							{loading ? <ButtonLoader text="Please wait"/> : "Create Account"}
+							{loading ? (
+								<ButtonLoader text="Please wait" />
+							) : (
+								"Create Account"
+							)}
 						</button>
 					</form>
 
@@ -168,7 +198,10 @@ const RegisterPage = () => {
 					</div>
 
 					{/* Google Button */}
-					<button className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer">
+					<button
+						className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer"
+						onClick={handleRegistrationWithGoogle}
+					>
 						<img
 							src="https://www.svgrepo.com/show/475656/google-color.svg"
 							alt="google"
