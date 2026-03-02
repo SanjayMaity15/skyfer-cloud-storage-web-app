@@ -1,6 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 import bcrypt from "bcrypt";
-import { sendMailUsingNodeMailer } from "../config/sendMailNodeMailer.js";
+import { sendMailUsingNodeMailer } from "../services/sendMailNodeMailer.js";
 import Otp from "../models/Otp.js";
 import User from "../models/User.js";
 import {
@@ -33,12 +33,12 @@ export const register = async (req, res) => {
 
 		const { userName, email, password, otp } = data;
 
-		const existingUser = await User.findOne({ email });
+		const isOTPMatch = await Otp.findOne({ email, otp });
 
-		if (existingUser) {
-			return res.status(409).json({
+		if (!isOTPMatch) {
+			return res.status(400).json({
 				success: false,
-				message: "User already exists",
+				message: "Invalid OTP",
 			});
 		}
 
@@ -136,9 +136,9 @@ export const login = async (req, res) => {
 			userName: user.userName,
 			email: user.email,
 			profilePic: user.profilePic,
-			role: user.role,	
-			rootDirId: user.rootDirId
-		}
+			role: user.role,
+			rootDirId: user.rootDirId,
+		};
 
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
@@ -149,7 +149,7 @@ export const login = async (req, res) => {
 		return res.status(200).json({
 			success: true,
 			message: "Login successfull",
-			user:userDetails
+			user: userDetails,
 		});
 	} catch (error) {}
 };
@@ -174,6 +174,15 @@ export const sendOTP = async (req, res) => {
 		}
 
 		const { email } = data;
+
+		const existingUser = await User.findOne({ email });
+
+		if (existingUser) {
+			return res.status(409).json({
+				success: false,
+				message: "User already exists",
+			});
+		}
 
 		const otp = Math.floor(Math.random() * 9000 + 1000);
 

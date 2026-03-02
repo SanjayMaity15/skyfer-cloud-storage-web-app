@@ -86,7 +86,7 @@ const ForgotPassword = () => {
 			setForgotPassStep(2);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
+			toast.error(error?.response?.data?.message);
 		}
 	};
 
@@ -108,7 +108,7 @@ const ForgotPassword = () => {
 			setForgotPassStep(3);
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
+			toast.error(error?.response?.data?.message);
 		}
 	};
 
@@ -142,7 +142,7 @@ const ForgotPassword = () => {
 			navigate("/login");
 		} catch (error) {
 			setLoading(false);
-			console.log(error);
+			toast.error(error?.response?.data?.message);
 		}
 	};
 

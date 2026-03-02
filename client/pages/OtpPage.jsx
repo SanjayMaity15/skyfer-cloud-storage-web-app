@@ -3,6 +3,7 @@ import { OTP_LENGTH } from "../constant/constant";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
+import { toast } from "react-toastify";
 
 const OtpPage = () => {
 	const [loading, setLoading] = useState(false)
@@ -54,10 +55,11 @@ const OtpPage = () => {
 			registrationData.otp = otpInputBox.join("");
 			const result = await api.post("/auth/register", registrationData, {withCredentials: true})
 			console.log(result);
-			navigate("/login")
+			toast.success(result?.data?.message)
 			setLoading(false)
+			navigate("/login")
 		} catch (error) {
-			console.log(error);
+			toast.error(error?.response?.data?.message);
 			setLoading(false)
 		}
 	};

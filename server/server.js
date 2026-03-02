@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser"
 
 // import routes
 import authRoutes from "./routes/authRoutes.js"
+import passResetRoutes from "./routes/forgotPassRoutes.js"
 
 // import port
 const PORT = process.env.PORT || 5000
@@ -34,6 +35,7 @@ app.use(helmet())
 
 // all routes
 app.use("/api/auth", authRoutes)
+app.use("/api/reset", passResetRoutes)
 
 
 
