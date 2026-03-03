@@ -26,6 +26,18 @@ export const createDirectory = async (req, res) => {
 			});
 		}
 
+		const existingDirname = await Directory.findOne({
+			dirName,
+			owner: user._id,
+		});
+
+		if (existingDirname) {
+			return res.status(409).json({
+				success: false,
+				message: "Failed to create folder name already exists",
+			});
+		}
+
 		const dir = await Directory.create({
 			dirName: dirData.dirName,
 			owner: dirData.owner,
@@ -107,6 +119,20 @@ export const renameDirectory = async (req, res) => {
 			});
 		}
 
+		// check if the name already exist or not
+
+		const existingDirname = await Directory.findOne({
+			dirName: newDirName,
+			owner: user._id,
+		});
+
+		if (existingDirname) {
+			return res.status(409).json({
+				success: false,
+				message: "Failed to rename folder name already exists",
+			});
+		}
+
 		const dir = await Directory.findOneAndUpdate(
 			{ _id: dirId, owner: user._id },
 			{ dirName: newDirName },
@@ -117,6 +143,57 @@ export const renameDirectory = async (req, res) => {
 			message: "Rename successfully",
 		});
 	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+export const deleteDirectory = async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const directoryData = await Directory.findOne({
+			_id: id,
+			owner: req.user._id,
+		})
+			.select("_id")
+			.lean();
+
+		if (!directoryData) {
+			return res.status(404).json({
+				success: false,
+				message: "Directory not found!",
+			});
+		}
+
+		async function getDirectoryContents(id) {
+			let directories = await Directory.find({ parentDirId: id })
+				.select("_id")
+				.lean();
+
+			for (const { _id } of directories) {
+				const { directories: childDirectories } =
+					await getDirectoryContents(_id);
+
+				directories = [...directories, ...childDirectories];
+			}
+
+			return { directories };
+		}
+
+		const { directories } = await getDirectoryContents(id);
+
+		await Directory.deleteMany({
+			_id: { $in: [...directories.map(({ _id }) => _id), id] },
+		});
+
+		return res.status(200).json({
+			success: true,
+			message: "Folder deleted successfully",
+		});
+	} catch (err) {
 		return res.status(500).json({
 			success: false,
 			message: "Server error",

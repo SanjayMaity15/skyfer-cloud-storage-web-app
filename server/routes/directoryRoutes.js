@@ -1,6 +1,7 @@
 import express from "express";
 import {
 	createDirectory,
+	deleteDirectory,
 	getDirectory,
 	renameDirectory,
 } from "../controllers/directoryController.js";
