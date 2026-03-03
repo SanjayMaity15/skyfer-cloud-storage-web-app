@@ -1,9 +1,18 @@
-import express from "express"
-import { createDirectory } from "../controllers/directoryController.js"
-import { isAuth } from "../middlewares/isAuth.js"
+import express from "express";
+import {
+	createDirectory,
+	getDirectory,
+} from "../controllers/directoryController.js";
+import { isAuth } from "../middlewares/isAuth.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/create", isAuth ,createDirectory)
+router.post("/create", isAuth, createDirectory);
+router.post("/create/:id", isAuth, createDirectory);
 
-export default router
+// support both root and sub directory
+router.get("/get-dir", isAuth, getDirectory);
+
+router.get("/get-dir/:id", isAuth, getDirectory);
+
+export default router;
