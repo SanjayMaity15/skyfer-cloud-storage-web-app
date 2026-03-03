@@ -11,7 +11,7 @@ import authRoutes from "./routes/authRoutes.js";
 import passResetRoutes from "./routes/forgotPassRoutes.js";
 import googleLoginRoutes from "./routes/authGoogleRoutes.js";
 import userRoutes from "./routes/userRoutes.js"
-
+import dirRoutes from "./routes/directoryRoutes.js"
 // import port
 const PORT = process.env.PORT || 5000;
 
@@ -39,6 +39,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/reset", passResetRoutes);
 app.use("/api/auth/google", googleLoginRoutes);
 app.use("/api/user", userRoutes)
+app.use("/api/dir", dirRoutes)
 // default get req
 app.get("/", (req, res) => {
 	res.send("SERVER IS RUNNING");
