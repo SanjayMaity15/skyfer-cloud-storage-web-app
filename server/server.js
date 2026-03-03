@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import passResetRoutes from "./routes/forgotPassRoutes.js";
 import googleLoginRoutes from "./routes/authGoogleRoutes.js";
+import userRoutes from "./routes/userRoutes.js"
 
 // import port
 const PORT = process.env.PORT || 5000;
@@ -37,7 +38,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/reset", passResetRoutes);
 app.use("/api/auth/google", googleLoginRoutes);
-
+app.use("/api/user", userRoutes)
 // default get req
 app.get("/", (req, res) => {
 	res.send("SERVER IS RUNNING");

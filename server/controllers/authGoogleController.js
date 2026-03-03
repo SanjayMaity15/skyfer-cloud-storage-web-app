@@ -8,6 +8,7 @@ import {
 } from "../services/loginWithGoogle.js";
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
+import { addPasswordSchema, resetPasswordSchema } from "../validators/passResetValidators.js";
 
 export const redirectToPopupScreen = async (req, res) => {
 	try {
@@ -109,5 +110,38 @@ export const fetchUser = async (req, res) => {
         window.close();
       </script>
     `);
+	}
+};
+
+export const addPasswordForGoogleLoginUser = async (req, res) => {
+	try {
+
+		console.log(req.body);
+
+		const { success, data } = addPasswordSchema.safeParse(req.body);
+
+		if (!success) {
+			return res.status(400).json({
+				success: false,
+				message: "All field must be filled",
+			});
+		}
+
+		const { newPass: password } = data;
+
+		const user = req.user;
+		user.password = password;
+		await user.save()
+
+		return res.status(201).json({
+			success: true,
+			message: "Password saved successfully"
+		})
+
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error"
+		})
 	}
 };

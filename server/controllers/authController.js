@@ -105,7 +105,7 @@ export const login = async (req, res) => {
 
 		const { email, password } = data;
 
-		const user = await User.findOne({ email }).lean();
+		const user = await User.findOne({ email })
 
 		if (!user) {
 			return res.status(401).json({
@@ -145,6 +145,7 @@ export const login = async (req, res) => {
 			profilePic: user.profilePic,
 			role: user.role,
 			rootDirId: user.rootDirId,
+			isSecure: user.isSecure
 		};
 
 		const payload = session._id.toString();
@@ -223,6 +224,7 @@ export const sendOTP = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
 	try {
+		console.log(req.user.isSecure);
 		return res.status(200).json({
 			success: true,
 			user: req.user,

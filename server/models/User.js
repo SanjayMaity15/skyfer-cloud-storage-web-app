@@ -21,6 +21,11 @@ const userSchema = new Schema(
 			type: String,
 			default: null,
 		},
+		gender: {
+			type: String,
+			enum:["male", "female"],
+			default: null,
+		},
 		rootDirId: {
 			type: Schema.Types.ObjectId,
 			ref: "Directory",
@@ -31,10 +36,21 @@ const userSchema = new Schema(
 			enum: ["admin", "user"],
 			default: "user",
 		},
+		
 	},
 	{
 		timestamps: true,
 		optimisticConcurrency: true,
+		virtuals: {
+			isSecure: {
+				get() {
+					return this.password !== null 
+				}
+			}
+		},
+		toJSON: {
+			virtuals: true
+		}
 	},
 );
 

@@ -23,3 +23,14 @@ export const loginSchema = z.object({
 export const otpSchema = z.object({
 	email: z.email({ message: "Email is required" }),
 });
+
+export const editProfileSchema = z.object({
+	userName: z
+		.string()
+		.min(1, "Username is required")
+		.min(3, "Minimum 3 characters needed"),
+
+	gender: z.enum(["male", "female"], {
+		errorMap: () => ({ message: "Gender is required" }),
+	}),
+});
