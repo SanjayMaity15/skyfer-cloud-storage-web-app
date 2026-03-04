@@ -16,6 +16,8 @@ import Starred from "../components/UI/Starred";
 import Profile from "../components/UI/Profile";
 import Popup from "../components/UI/Popup";
 import ForgotPassword from "../components/UI/ForgotPassword";
+import EditDetails from "../components/UI/EditDetails";
+import EnablePassword from "../components/UI/EnablePassword";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const App = () => {
 			const result = await api.get("/auth/current-user", {
 				withCredentials: true,
 			});
+			
 			dispatch(setUser(result?.data?.user));
 			dispatch(setPageLoading(false));
 		} catch (error) {
@@ -82,13 +85,24 @@ const App = () => {
 		},
 		{
 			path: "/profile",
-			element: <Profile />,
+			element: (
+				<ProtectedRoutes>
+					<Profile />
+				</ProtectedRoutes>
+			),
+		},
+		{
+			path: "/edit-profile",
+			element: <EditDetails />,
 		},
 		{
 			path: "/reset-password",
 			element: <ForgotPassword />,
 		},
-
+		{
+			path: "/add-password",
+			element: <EnablePassword />,
+		},
 	]);
 
 	return <RouterProvider router={router} />;

@@ -1,0 +1,806 @@
+/* =================== GOOGLE FONT IMPORT================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400...700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ceveat", cursive;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  --primary-text-color: #ffffff;
+  --hover-color: #f38417;
+  --btn-bg-color: #f3aa17;
+  --section-bg-color: #222831;
+}
+
+/* =================== BASIC STYLING =================== */
+
+.container {
+  max-width: 1280px;
+  padding-inline: 5rem;
+  margin: 0 auto;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-text-color);
+}
+p {
+  font-size: 1.8rem;
+  color: var(--primary-text-color);
+  letter-spacing: 0.07rem;
+}
+
+li,
+a {
+  font-size: 1.8rem;
+}
+
+.nav-links li a {
+  transition: all 0.3s ease-in-out;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.gap-4 {
+  gap: 4rem;
+}
+.gap-3 {
+  gap: 3rem;
+}
+
+.gap-2 {
+  gap: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  color: var(--primary-text-color);
+  transition: all 0.3s ease-in-out;
+  background-color: var(--btn-bg-color);
+  border-radius: 1.8rem;
+}
+
+.btn:hover {
+  background-color: var(--hover-color);
+}
+
+.nav-links li a:hover {
+  color: var(--hover-color);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+  display: block;
+}
+
+button {
+  font-size: 1.8rem;
+}
+
+/* ====================== HEADER SECTION STYLING ======================== */
+
+#navbar {
+  height: 12vh;
+  background-color: #31363f;
+}
+
+#brand-name {
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: var(--btn-bg-color);
+  font-family: "Caveat", cursive;
+}
+
+#cart-icon {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  font-size: 2.5rem;
+}
+
+#cart-icon:hover {
+  color: var(--hover-color);
+}
+
+#cart-value {
+  background-color: var(--btn-bg-color);
+  color: var(--primary-text-color);
+  width: 1.7rem;
+  aspect-ratio: 1;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.7rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 90%;
+}
+
+#humburger {
+  display: none;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* ================== MAIN SECTION STYLING ================= */
+
+/* ======================== HERO SECTION =================== */
+
+#hero-section {
+  background-color: #222831ee;
+  min-height: calc(100vh - 12vh);
+  flex-wrap: wrap;
+}
+
+.content-section,
+.hero-img-section {
+  flex: 1;
+  flex-basis: 320px;
+}
+
+.hero-img-section img {
+  width: 80%;
+}
+
+.content-section h1 {
+  font-size: 5.6rem;
+  text-transform: capitalize;
+  color: var(--primary-text-color);
+  font-family: "Caveat", cursive;
+}
+.content-section span {
+  color: var(--btn-bg-color);
+  font-family: "Caveat", cursive;
+}
+.content-section p {
+  color: #ffffffcc;
+  margin-block: 2rem;
+  font-family: "Caveat", cursive;
+}
+
+/* ================= DISCOUNT SECTION ================= */
+
+.discount-section {
+  margin-top: 7rem;
+  flex-wrap: wrap;
+}
+
+.left-tasty-thursday,
+.right-pizza-day {
+  flex: 1;
+  flex-basis: 320px;
+  justify-content: center;
+  background-color: var(--section-bg-color);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.img-side img {
+  width: 150px;
+  border-radius: 100%;
+  border: 5px solid #f3aa17;
+}
+
+.content-side h3 {
+  font-size: 3rem;
+  color: var(--primary-text-color);
+  margin-block: 1rem;
+}
+
+/* =============== MENU SECTION STYLING ================= */
+
+.menu-section {
+  margin-top: 4rem;
+}
+
+.menu-section h2 {
+  font-size: 3rem;
+  text-align: center;
+  font-family: "Caveat", cursive;
+}
+
+.filter-menu-btns-container {
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-menu-btns-container button {
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/** THIS BELOW CLASS IS ACTIVATED THROGH JS */
+
+.filter-menu-btns-container button.active {
+  background-color: #222831;
+  color: white;
+  padding: 0.7rem 1.7rem;
+  border-radius: 1.7rem;
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  row-gap: 0.1rem;
+  column-gap: 3rem;
+}
+
+.menu-item {
+  margin-top: 5rem;
+  display: none;
+
+  & h4 {
+    font-size: 2.5rem;
+    color: var(--primary-text-color);
+    font-family: "Caveat", cursive;
+  }
+}
+
+.top-section {
+  background-color: rgb(224, 227, 228);
+  padding: 2rem;
+  border-radius: 2rem;
+  min-height: 200px;
+
+  & img {
+    width: 150px;
+  }
+}
+
+.bottom-section {
+  background-color: var(--section-bg-color);
+  padding: 2rem;
+  border-radius: 2rem;
+
+  & p {
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.price-add-to-cart-box {
+  color: var(--primary-text-color);
+  font-size: 1.8rem;
+
+  & .cart {
+    background-color: #f3aa17;
+    width: 40px;
+    aspect-ratio: 1;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 100%;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+
+  & .cart:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+/* ================= CART TAB SECTION STYLING =============== */
+
+.cart-tab {
+  background-color: #222831;
+  height: 100vh;
+  width: 30rem;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  bottom: 0;
+  padding-block: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  transition: all 0.3s ease-in-out;
+}
+
+.cart-tab h3 {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--btn-bg-color);
+}
+
+.item-list {
+  margin-block: 2rem;
+  flex: 1;
+  width: 100%;
+  overflow: auto;
+}
+
+.item-list::-webkit-scrollbar {
+  width: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  margin-block: 0.5rem;
+  padding-block: 0.5rem;
+}
+
+.item-image img {
+  width: 5rem;
+}
+
+.item-name-price h4 {
+  color: var(--primary-text-color);
+  font-size: 1.4rem;
+}
+
+.item-name-price h4:last-child {
+  font-size: 1.1rem;
+}
+
+.qty-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qty-value {
+  margin-inline: 1rem;
+  font-size: 1.4rem;
+}
+
+.increment,
+.decrement {
+  font-size: 1rem;
+  width: 16px;
+  aspect-ratio: 1;
+  line-height: 16px;
+
+  background-color: #f38417;
+  border-radius: 100%;
+  text-align: center;
+}
+
+.qty-value {
+  font-size: 1.4rem;
+  color: var(--primary-text-color);
+}
+
+.total-price-container {
+  background-color: #f3aa17;
+  width: 100%;
+  text-align: center;
+  padding-block: 0.7rem;
+  font-size: 1.4rem;
+  color: var(--primary-text-color);
+}
+
+.total-price-container h4 {
+  display: inline-block;
+}
+
+.cart-btn-container {
+  margin-top: 2rem;
+}
+
+.item:nth-child(odd) {
+  background-color: #31363f;
+}
+
+#close,
+#payment {
+  width: 80px;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-left: 1rem;
+}
+
+.cart-tab-active {
+  right: 0;
+}
+
+/* ================= WE ARE SALT & STORY ============== */
+
+#we-salt-story {
+  min-height: 500px;
+  background-color: var(--section-bg-color);
+  margin-top: 5rem;
+}
+
+.we-are-salt-story {
+  align-items: center;
+  min-height: 500px;
+  flex-wrap: wrap;
+}
+
+.left-burger-part,
+.right-we-salt-story-content {
+  flex: 1;
+  flex-basis: 300px;
+}
+
+.left-burger-part {
+  padding-block: 3rem;
+}
+
+.left-burger-part img {
+  min-width: 200px;
+  width: 400px;
+}
+
+.right-we-salt-story-content h3 {
+  font-size: 3.5rem;
+  color: var(--primary-text-color);
+  font-family: "Caveat", cursive;
+}
+.right-we-salt-story-content p {
+  font-size: 1.5rem;
+  margin-block: 1rem;
+  line-height: 1.4;
+}
+.right-we-salt-story-content button {
+  margin-top: 2rem;
+}
+
+/* ================= TESTIMONIAL SECTION STYLING ================== */
+
+.testimonial-section {
+  margin-top: 5rem;
+}
+
+.testimonial-section h2 {
+  text-align: center;
+  font-size: 3.5rem;
+  font-family: "Caveat", cursive;
+}
+
+.customer-review {
+  margin-top: 5rem;
+}
+
+.testimonial-card-container {
+  padding-inline: 7rem;
+  padding-block: 4rem;
+}
+
+.client img {
+  border-radius: 100%;
+  min-width: 150px;
+}
+.review {
+  margin-left: 5rem;
+  background-color: #222831;
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
+.review p {
+  text-align: left;
+  font-size: 1.6rem;
+  line-height: 1.6;
+}
+.review h4 {
+  text-align: left;
+  font-size: 2.6rem;
+  margin-top: 2rem;
+  color: aliceblue;
+}
+
+/* =================== FOOTER SECTION STYLING ============== */
+
+#footer {
+  background-color: #222831;
+  margin-top: 5rem;
+}
+
+.footer-container {
+  padding-inline: 10rem;
+  padding-block: 6rem;
+}
+
+.main-footer-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  text-align: center;
+}
+
+.main-footer-section h4 {
+  font-size: 2.6rem;
+  color: var(--primary-text-color);
+  font-family: "Caveat", cursive;
+}
+.main-footer-section p {
+  font-size: 1.6rem;
+  color: var(--primary-text-color);
+  margin-block: 2rem;
+}
+
+.contact-us {
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.social-links {
+  justify-content: center;
+  gap: 1rem;
+}
+.social-links a {
+  font-size: 3rem;
+}
+
+.footer-container a {
+  transition: all 0.3s ease-in-out;
+}
+
+.footer-container a:hover {
+  color: var(--hover-color);
+}
+
+.copyrights-section {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+/* ================= SWIPER JS SLIDE CSS ============= */
+
+.swiper {
+  width: 100%;
+  height: auto;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.autoplay-progress {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #f38417;
+}
+
+.autoplay-progress svg {
+  --progress: 0;
+  position: absolute;
+  left: 0;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  stroke-width: 4px;
+  stroke: #f38417;
+  fill: none;
+  stroke-dashoffset: calc(125.6px * (1 - var(--progress)));
+  stroke-dasharray: 125.6;
+  transform: rotate(-90deg);
+}
+
+/* ===================== MEDIA QUERIES FOR RESPONSIVENESS ==============*/
+
+@media screen and (max-width: 768px) {
+  /*Header section */
+
+  #navbar {
+    height: 16vh;
+  }
+
+  #hero-section {
+    min-height: calc(100vh - 16vh);
+  }
+
+  #humburger {
+    display: block;
+  }
+
+  .desktop-menu {
+    display: none;
+  }
+
+  .sign-in-btn {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    position: absolute;
+    /* top: calc(12vh); */
+    top: 20%;
+    left: -100%;
+    transform: translateX(-50%);
+    background-color: #222831;
+    width: 30rem;
+    padding: 3rem;
+    border-radius: 2rem;
+    border: 0.5rem solid var(--btn-bg-color);
+    transition: all 0.4s ease-in-out;
+  }
+
+  #close-menu {
+    font-size: 3rem;
+  }
+
+  .mobile-menu-active {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Section Main */
+
+  #hero-section {
+    padding-block: 5rem;
+  }
+
+  .hero-img-section {
+    margin-block: 4rem;
+  }
+
+  .content-section {
+    & h1 {
+      font-size: 3.8rem;
+    }
+
+    & p {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* Discount section */
+
+  .left-tasty-thursday,
+  .right-pizza-day {
+    justify-content: center;
+    gap: 4rem;
+  }
+
+  /* We are salt & story styling */
+
+  .we-are-salt-story {
+    padding-bottom: 4rem;
+  }
+
+  /* Testimonial section */
+
+  .testimonial-card-container {
+    flex-direction: column;
+    padding-inline: 1rem;
+    padding-block: 2rem;
+  }
+
+  .client img {
+    max-width: 100px !important;
+  }
+
+  .client {
+    margin-bottom: 4rem;
+  }
+
+  .main-footer-section {
+    gap: 4rem;
+  }
+}
+
+@media screen and (max-width: 432px) {
+  /* Basic styling */
+
+  .container {
+    padding-inline: 2rem;
+  }
+
+  /* Header styling */
+
+  #brand-name {
+    font-size: 3rem;
+  }
+
+  /* Hero section */
+
+  #hero-section {
+    padding-block: 2rem;
+  }
+
+  .content-section {
+    margin-top: 3rem;
+  }
+
+  /* Footer section */
+
+  .footer-container {
+    padding-inline: 5rem;
+  }
+
+  /* Testimonial section */
+
+  .testimonial-card-container {
+    padding-inline: 2rem;
+  }
+
+  .review {
+    margin-left: 0px;
+    margin-bottom: 2rem;
+  }
+
+  /* Discount section */
+
+  .left-tasty-thursday,
+  .right-pizza-day {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  #cart-icon {
+    font-size: 1.7rem;
+  }
+
+  .cart-value {
+    width: 1rem;
+    aspect-ratio: 1;
+    line-height: 1rem;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  /* Discount section */
+
+  .left-tasty-thursday,
+  .right-pizza-day {
+    flex-direction: column;
+  }
+
+  #brand-name {
+    font-size: 2.4rem;
+  }
+}

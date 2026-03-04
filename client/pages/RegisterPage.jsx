@@ -2,10 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../src/utils/getImageUrl";
 import { registrationSchema } from "../validators/authValidator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUser } from "../src/features/userSlice";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -15,12 +18,12 @@ const RegisterPage = () => {
 			password: "123456",
 		},
 	});
-
+	const [showPass, setShowPass] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	// naviagte
 	const navigate = useNavigate();
-
+	const dispatch = useDispatch();
 	// Error state
 	const [errors, setErrors] = useState({});
 
@@ -36,6 +39,7 @@ const RegisterPage = () => {
 			);
 
 			setErrors(regFormError);
+			return;
 		}
 
 		try {
@@ -70,15 +74,25 @@ const RegisterPage = () => {
 		}
 	};
 
-	window.addEventListener("message", (event) => {
-		if (event.origin !== "http://localhost:8000") return;
+	useEffect(() => {
+		const handleMessage = (event) => {
+			if (event.origin !== "http://localhost:8000") return;
 
-		if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
-			console.log("User data received from popup:", event.data.data);
-		}
-	});
+			if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+				dispatch(setUser(event.data.data));
+				toast.success("LoggedIn successfully");
+				navigate("/dashboard");
+			}
+		};
 
-	
+		window.addEventListener("message", handleMessage);
+
+		// Cleanup on unmount
+		return () => {
+			window.removeEventListener("message", handleMessage);
+		};
+	}, []);
+
 	return (
 		<div className="min-h-screen flex bg-bg-soft">
 			{/* LEFT SIDE */}
@@ -151,13 +165,22 @@ const RegisterPage = () => {
 							)}
 						</div>
 
-						<div>
+						<div className="relative">
 							<input
-								type="password"
+								type={showPass ? "text" : "password"}
 								placeholder="Enter password..."
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("password")}
 							/>
+
+							<button
+								type="button"
+								onClick={() => setShowPass((prev) => !prev)}
+								className="cursor-pointer absolute top-3 right-4"
+							>
+								{showPass ? <FaRegEye /> : <FaRegEyeSlash />}
+							</button>
+
 							{errors.password && (
 								<p className="text-red-500 pl-4 text-sm mt-1">
 									{errors.password}

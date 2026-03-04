@@ -11,6 +11,8 @@ import {
 
 export const sendForgotPassOTP = async (req, res) => {
 	try {
+		
+
 		const { success, data } = passResetEmailSchema.safeParse(req.body);
 
 		if (!success) {
@@ -104,9 +106,9 @@ export const resetPassword = async (req, res) => {
 
 		const { newPass: password, emailForPassReset: email } = data;
 
-        const user = await User.findOne({ email });
-        user.password = password
-        await user.save()
+		const user = await User.findOne({ email });
+		user.password = password;
+		await user.save();
 
 		return res.status(200).json({
 			success: true,

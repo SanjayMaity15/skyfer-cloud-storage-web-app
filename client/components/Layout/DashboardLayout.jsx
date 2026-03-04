@@ -115,7 +115,7 @@ const DashboardLayout = () => {
 					/>
 				</div>
 			</aside>
-			<section>
+			<section className="w-full">
 				<Outlet />
 			</section>
 		</div>

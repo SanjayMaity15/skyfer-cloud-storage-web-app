@@ -3,6 +3,7 @@
 import Directory from "../models/Directory.js";
 import { directorySchema } from "../validators/directoryValidators.js";
 import File from "../models/File.js";
+import fs from "node:fs/promises";
 
 export const createDirectory = async (req, res) => {
 	try {
@@ -90,13 +91,16 @@ export const getDirectory = async (req, res) => {
 			directories: directories.map((dir) => ({
 				_id: dir._id,
 				name: dir.dirName,
+				isStarred: dir.isStarred,
 				createdAt: dir.createdAt,
 			})),
 			files: files.map((file) => ({
 				_id: file._id,
 				name: file.fileName,
+				extension: file.extension,
 				size: file.size,
 				createdAt: file.createdAt,
+				updatedAt: file.updatedAt,
 			})),
 		});
 	} catch (error) {
@@ -173,27 +177,75 @@ export const deleteDirectory = async (req, res) => {
 				.select("_id")
 				.lean();
 
-			for (const { _id } of directories) {
-				const { directories: childDirectories } =
-					await getDirectoryContents(_id);
+			let files = await File.find({ parentDirId: id })
+				.select("_id fileName")
+				.lean();
 
+			for (const { _id } of directories) {
+				const { files: childFiles, directories: childDirectories } =
+					await getDirectoryContents(_id);
+				files = [...files, ...childFiles];
 				directories = [...directories, ...childDirectories];
 			}
 
-			return { directories };
+			return { directories, files };
 		}
 
-		const { directories } = await getDirectoryContents(id);
+		const { directories, files } = await getDirectoryContents(id);
 
 		await Directory.deleteMany({
 			_id: { $in: [...directories.map(({ _id }) => _id), id] },
 		});
+
+		await File.deleteMany({
+			_id: { $in: [...files.map(({ _id }) => _id)] },
+		});
+
+		console.log(files)
+
+		for (const { fileName } of files) {
+			console.log(fileName)
+			await fs.rm(`${process.cwd()}/storage/${fileName}`);
+		}
 
 		return res.status(200).json({
 			success: true,
 			message: "Folder deleted successfully",
 		});
 	} catch (err) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+export const handleAddStarToFolder = async (req, res) => {
+	try {
+		const { folderId } = req.body;
+		const user = req.user;
+
+		if (!folderId || !user) {
+			return res.status(400).json({
+				success: false,
+				message: "Something went wrong",
+			});
+		}
+
+		const starDir = await Directory.findOne({
+			_id: folderId,
+			owner: user._id,
+		});
+
+		starDir.isStarred = !starDir.isStarred;
+
+		await starDir.save();
+
+		return res.status(200).json({
+			success: false,
+			message: `${starDir.isStarred ? "Mark as imported folder" : "Remove from important folder"}`,
+		});
+	} catch (error) {
 		return res.status(500).json({
 			success: false,
 			message: "Server error",

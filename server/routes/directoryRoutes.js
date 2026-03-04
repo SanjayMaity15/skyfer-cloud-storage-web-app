@@ -3,6 +3,7 @@ import {
 	createDirectory,
 	deleteDirectory,
 	getDirectory,
+	handleAddStarToFolder,
 	renameDirectory,
 } from "../controllers/directoryController.js";
 import { isAuth } from "../middlewares/isAuth.js";
@@ -20,5 +21,7 @@ router.get("/get-dir/:id", isAuth, getDirectory);
 router.post("/rename/:id", isAuth, renameDirectory)
 
 router.delete("/delete/:id", isAuth, deleteDirectory)
+
+router.post("/starred", isAuth, handleAddStarToFolder)
 
 export default router;

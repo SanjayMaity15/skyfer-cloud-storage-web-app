@@ -224,7 +224,7 @@ export const sendOTP = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
 	try {
-		console.log(req.user.isSecure);
+		
 		return res.status(200).json({
 			success: true,
 			user: req.user,

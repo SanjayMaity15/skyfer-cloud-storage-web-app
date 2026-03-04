@@ -2,12 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../src/utils/getImageUrl";
 import { loginSchema } from "../validators/authValidator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { useDispatch } from "react-redux";
 import { setUser } from "../src/features/userSlice";
 import { toast } from "react-toastify";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
 	const { register, handleSubmit } = useForm({
@@ -17,10 +18,12 @@ const LoginPage = () => {
 		},
 	});
 
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+
+	const [showPass, setShowPass] = useState(false)
 
 	// login errors
 	const [errors, setErrors] = useState({});
@@ -36,6 +39,7 @@ const LoginPage = () => {
 			);
 
 			setErrors(loginErrors);
+			return;
 		}
 
 		try {
@@ -43,9 +47,9 @@ const LoginPage = () => {
 			const result = await api.post("/auth/login", loginData, {
 				withCredentials: true,
 			});
-			toast.success(result?.data?.message)
-			dispatch(setUser(result?.data?.user))
-			navigate("/dashboard");	
+			toast.success(result?.data?.message);
+			dispatch(setUser(result?.data?.user));
+			navigate("/dashboard");
 			setLoading(false);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
@@ -53,6 +57,41 @@ const LoginPage = () => {
 		}
 	};
 
+	// login with google
+
+	const handleLoginWithGoogle = async () => {
+		try {
+			const result = window.open(
+				`${import.meta.env.VITE_BASE_URL}/auth/google`,
+				"googleLoginPopup",
+				"width=500,height=600",
+			);
+			console.log(result);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		const handleMessage = (event) => {
+			if (event.origin !== "http://localhost:8000") return;
+
+			if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+				dispatch(setUser(event.data.data));
+				toast.success("LoggedIn successfully");
+				navigate("/dashboard");
+			}
+		};
+
+		window.addEventListener("message", handleMessage);
+
+		// Cleanup on unmount
+		return () => {
+			window.removeEventListener("message", handleMessage);
+		};
+	}, []);
+	
+	
 	return (
 		<div className="min-h-screen flex bg-bg-soft">
 			{/* LEFT SIDE */}
@@ -111,13 +150,20 @@ const LoginPage = () => {
 							)}
 						</div>
 
-						<div>
+						<div className="relative">
 							<input
-								type="password"
+								type={showPass ? "text": 'password'}
 								placeholder="Enter password..."
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("password")}
 							/>
+							<button
+								type="button"
+								onClick={() => setShowPass((prev) => !prev)}
+								className="cursor-pointer absolute top-3 right-4"
+							>
+								{showPass ? <FaRegEye /> : <FaRegEyeSlash />}
+							</button>
 							{errors.password && (
 								<p className="text-red-500 pl-4 text-sm mt-1">
 									{errors.password}
@@ -126,7 +172,13 @@ const LoginPage = () => {
 						</div>
 
 						<div className="flex justify-end mr-2 text-xs text-primary">
-							<Link to="/reset-password" className="hover:underline" title="Click to reset password">Forgot password</Link>
+							<Link
+								to="/reset-password"
+								className="hover:underline"
+								title="Click to reset password"
+							>
+								Forgot password
+							</Link>
 						</div>
 
 						{/* Button */}
@@ -162,7 +214,10 @@ const LoginPage = () => {
 					</div>
 
 					{/* Google Button */}
-					<button className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer">
+					<button
+						className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer"
+						onClick={handleLoginWithGoogle}
+					>
 						<img
 							src="https://www.svgrepo.com/show/475656/google-color.svg"
 							alt="google"

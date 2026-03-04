@@ -21,6 +21,7 @@ export const redirectToPopupScreen = async (req, res) => {
 		});
 	}
 };
+
 export const fetchUser = async (req, res) => {
 	try {
 		const mongooseSession = await mongoose.startSession();
