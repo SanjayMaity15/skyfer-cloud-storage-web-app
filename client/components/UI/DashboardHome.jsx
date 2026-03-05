@@ -91,6 +91,61 @@ const DashboardHome = () => {
 	const filterDirectory = currentDir.directories.filter((dir) =>
 		dir.name.toLowerCase().includes(searchDir.toLowerCase()),
 	);
+	const filterFiles = currentDir.files.filter((file) =>
+		file.name.toLowerCase().includes(searchDir.toLowerCase()),
+	);
+
+	// filter
+
+	
+
+	function filterItems(filter) {
+		if (filter === "asc-name") {
+			const result = currentDir.files.sort((a, b) =>
+				a.name.localeCompare(b.name),
+			);
+			setCurrentDir((prev) => ({...prev, files :result}));
+		} else if (filter === "dsc-name") {
+			const result = currentDir.files.sort((a, b) =>
+				b.name.localeCompare(a.name),
+			);
+			setCurrentDir((prev) => ({ ...prev, files: result }));
+		} else if (filter === "highsize") {
+				const result = currentDir.files.sort((a, b) =>
+					b.size - a.size,
+				);
+				setCurrentDir((prev) => ({ ...prev, files: result }));
+		} else if (filter === "lowsize") {
+				const result = currentDir.files.sort((a, b) =>
+					a.size - b.size
+				);
+				setCurrentDir((prev) => ({ ...prev, files: result }));
+		}
+		 else if (filter === "asc-time") {
+				const result = currentDir.files.sort(
+					(a, b) =>
+						new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+				);
+			
+				setCurrentDir((prev) => ({ ...prev, files: result }));
+		
+		} else if (filter === "dsc-time") {
+				const result = currentDir.files.sort(
+					(a, b) =>
+						new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+				);
+			
+				setCurrentDir((prev) => ({ ...prev, files: result }));
+		}
+	}
+
+	
+
+	const [filter, setFilter] = useState("");
+
+	useEffect(() => {
+		filterItems(filter);
+	}, [filter]);
 
 	const [dirPopupConfig, setDirPopupConfig] = useState({
 		isOpen: false,
@@ -329,7 +384,7 @@ const DashboardHome = () => {
 	return (
 		<div className="w-full ">
 			{/* serach section */}
-			<div className="flex flex-col-reverse md:flex md:justify-between p-6 gap-3">
+			<div className="flex flex-col-reverse md:flex-row md:justify-between p-6 gap-3">
 				<div className="flex-1 relative md:w-1/2">
 					<CiSearch className="absolute top-3 left-3" />
 					<input
@@ -368,6 +423,30 @@ const DashboardHome = () => {
 					</div>
 				</div>
 			</div>
+			{/* filter */}
+			<div className="flex justify-center md:justify-end items-center gap-3 px-6 mb-4">
+				<label
+					htmlFor="filter"
+					className="text-sm font-semibold text-gray-700"
+				>
+					Sort by:
+				</label>
+				<select
+					name="sort"
+					id="filter"
+					className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 px-4 py-2 cursor-pointer transition duration-200 hover:border-indigo-300"
+					value={filter}
+					onChange={(e) => setFilter(e.target.value)}
+				>
+					<option value="">Select</option>
+					<option value="asc-name">Asc by filename</option>
+					<option value="dsc-name">Des by filename</option>
+					<option value="lowsize">Low size</option>
+					<option value="highsize">High size</option>
+					<option value="asc-time">Asc by created time</option>
+					<option value="dsc-time">Dsc by created time</option>
+				</select>
+			</div>
 			{/* upload progress */}
 			{uploadProgress > 0 && (
 				<div className="h-4 w-[80%] md:w-[50%] mx-auto border border-green-300 rounded-full bg-green-100 mb-4">
@@ -389,7 +468,7 @@ const DashboardHome = () => {
 					>
 						<FaArrowLeft />
 					</button>
-					<FaHome className="text-secondary text-xl"/>
+					<FaHome className="text-secondary text-xl" />
 					<ul className="flex items-center ">
 						{path.map((el, i) => (
 							<li
@@ -553,7 +632,7 @@ const DashboardHome = () => {
 				</h2>
 				<div className="h-0.5 bg-gray-300 mb-2" />
 				<div className="flex flex-col gap-2">
-					{currentDir?.files.map((file) => {
+					{filterFiles?.map((file) => {
 						const {
 							icon: FileIcon,
 							color,
