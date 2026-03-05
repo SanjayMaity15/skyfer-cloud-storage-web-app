@@ -12,7 +12,6 @@ import { api } from "../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { setPageLoading, setUser } from "./features/userSlice";
 import ProtectedRoutes from "../components/UI/ProtectedRoutes";
-import Starred from "../components/UI/Starred";
 import Profile from "../components/UI/Profile";
 import Popup from "../components/UI/Popup";
 import ForgotPassword from "../components/UI/ForgotPassword";
@@ -77,10 +76,7 @@ const App = () => {
 					index: true,
 					element: <DashboardHome />,
 				},
-				{
-					path: "starred",
-					element: <Starred />,
-				},
+
 			],
 		},
 		{

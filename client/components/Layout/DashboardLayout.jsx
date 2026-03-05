@@ -88,13 +88,7 @@ const DashboardLayout = () => {
 							<MdDashboard className="text-lg" />
 							Dashboard
 						</Link>
-						<Link
-							to="starred"
-							className={`flex items-center gap-2 px-4 py-3 ${isStarred && "bg-primary/10 text-primary border-r-4 border-primary"}`}
-						>
-							<MdOutlineStarBorder className="text-lg" />
-							Starred
-						</Link>
+
 					</div>
 				</div>
 
@@ -103,7 +97,7 @@ const DashboardLayout = () => {
 					<div className="flex items-center">
 						<div>
 							<IoPersonCircleOutline
-								className="text-4xl text-gray-600"
+								className="text-4xl text-gray-600 cursor-pointer"
 								onClick={() => navigate("/profile")}
 							/>
 						</div>

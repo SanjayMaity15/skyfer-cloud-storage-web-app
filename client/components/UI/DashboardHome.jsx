@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import {
 	FaArrowLeft,
 	FaFolder,
+	FaHome,
 	FaRegEye,
 	FaRegFile,
 	FaRegFolder,
@@ -48,6 +49,35 @@ const DashboardHome = () => {
 		directories: [],
 		files: [],
 	});
+
+	console.log(currentDir._id);
+	// breadcrums
+	const [path, setPath] = useState([]);
+
+	useEffect(() => {
+		if (!currentDir._id) return;
+
+		setPath((prev) => {
+			const last = prev.at(-1);
+
+			// prevent duplicate entry
+			if (last?.dirId === currentDir._id) return prev;
+
+			const name = prev.length === 0 ? "Home" : currentDir.name;
+
+			return [...prev, { dirId: currentDir._id, dirName: name }];
+		});
+	}, [currentDir._id]);
+
+	function handlePathBack() {
+		if (path.length > 1) {
+			const copyPath = [...path];
+			copyPath.pop();
+			setPath(copyPath);
+			const currentOpenDirAfterBack = copyPath.slice(-1);
+			getDirData(currentOpenDirAfterBack[0].dirId);
+		}
+	}
 
 	// file upload
 
@@ -162,6 +192,7 @@ const DashboardHome = () => {
 				directories: result.data.directories,
 				files: result.data.files,
 			});
+
 			setLoadingFolderId(null);
 		} catch (error) {
 			setLoadingFolderId(null);
@@ -240,6 +271,7 @@ const DashboardHome = () => {
 			);
 			setUploadProgress(0);
 			toast.success(result?.data?.message);
+			getDirData(currentDir._id);
 		} catch (error) {
 			setUploadProgress(0);
 			toast.error(error?.response?.data?.message);
@@ -349,9 +381,28 @@ const DashboardHome = () => {
 			)}
 			{/* path */}
 			<div className="bg-white shadow-xs py-4 flex flex-col md:flex-row justify-between md:items-center px-4 gap-2">
-				<div className="flex items-center gap-2">
-					<FaArrowLeft className="text-gray-500" />
-					<span>PATH</span>
+				<div className="flex items-center gap-2 pl-3">
+					<button
+						className={`${path.length === 1 ? "text-gray-400" : "text-gray-900"} text-xl cursor-pointer`}
+						onClick={handlePathBack}
+						disabled={path.length === 1}
+					>
+						<FaArrowLeft />
+					</button>
+					<FaHome className="text-secondary text-xl"/>
+					<ul className="flex items-center ">
+						{path.map((el, i) => (
+							<li
+								key={i}
+								className={`text-sm flex items-center ${i === path.length - 1 && "font-bold text-primary"} `}
+							>
+								{el.dirName}
+								<span className="font-semibold text-xl  mx-1">
+									/
+								</span>
+							</li>
+						))}
+					</ul>
 				</div>
 				<div className="flex gap-2 justify-end">
 					<div className="flex items-center gap-1 bg-yellow-50 text-yellow-600 text-xs font-semibold px-4 py-1 border border-yellow-600 rounded-full">
@@ -437,7 +488,8 @@ const DashboardHome = () => {
 									<div className="flex items-center gap-4">
 										{/* date */}
 										<span className="text-xs text-yellow-600 font-semibold bg-yellow-50 border border-amber-300 px-2 py-1 rounded-full">
-											Created At : {timeFormat(dir.createdAt)}
+											Created At :{" "}
+											{timeFormat(dir.createdAt)}
 										</span>
 
 										<button
@@ -547,7 +599,8 @@ const DashboardHome = () => {
 
 								<div>
 									<p className="md:hidden text-xs text-primary bg-pink-100 px-4 py-1 rounded-full border border-pink-300 font-semibold text-center">
-										Created At : {timeFormat(file.createdAt)}
+										Created At :{" "}
+										{timeFormat(file.createdAt)}
 									</p>
 								</div>
 
