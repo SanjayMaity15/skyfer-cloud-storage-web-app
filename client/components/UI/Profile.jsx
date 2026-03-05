@@ -24,9 +24,9 @@ const Profile = () => {
 
 	return (
 		<section className="h-screen p-6">
-			<div className="h-full max-w-4xl mx-auto flex gap-7">
+			<div className="h-full max-w-4xl mx-auto flex flex-col md:flex-row gap-7">
 				{/* left side */}
-				<div className="flex-1 flex flex-col items-center bg-linear-to-tl from-green-50 via-purple-50 to-white p-6 shadow-md rounded-2xl relative">
+				<div className="flex-1 flex flex-col items-center bg-linear-to-tl from-green-50 via-purple-50 to-green-50 p-6 shadow-md rounded-2xl relative">
 					{/* back button */}
 					<button
 						className="absolute left-5 font-bold cursor-pointer text-xl"
@@ -103,7 +103,7 @@ const Profile = () => {
 
 				{/* right side */}
 				<div className="flex-2 flex flex-col justify-between gap-5">
-					<div className="flex justify-between gap-5">
+					<div className="flex flex-col md:flex-row justify-between gap-5">
 						{/* join date */}
 						<div className="flex-1 shadow-md flex items-center justify-between p-6 rounded-2xl bg-linear-to-bl from-green-100 via-purple-50 to-white">
 							<div className="flex flex-col gap-2">
@@ -154,7 +154,7 @@ const Profile = () => {
 
 					{/* security alert section */}
 					<div
-						className={`shadow-md h-full rounded-2xl bg-linear-to-bl  ${user?.isSecure ? "bg-green-100" : "from-red-100"} via-40% via-white  to-white p-8 flex flex-col justify-between`}
+						className={`shadow-md h-full rounded-2xl bg-linear-to-bl  ${user?.isSecure ? "bg-green-100" : "from-red-100"} via-40% via-white  to-white p-8 flex flex-col justify-between mb-6 md:mb-0`}
 					>
 						<div>
 							<div className="flex justify-between">

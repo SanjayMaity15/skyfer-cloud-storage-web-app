@@ -93,7 +93,7 @@ const LoginPage = () => {
 	
 	
 	return (
-		<div className="min-h-screen flex bg-bg-soft">
+		<div className="min-h-screen flex bg-bg-soft container">
 			{/* LEFT SIDE */}
 			<div className="hidden md:flex w-1/2 bg-linear-to-br from-primary/80 to-secondary/80 text-white flex-col justify-start gap-4 items-start p-12 rounded-r-full">
 				{/* Logo */}
@@ -124,10 +124,10 @@ const LoginPage = () => {
 			</div>
 
 			{/* RIGHT SIDE */}
-			<div className="w-full md:w-1/2 flex items-center justify-center bg-bg-soft px-6">
+			<div className="w-full md:w-1/2 flex pt-12 md:pt-0 md:items-center justify-center bg-bg-soft px-6">
 				<div className="w-full max-w-md">
 					{/* Title */}
-					<h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+					<h2 className="text-3xl font-bold text-gray-900 mb-6 text-center tracking-wide">
 						Login
 					</h2>
 

@@ -125,10 +125,10 @@ const RegisterPage = () => {
 			</div>
 
 			{/* RIGHT SIDE */}
-			<div className="w-full md:w-1/2 flex items-center justify-center bg-bg-soft px-6">
+			<div className="w-full md:w-1/2 flex items-start  md:items-center justify-center bg-bg-soft px-6">
 				<div className="w-full max-w-md">
 					{/* Title */}
-					<h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+					<h2 className="text-3xl pt-12 md:pt-0 font-bold text-gray-900 mb-6 text-center tracking-wide">
 						Register
 					</h2>
 

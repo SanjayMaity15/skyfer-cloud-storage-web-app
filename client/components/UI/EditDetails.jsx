@@ -48,8 +48,8 @@ const EditDetails = () => {
 
 
 	return (
-		<div className="min-h-screen flex items-center justify-center  p-6">
-			<div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
+		<div className="min-h-screen flex pt-16 md:pt-0 md:items-center justify-center  p-6">
+			<div className="w-full max-w-md h-fit bg-white rounded-3xl shadow-xl p-8">
 				<h3 className="text-3xl font-bold text-center text-gray-800 mb-8">
 					Edit Profile
 				</h3>

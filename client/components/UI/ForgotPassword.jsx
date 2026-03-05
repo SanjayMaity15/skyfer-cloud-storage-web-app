@@ -8,6 +8,7 @@ import {
 import { api } from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 import ButtonLoader from "./ButtonLoader";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const ForgotPassword = () => {
 	const [forgotPassStep, setForgotPassStep] = useState(1);
@@ -17,6 +18,8 @@ const ForgotPassword = () => {
 
 	const [newPass, setNewPass] = useState("");
 	const [confirmPass, setConfirmPass] = useState("");
+	const [showPass1, setShowPass1] = useState(false)
+	const [showPass2, setShowPass2] = useState(false)
 
 	const [errors, setErrors] = useState({});
 
@@ -244,29 +247,43 @@ const ForgotPassword = () => {
 					</h4>
 
 					<div className="flex flex-col gap-4 mt-4 px-12">
-						<div>
+						<div className="relative">
 							<input
-								type="text"
+								type={showPass1 ? "text" : "password"}
 								placeholder="New password"
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								onChange={(e) => setNewPass(e.target.value)}
 								value={newPass}
 							/>
+							<button
+								type="button"
+								onClick={() => setShowPass1((prev) => !prev)}
+								className="cursor-pointer absolute top-3 right-4"
+							>
+								{showPass1 ? <FaRegEye /> : <FaRegEyeSlash />}
+							</button>
 							{errors.newPass && (
 								<p className="text-sm pl-4 mt-1 text-red-600">
 									{errors.newPass}
 								</p>
 							)}
 						</div>
-						<div>
+						<div className="relative">
 							{" "}
 							<input
-								type="text"
+								type={showPass2 ? "text": "password"}
 								placeholder="Confirm password"
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								onChange={(e) => setConfirmPass(e.target.value)}
 								value={confirmPass}
 							/>
+							<button
+								type="button"
+								onClick={() => setShowPass2((prev) => !prev)}
+								className="cursor-pointer absolute top-3 right-4"
+							>
+								{showPass2 ? <FaRegEye /> : <FaRegEyeSlash />}
+							</button>
 							{errors.confirmPass && (
 								<p className="text-sm pl-4 mt-1 text-red-600">
 									{errors.confirmPass}

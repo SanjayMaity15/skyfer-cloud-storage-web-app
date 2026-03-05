@@ -6,7 +6,7 @@ const Navbar = () => {
 
 	return (
 		<div className="bg-white z-50 shadow-xs h-18">
-			<div className=" flex justify-between h-full items-center container ">
+			<div className=" flex justify-between h-full items-center container px-4">
 				{/* brand name */}
 				<Link
 					className="flex items-center cursor-pointer"

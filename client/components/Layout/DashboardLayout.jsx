@@ -8,11 +8,13 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { setUser } from "../../src/features/userSlice";
 import Popup from "../UI/Popup";
+import { FaArrowLeft, FaBars } from "react-icons/fa";
 
 const DashboardLayout = () => {
 	// get user data from redux store
 	const { user } = useSelector((state) => state.user);
 	const [isOpenPopup, setIsOpenPopup] = useState(false);
+	const [isMbMenuActive, setIsMbMenuActive] = useState(false);
 	const location = useLocation();
 	console.log(user);
 	const isDashboard = location.pathname === "/dashboard";
@@ -36,10 +38,31 @@ const DashboardLayout = () => {
 		}
 	};
 
+	console.log(isMbMenuActive);
 	return (
-		<div className="flex h-screen">
-			<aside className="w-1/5 bg-white flex flex-col justify-between">
+		<div className="flex h-screen relative">
+			<button
+				className={`absolute md:hidden top-8 left-4 text-xl ${isMbMenuActive && "hidden"}`}
+				onClick={() => setIsMbMenuActive((prev) => !prev)}
+			>
+				<FaBars />
+			</button>
+
+			<aside
+				className={`
+					fixed top-0 left-0 h-screen w-3/4 bg-white z-50 flex flex-col justify-between
+					transform transition-transform duration-300 ease-in-out
+					${isMbMenuActive ? "translate-x-0" : "-translate-x-full"}
+					
+					md:translate-x-0 
+					md:static 
+					md:w-1/5
+				`}
+			>
 				<div>
+					<button className="md:hidden relative top-2 left-2 text-xl" onClick={() => setIsMbMenuActive(prev => !prev)}>
+						<FaArrowLeft/>
+					</button>
 					{/* brand name */}
 					<Link
 						className="flex items-center cursor-pointer mt-2"
@@ -115,6 +138,9 @@ const DashboardLayout = () => {
 					/>
 				</div>
 			</aside>
+
+			{/* mobile side bar */}
+
 			<section className="w-full">
 				<Outlet />
 			</section>

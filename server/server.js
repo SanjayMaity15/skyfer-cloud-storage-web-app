@@ -28,10 +28,15 @@ app.disable("x-powered-by");
 app.use(
 	cors({
 		origin: process.env.FRONTEND_URL,
+			// origin: [
+			// 	"http://localhost:5173",
+			// 	"http://10.120.40.153:5173", // your local network IP
+			// ],
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		credentials: true,
 	}),
 );
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -53,7 +58,7 @@ app.get("/", (req, res) => {
 });
 
 // server listen
-app.listen(PORT, async () => {
+app.listen(PORT, "0.0.0.0" ,async () => {
 	await connectDatabase();
 	console.log(`---SERVER IS RUNNING AT PORT ${PORT}---`);
 });

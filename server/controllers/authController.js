@@ -200,7 +200,7 @@ export const sendOTP = async (req, res) => {
 			{ upsert: true, new: true },
 		);
 
-		await sendMailUsingNodeMailer(email, "Registration OTP", otp);
+		await sendMailUsingNodeMailer(email, "Skyfer Registration OTP For Verification", "registration", otp);
 		return res.status(200).json({
 			success: true,
 			message: "OTP Send Successfully",

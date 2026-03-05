@@ -9,7 +9,7 @@ const Popup = ({ isOpen, setIsOpen, heading, text, btn1, btn2, onCancel, onConfi
 
 	return (
 		<section
-			className="flex fixed w-full top-0 left-0 backdrop:blur-sm z-50  justify-center items-center h-screen bg-black/60"
+			className="flex fixed w-screen top-0 left-0 backdrop:blur-sm z-50  justify-center items-center h-screen bg-black/60"
 			onClick={() => setIsOpen(false)}
 		>
 			<div
