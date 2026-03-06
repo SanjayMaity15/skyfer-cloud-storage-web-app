@@ -10,6 +10,16 @@ import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
 import { addPasswordSchema, resetPasswordSchema } from "../validators/passResetValidators.js";
 
+
+
+/*
+=========================================
+
+	Redirect to google longin popup Controller
+
+=========================================
+*/
+
 export const redirectToPopupScreen = async (req, res) => {
 	try {
 		const authURL = generateGoogleAuthURL();
@@ -21,6 +31,16 @@ export const redirectToPopupScreen = async (req, res) => {
 		});
 	}
 };
+
+
+
+/*
+=========================================
+
+	Fetch user from google auth code Controller
+
+=========================================
+*/
 
 export const fetchUser = async (req, res) => {
 	try {
@@ -113,6 +133,17 @@ export const fetchUser = async (req, res) => {
     `);
 	}
 };
+
+
+
+
+/*
+=========================================
+
+	Add password for google login user Controller
+
+=========================================
+*/
 
 export const addPasswordForGoogleLoginUser = async (req, res) => {
 	try {

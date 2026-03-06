@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getImageUrl } from "../../src/utils/getImageUrl";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 const Navbar = () => {
 
@@ -15,9 +15,9 @@ const Navbar = () => {
 					<img
 						src={getImageUrl("brand.png")}
 						alt="skyfer cloud storage app"
-						className="w-20"
+						className="w-25"
 					/>
-					<span className="text-2xl font-extrabold -ml-3 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary font-lobster select-none">
+					<span className="text-3xl font-extrabold -ml-5 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary font-lobster select-none">
 						Skyfer
 					</span>
 				</Link>
@@ -25,7 +25,7 @@ const Navbar = () => {
 				{/* get started right section */}
 				<div>
 					<Link
-						to="/register"
+						to="/login"
 						className="px-8 py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white "
 					>
 						Get Started

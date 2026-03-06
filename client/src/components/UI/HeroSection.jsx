@@ -32,7 +32,7 @@ const HeroSection = () => {
 				{/* Button */}
 				<div className="mt-8">
 					<Link
-						to="/register"
+						to="/login"
 						className="bg-gray-900 text-white px-6 py-3 rounded-full cursor-pointer font-semibold shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto"
 					>
 						Get Started Free →

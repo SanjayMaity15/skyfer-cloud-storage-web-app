@@ -5,7 +5,7 @@ import Navbar from "../components/UI/Navbar";
 const HomePage = () => {
 	return (
 		<>
-			<Navbar/>
+			<Navbar />
 			<HeroSection />
 		</>
 	);

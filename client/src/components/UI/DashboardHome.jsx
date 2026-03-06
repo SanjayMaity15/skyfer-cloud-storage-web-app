@@ -18,15 +18,15 @@ import { MdOutlineCreate, MdOutlineCreateNewFolder } from "react-icons/md";
 import DirectoryPopup from "./DirectoryPopup";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../api/axiosInstance";
+import { api } from "../../../api/axiosInstance";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import axios from "axios";
-import { getFileIcon } from "../../src/utils/getFileIcons";
-import { convertBytes } from "../../src/utils/digitalUnitConverter";
-import { truncateFileName } from "../../src/utils/wordTruncate";
-import { timeFormat } from "../../src/utils/timeFormat";
+import { getFileIcon } from "../../utils/getFileIcons";
+import { convertBytes } from "../../utils/digitalUnitConverter";
+import { truncateFileName } from "../../utils/wordTruncate";
+import { timeFormat } from "../../utils/timeFormat";
 
 const DashboardHome = () => {
 	const { user } = useSelector((state) => state.user);
@@ -97,49 +97,41 @@ const DashboardHome = () => {
 
 	// filter
 
-	
-
 	function filterItems(filter) {
 		if (filter === "asc-name") {
 			const result = currentDir.files.sort((a, b) =>
 				a.name.localeCompare(b.name),
 			);
-			setCurrentDir((prev) => ({...prev, files :result}));
+			setCurrentDir((prev) => ({ ...prev, files: result }));
 		} else if (filter === "dsc-name") {
 			const result = currentDir.files.sort((a, b) =>
 				b.name.localeCompare(a.name),
 			);
 			setCurrentDir((prev) => ({ ...prev, files: result }));
 		} else if (filter === "highsize") {
-				const result = currentDir.files.sort((a, b) =>
-					b.size - a.size,
-				);
-				setCurrentDir((prev) => ({ ...prev, files: result }));
+			const result = currentDir.files.sort((a, b) => b.size - a.size);
+			setCurrentDir((prev) => ({ ...prev, files: result }));
 		} else if (filter === "lowsize") {
-				const result = currentDir.files.sort((a, b) =>
-					a.size - b.size
-				);
-				setCurrentDir((prev) => ({ ...prev, files: result }));
-		}
-		 else if (filter === "asc-time") {
-				const result = currentDir.files.sort(
-					(a, b) =>
-						new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-				);
-			
-				setCurrentDir((prev) => ({ ...prev, files: result }));
-		
+			const result = currentDir.files.sort((a, b) => a.size - b.size);
+			setCurrentDir((prev) => ({ ...prev, files: result }));
+		} else if (filter === "asc-time") {
+			const result = currentDir.files.sort(
+				(a, b) =>
+					new Date(a.createdAt).getTime() -
+					new Date(b.createdAt).getTime(),
+			);
+
+			setCurrentDir((prev) => ({ ...prev, files: result }));
 		} else if (filter === "dsc-time") {
-				const result = currentDir.files.sort(
-					(a, b) =>
-						new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-				);
-			
-				setCurrentDir((prev) => ({ ...prev, files: result }));
+			const result = currentDir.files.sort(
+				(a, b) =>
+					new Date(b.createdAt).getTime() -
+					new Date(a.createdAt).getTime(),
+			);
+
+			setCurrentDir((prev) => ({ ...prev, files: result }));
 		}
 	}
-
-	
 
 	const [filter, setFilter] = useState("");
 
@@ -363,7 +355,7 @@ const DashboardHome = () => {
 				{ newFileName },
 				{ withCredentials: true },
 			);
-			getDirData(currentDir._id)
+			getDirData(currentDir._id);
 			toast.success(result?.data?.message);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
@@ -376,7 +368,7 @@ const DashboardHome = () => {
 			const result = await api.delete(`/file/delete/${currentFile}`, {
 				withCredentials: true,
 			});
-			getDirData(currentDir._id)
+			getDirData(currentDir._id);
 			toast.success(result?.data?.message);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);

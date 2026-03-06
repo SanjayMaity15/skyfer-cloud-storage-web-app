@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { getImageUrl } from "../src/utils/getImageUrl";
-import { loginSchema } from "../validators/authValidator";
+import { getImageUrl } from "../utils/getImageUrl";
+import { loginSchema } from "../../validators/authValidator";
 import { useEffect, useState } from "react";
-import { api } from "../api/axiosInstance";
+import { api } from "../../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { useDispatch } from "react-redux";
-import { setUser } from "../src/features/userSlice";
+import { setUser } from "../features/userSlice";
 import { toast } from "react-toastify";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
@@ -23,7 +23,7 @@ const LoginPage = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
-	const [showPass, setShowPass] = useState(false)
+	const [showPass, setShowPass] = useState(false);
 
 	// login errors
 	const [errors, setErrors] = useState({});
@@ -90,8 +90,7 @@ const LoginPage = () => {
 			window.removeEventListener("message", handleMessage);
 		};
 	}, []);
-	
-	
+
 	return (
 		<div className="min-h-screen flex bg-bg-soft container">
 			{/* LEFT SIDE */}
@@ -152,7 +151,7 @@ const LoginPage = () => {
 
 						<div className="relative">
 							<input
-								type={showPass ? "text": 'password'}
+								type={showPass ? "text" : "password"}
 								placeholder="Enter password..."
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("password")}

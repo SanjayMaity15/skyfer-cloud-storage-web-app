@@ -27,11 +27,11 @@ app.disable("x-powered-by");
 
 app.use(
 	cors({
-		// origin: process.env.FRONTEND_URL,
-		origin: [
-			"http://localhost:5173",
-			"http://10.180.53.153:5173",
-		],
+		origin: process.env.FRONTEND_URL,
+		// origin: [
+		// 	"http://localhost:5173",
+		// 	"http://10.180.53.153:5173",
+		// ],
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 		credentials: true,
 	}),

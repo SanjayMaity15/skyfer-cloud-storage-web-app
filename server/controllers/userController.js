@@ -1,6 +1,17 @@
 import { success } from "zod";
 import { editProfileSchema } from "../validators/authValidators.js"
 
+
+
+/*
+=========================================
+
+		Edit user profile Controller
+
+=========================================
+*/
+
+
 export const editProfile = async (req, res) => {
     try {
         const { success, data } = editProfileSchema.safeParse(req.body)

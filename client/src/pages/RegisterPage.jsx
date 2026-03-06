@@ -1,13 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { getImageUrl } from "../src/utils/getImageUrl";
-import { registrationSchema } from "../validators/authValidator";
-import { useEffect, useState } from "react";
-import { api } from "../api/axiosInstance";
+import { getImageUrl } from "../utils/getImageUrl";
+import { registrationSchema } from "../../validators/authValidator";
+import {  useState } from "react";
+import { api } from "../../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { setUser } from "../src/features/userSlice";
+
+
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
@@ -23,7 +23,7 @@ const RegisterPage = () => {
 
 	// naviagte
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	
 	// Error state
 	const [errors, setErrors] = useState({});
 
@@ -58,7 +58,6 @@ const RegisterPage = () => {
 			setLoading(false);
 		}
 	};
-
 
 	return (
 		<div className="min-h-screen flex bg-bg-soft">

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { api } from "../../api/axiosInstance";
+import { api } from "../../../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
-import { getImageUrl } from "../../src/utils/getImageUrl";
+import { getImageUrl } from "../../utils/getImageUrl";
 import { MdDashboard, MdLogout, MdOutlineStarBorder } from "react-icons/md";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
-import { setUser } from "../../src/features/userSlice";
+import { setUser } from "../../features/userSlice";
 import Popup from "../UI/Popup";
 import { FaArrowLeft, FaBars } from "react-icons/fa";
 

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import { OTP_LENGTH } from "../../constant/constant";
+import { OTP_LENGTH } from "../../../constant/constant";
 import {
 	passResetEmailSchema,
 	resetPasswordSchema,
-} from "../../validators/passResetValidators";
-import { api } from "../../api/axiosInstance";
+} from "../../../validators/passResetValidators";
+import { api } from "../../../api/axiosInstance";
 import { toast } from "react-toastify";
 import ButtonLoader from "./ButtonLoader";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";

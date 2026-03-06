@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import ButtonLoader from "./ButtonLoader";
-import { editProfileSchema } from "../../validators/authValidator";
-import { api } from "../../api/axiosInstance";
+import { editProfileSchema } from "../../../validators/authValidator";
+import { api } from "../../../api/axiosInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { resetPasswordSchema } from "../../validators/passResetValidators";
-import { api } from "../../api/axiosInstance";
+import { resetPasswordSchema } from "../../../validators/passResetValidators";
+import { api } from "../../../api/axiosInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ButtonLoader from "./ButtonLoader";

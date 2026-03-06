@@ -9,6 +9,16 @@ import {
 	resetPasswordSchema,
 } from "../validators/passResetValidators.js";
 
+
+
+/*
+=========================================
+
+		Send OTP for password rest Controller
+
+=========================================
+*/
+
 export const sendForgotPassOTP = async (req, res) => {
 	try {
 		
@@ -55,6 +65,16 @@ export const sendForgotPassOTP = async (req, res) => {
 	}
 };
 
+
+
+/*
+=========================================
+
+		Verify OTP for password reset Controller
+
+=========================================
+*/
+
 export const verifyOTPForPassReset = async (req, res) => {
 	try {
 		const { success, data } = otpAndEmailVerificationSchema.safeParse(
@@ -91,7 +111,14 @@ export const verifyOTPForPassReset = async (req, res) => {
 	}
 };
 
-// reset pasword
+
+/*
+=========================================
+
+		Reset password Controller
+
+=========================================
+*/
 
 export const resetPassword = async (req, res) => {
 	try {

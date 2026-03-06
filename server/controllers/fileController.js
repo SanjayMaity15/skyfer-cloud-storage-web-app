@@ -2,6 +2,16 @@ import File from "../models/File.js";
 import path from "path";
 import fs from "node:fs/promises"
 
+
+
+/*
+=========================================
+
+		File upload Controller
+
+=========================================
+*/
+
 export const fileUpload = async (req, res) => {
 	try {
 		const user = req.user;
@@ -40,6 +50,16 @@ export const fileUpload = async (req, res) => {
 	}
 };
 
+
+
+/*
+=========================================
+
+		File preview Controller
+
+=========================================
+*/
+
 export const sendFileToUser = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -71,7 +91,14 @@ export const sendFileToUser = async (req, res) => {
 	}
 };
 
-// rename file
+
+/*
+=========================================
+
+		File rename Controller
+
+=========================================
+*/
 
 export const renameFile = async (req, res) => {
 	try {
@@ -105,7 +132,16 @@ export const renameFile = async (req, res) => {
 		});
 	}
 };
-// delete file
+
+
+
+/*
+=========================================
+
+		Delete file Controller
+
+=========================================
+*/
 
 export const deleteFile = async (req, res) => {
 	try {

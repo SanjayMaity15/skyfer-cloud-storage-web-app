@@ -5,6 +5,16 @@ import { directorySchema } from "../validators/directoryValidators.js";
 import File from "../models/File.js";
 import fs from "node:fs/promises";
 
+
+
+/*
+=========================================
+
+		Create directory Controller
+
+=========================================
+*/
+
 export const createDirectory = async (req, res) => {
 	try {
 		const user = req.user;
@@ -57,7 +67,14 @@ export const createDirectory = async (req, res) => {
 	}
 };
 
-// controllers/directoryController.js
+
+/*
+=========================================
+
+		Get directory Controller
+
+=========================================
+*/
 
 export const getDirectory = async (req, res) => {
 	try {
@@ -109,6 +126,16 @@ export const getDirectory = async (req, res) => {
 	}
 };
 
+
+
+/*
+=========================================
+
+		Rename directory Controller
+
+=========================================
+*/
+
 export const renameDirectory = async (req, res) => {
 	try {
 		const { newDirName } = req.body;
@@ -153,6 +180,16 @@ export const renameDirectory = async (req, res) => {
 		});
 	}
 };
+
+
+
+/*
+=========================================
+
+		Delete directory Controller
+
+=========================================
+*/
 
 export const deleteDirectory = async (req, res) => {
 	const { id } = req.params;
@@ -219,6 +256,16 @@ export const deleteDirectory = async (req, res) => {
 		});
 	}
 };
+
+
+
+/*
+=========================================
+
+		handle star directory Controller
+
+=========================================
+*/
 
 export const handleAddStarToFolder = async (req, res) => {
 	try {

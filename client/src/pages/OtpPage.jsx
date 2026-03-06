@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-import { OTP_LENGTH } from "../constant/constant";
+import { OTP_LENGTH } from "../../constant/constant";
 import { useLocation, useNavigate } from "react-router-dom";
-import { api } from "../api/axiosInstance";
+import { api } from "../../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { toast } from "react-toastify";
 
 const OtpPage = () => {
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 	const location = useLocation();
 	const registrationData = location.state;
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	const [otpInputBox, setOtpInputBox] = useState(
 		new Array(OTP_LENGTH).fill(""),
 	);
@@ -50,17 +50,19 @@ const OtpPage = () => {
 	};
 
 	const handleVerifyOTPandRegister = async () => {
-		setLoading(true)
+		setLoading(true);
 		try {
 			registrationData.otp = otpInputBox.join("");
-			const result = await api.post("/auth/register", registrationData, {withCredentials: true})
+			const result = await api.post("/auth/register", registrationData, {
+				withCredentials: true,
+			});
 			console.log(result);
-			toast.success(result?.data?.message)
-			setLoading(false)
-			navigate("/login")
+			toast.success(result?.data?.message);
+			setLoading(false);
+			navigate("/login");
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
-			setLoading(false)
+			setLoading(false);
 		}
 	};
 
@@ -100,7 +102,11 @@ const OtpPage = () => {
 						onClick={handleVerifyOTPandRegister}
 						disabled={loading}
 					>
-						{loading ? <ButtonLoader text="Verifying"/> : "Verify OTP"}
+						{loading ? (
+							<ButtonLoader text="Verifying" />
+						) : (
+							"Verify OTP"
+						)}
 					</button>
 				</div>
 			</div>
