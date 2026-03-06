@@ -59,39 +59,6 @@ const RegisterPage = () => {
 		}
 	};
 
-	// handle registration with google
-
-	const handleRegistrationWithGoogle = async () => {
-		try {
-			const result = window.open(
-				`${import.meta.env.VITE_BASE_URL}/auth/google`,
-				"googleLoginPopup",
-				"width=500,height=600",
-			);
-			console.log(result);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		const handleMessage = (event) => {
-			if (event.origin !== "http://localhost:8000") return;
-
-			if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
-				dispatch(setUser(event.data.data));
-				toast.success("LoggedIn successfully");
-				navigate("/dashboard");
-			}
-		};
-
-		window.addEventListener("message", handleMessage);
-
-		// Cleanup on unmount
-		return () => {
-			window.removeEventListener("message", handleMessage);
-		};
-	}, []);
 
 	return (
 		<div className="min-h-screen flex bg-bg-soft">
@@ -212,28 +179,6 @@ const RegisterPage = () => {
 							Login
 						</Link>
 					</p>
-
-					{/* Divider */}
-					<div className="flex items-center gap-4 my-6">
-						<div className="flex-1 h-px bg-gray-300"></div>
-						<span className="text-gray-400 text-sm">or</span>
-						<div className="flex-1 h-px bg-gray-300"></div>
-					</div>
-
-					{/* Google Button */}
-					<button
-						className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer"
-						onClick={handleRegistrationWithGoogle}
-					>
-						<img
-							src="https://www.svgrepo.com/show/475656/google-color.svg"
-							alt="google"
-							className="w-5 h-5"
-						/>
-						<span className="text-sm font-medium text-gray-700 ">
-							Continue with Google
-						</span>
-					</button>
 				</div>
 			</div>
 		</div>

@@ -363,6 +363,7 @@ const DashboardHome = () => {
 				{ newFileName },
 				{ withCredentials: true },
 			);
+			getDirData(currentDir._id)
 			toast.success(result?.data?.message);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
@@ -375,6 +376,7 @@ const DashboardHome = () => {
 			const result = await api.delete(`/file/delete/${currentFile}`, {
 				withCredentials: true,
 			});
+			getDirData(currentDir._id)
 			toast.success(result?.data?.message);
 		} catch (error) {
 			toast.error(error?.response?.data?.message);
@@ -469,7 +471,7 @@ const DashboardHome = () => {
 						<FaArrowLeft />
 					</button>
 					<FaHome className="text-secondary text-xl" />
-					<ul className="flex items-center ">
+					<ul className="flex items-center flex-wrap">
 						{path.map((el, i) => (
 							<li
 								key={i}

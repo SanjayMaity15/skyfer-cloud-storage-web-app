@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [react(), tailwindcss()],
-	server: {
-		open: true, // ensures all routes serve index.html
-	},
+	// server: {
+	// 	allowedHosts: true, // ensures all routes serve index.html
+	// },
 });

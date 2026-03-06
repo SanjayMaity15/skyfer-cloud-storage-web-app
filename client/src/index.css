@@ -37,3 +37,16 @@ body{
   @apply bg-pink-200 text-pink-600
 }
 
+.my-toast {
+  @apply bg-opacity-80 bg-linear-to-r from-pink-600 to-purple-600 
+         text-white font-bold rounded-lg shadow-lg p-4;
+}
+
+.my-toast-body {
+  @apply text-white;
+}
+
+.my-toast-progress {
+  @apply bg-white;
+}
+
