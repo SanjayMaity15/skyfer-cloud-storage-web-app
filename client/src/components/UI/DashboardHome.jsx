@@ -329,7 +329,10 @@ const DashboardHome = () => {
 
 	const handleFilePreview = async (fileId) => {
 		try {
-			window.open(`${import.meta.env.VITE_BASE_URL}/file/view/${fileId}`);
+
+			const result = await api.get(`/file/view/${fileId}`, { withCredentials: true })
+			console.log(result)
+			window.open(result.data.data, "_blank");
 		} catch (error) {
 			console.log(error);
 		}

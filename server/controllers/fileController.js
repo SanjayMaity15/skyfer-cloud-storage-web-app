@@ -66,8 +66,8 @@ export const fileUpload = async (req, res) => {
 export const sendFileToUser = async (req, res) => {
 	try {
 		const { id } = req.params;
-		const user = req.user;
 		const { action } = req.query;
+		const user = req.user;
 
 		const file = await File.findOne({ _id: id, owner: user._id });
 
@@ -78,23 +78,27 @@ export const sendFileToUser = async (req, res) => {
 			});
 		}
 
-		const filePath = `${process.cwd()}/storage/${file.fileName}`;
-
 		if (action === "download") {
-			return res.download(filePath);
+			const downloadUrl = file.url.replace(
+				"/upload/",
+				"/upload/fl_attachment/",
+			);
+
+			return res.redirect(downloadUrl);
 		}
 
-		return res.sendFile(filePath, (err) => {
-			if (!res.headersSent && err) {
-				return res.status(404).json({ error: "File not found!" });
-			}
+		return res.status(200).json({
+			success: true,
+			data: file.url,
 		});
 	} catch (error) {
-		console.log(error);
+		console.error(error);
+		res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
 	}
 };
-
-
 /*
 =========================================
 
