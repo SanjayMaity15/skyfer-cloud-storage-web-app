@@ -1,6 +1,7 @@
 import File from "../models/File.js";
 import path from "path";
 import fs from "node:fs/promises"
+import { uploadFileToCloudinary } from "../services/cloudinary.js";
 
 
 
@@ -24,6 +25,7 @@ export const fileUpload = async (req, res) => {
 			});
 		}
 
+		const uploadUrl = await uploadFileToCloudinary(file.path)
 		const fileName = file.originalname;
 		const size = file.size;
 		const extension = path.extname(file.originalname);
@@ -33,6 +35,7 @@ export const fileUpload = async (req, res) => {
 		const fileRes = await File.create({
 			fileName,
 			size,
+			url : uploadUrl,
 			extension,
 			parentDirId,
 			owner,
