@@ -12,8 +12,8 @@ import passResetRoutes from "./routes/forgotPassRoutes.js";
 import googleLoginRoutes from "./routes/authGoogleRoutes.js";
 import userRoutes from "./routes/userRoutes.js"
 import dirRoutes from "./routes/directoryRoutes.js"
-import multer from "multer";
 import fileRoutes from "./routes/fileRoutes.js"
+import contactRoutes from "./routes/contactRoutes.js"
 // import port
 const PORT = process.env.PORT || 5000;
 
@@ -51,6 +51,7 @@ app.use("/api/auth/google", googleLoginRoutes);
 app.use("/api/user", userRoutes)
 app.use("/api/dir", dirRoutes)
 app.use("/api/file", fileRoutes)
+app.use("/api/contact", contactRoutes)
 
 // default get req
 app.get("/", (req, res) => {

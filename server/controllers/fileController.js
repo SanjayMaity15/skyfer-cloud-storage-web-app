@@ -118,15 +118,8 @@ export const renameFile = async (req, res) => {
 			owner: user._id,
 		});
 
-		const ext = path.extname(file.fileName);
-		const finalFileName = `${newFileName}${ext}`;
-		const oldFilePath = `${process.cwd()}/storage/${file.fileName}`;
-		const newFilePath = `${process.cwd()}/storage/${finalFileName}`;
-		file.fileName = finalFileName;
-
+		file.fileName = newFileName;
 		await file.save()
-
-		await fs.rename(oldFilePath, newFilePath)
 
 		return res.status(200).json({
 			success: true,

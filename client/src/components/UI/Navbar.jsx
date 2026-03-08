@@ -8,10 +8,7 @@ const Navbar = () => {
 		<div className="bg-white z-50 shadow-xs h-18">
 			<div className=" flex justify-between h-full items-center container px-4">
 				{/* brand name */}
-				<Link
-					className="flex items-center cursor-pointer"
-					to="/"
-				>
+				<Link className="flex items-center cursor-pointer" to="/">
 					<img
 						src={getImageUrl("brand.png")}
 						alt="skyfer cloud storage app"
@@ -26,7 +23,7 @@ const Navbar = () => {
 				<div>
 					<Link
 						to="/login"
-						className="px-8 py-3 rounded-full bg-linear-to-r from-primary to-secondary text-white "
+						className="bg-gray-900 text-white px-6 py-3 rounded-full cursor-pointer font-semibold shadow-md hover:shadow-lg transition-all duration-300 flex items-center gap-2 mx-auto"
 					>
 						Get Started
 					</Link>

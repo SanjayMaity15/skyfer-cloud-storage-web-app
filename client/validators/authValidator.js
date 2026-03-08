@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 
 export const registrationSchema = z.object({
 	userName: z.string().min(3, "Minimum 3 character need"),
@@ -21,3 +21,7 @@ export const editProfileSchema = z.object({
 		errorMap: () => ({ message: "Gender is required" }),
 	}),
 });
+
+
+// contact form validation
+

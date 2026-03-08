@@ -101,11 +101,13 @@ export const sendMailUsingNodeMailer = async (email, subject, text, otp = null) 
 </body>
 </html>
 `;
+  
+  const htmlTemplate2 = "Thanks for contact us"
 
 	const info = await transporter.sendMail({
 		from: `"Skyfer" <${process.env.EMAIL_USER}>`,
 		to: email,
 		subject: subject,
-		html: htmlTemplate,
+		html: otp ? htmlTemplate : htmlTemplate2,
 	});
 };

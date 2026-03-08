@@ -1,0 +1,92 @@
+[
+	{
+		"name": "Aarav Sharma",
+		"profilePic": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+		"message": "Skyfer completely changed how our team manages cloud storage. It's fast, secure, and incredibly easy to use.",
+		"rating": 5
+	},
+	{
+		"name": "Emily Johnson",
+		"profilePic": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
+		"message": "The interface is clean and the performance is amazing. Uploading and sharing files has never been easier.",
+		"rating": 5
+	},
+	{
+		"name": "Rohan Gupta",
+		"profilePic": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+		"message": "I love the security features. It gives me peace of mind knowing my files are protected.",
+		"rating": 4
+	},
+	{
+		"name": "Sophia Martinez",
+		"profilePic": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
+		"message": "Great experience so far. The speed and reliability are far better than other cloud services I've tried.",
+		"rating": 5
+	},
+	{
+		"name": "Kabir Singh",
+		"profilePic": "https://images.unsplash.com/photo-1527980965255-d3b416303d12",
+		"message": "Skyfer helped our startup manage files across teams effortlessly.",
+		"rating": 4
+	},
+	{
+		"name": "Olivia Brown",
+		"profilePic": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
+		"message": "Super intuitive design. I was able to get started without any learning curve.",
+		"rating": 5
+	},
+	{
+		"name": "Arjun Patel",
+		"profilePic": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+		"message": "File sharing and syncing works perfectly. Highly recommended!",
+		"rating": 5
+	},
+	{
+		"name": "Isabella Davis",
+		"profilePic": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91",
+		"message": "The cloud storage is reliable and extremely fast compared to other platforms.",
+		"rating": 4
+	},
+	{
+		"name": "Liam Wilson",
+		"profilePic": "https://images.unsplash.com/photo-1519345182560-3f2917c472ef",
+		"message": "A fantastic product for teams that need secure file management.",
+		"rating": 5
+	},
+	{
+		"name": "Meera Kapoor",
+		"profilePic": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1",
+		"message": "The UI and performance are outstanding. Everything feels smooth.",
+		"rating": 5
+	},
+	{
+		"name": "Noah Anderson",
+		"profilePic": "https://images.unsplash.com/photo-1502767089025-6572583495b0",
+		"message": "Customer support is responsive and the platform works flawlessly.",
+		"rating": 4
+	},
+	{
+		"name": "Ananya Das",
+		"profilePic": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
+		"message": "Managing my files across devices has never been this easy.",
+		"rating": 5
+	},
+	{
+		"name": "James Taylor",
+		"profilePic": "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c",
+		"message": "Skyfer delivers exactly what it promises — fast and secure cloud storage.",
+		"rating": 4
+	},
+	{
+		"name": "Priya Nair",
+		"profilePic": "https://images.unsplash.com/photo-1519699047748-de8e457a634e",
+		"message": "Beautiful interface and reliable performance. Highly satisfied.",
+		"rating": 5
+	},
+	{
+		"name": "Daniel Lee",
+		"profilePic": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+		"message": "A must-have tool for anyone needing dependable cloud storage.",
+		"rating": 5
+	}
+]
