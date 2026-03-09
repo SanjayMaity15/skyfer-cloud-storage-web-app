@@ -1,40 +1,63 @@
 // get all users
 
-import Session from "../models/Session.js"
-import User from "../models/User.js"
+import { success } from "zod";
+import Session from "../models/Session.js";
+import User from "../models/User.js";
 
 export const getAllUser = async (req, res) => {
-    try {
-        const allUsers = await User.find({ role: "user" })
-        const session = await Session.find({})
+	try {
+		const allUsers = await User.find({ role: "user" });
+		const session = await Session.find({});
 
-        console.log(allUsers)
-        console.log(session)
+		console.log(allUsers);
+		console.log(session);
 
-        const users = allUsers.map((user) => {
+		const users = allUsers.map((user) => {
+			const isLoggedIn = session.some(
+				(session) => session.userId.toString() === user._id.toString(),
+			);
 
-            const isLoggedIn = session.some((session) => session.userId.toString() === user._id.toString())
+			return {
+				_id: user._id,
+				name: user.userName,
+				email: user.email,
+				join: user.createdAt,
+				gender: user.gender,
+				isLoggedIn,
+			};
+		});
 
-            return {
-                name: user.userName,
-                email: user.email,
-                join: user.createdAt,
-                gender: user.gender,
-                isLoggedIn,
-            }
-        })
-            
+		console.log(users);
 
-        console.log(users)
+		return res.status(200).json({
+			success: true,
+			data: users,
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+// logout user
+
+export const logoutUser = async (req, res) => {
+	try {
+		const { id } = req.params;
+		console.log(id);
+
+		await Session.findOneAndDelete({userId: id});
 
         return res.status(200).json({
             success: true,
-            data: users
+            message: "User logout successfully"
         })
-    } catch (error) {
+	} catch (error) {
         return res.status(500).json({
             success: false,
             message: "Server error"
         })
-    }
-}
+	}
+};

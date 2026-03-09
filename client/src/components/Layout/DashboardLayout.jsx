@@ -95,7 +95,7 @@ const DashboardLayout = () => {
 				</div>
 
 				{/* profile */}
-				<div className="mb-6 flex flex-col gap-4 px-4">
+				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
 					<div className="flex items-center gap-2 ">
 						{user.profilePic ? (
 							<img
