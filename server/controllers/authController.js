@@ -113,6 +113,13 @@ export const login = async (req, res) => {
 			});
 		}
 
+		if (user.isDeleted) {
+			return res.status(401).json({
+				success: false,
+				message: "You account has been deleted contact Admin"
+			})
+		}
+
 		if (user.password === null) {
 			return res.status(401).json({
 				success: false,

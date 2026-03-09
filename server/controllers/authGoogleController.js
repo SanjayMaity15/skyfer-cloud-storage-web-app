@@ -8,9 +8,11 @@ import {
 } from "../services/loginWithGoogle.js";
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
-import { addPasswordSchema, resetPasswordSchema } from "../validators/passResetValidators.js";
-
-
+import {
+	addPasswordSchema,
+	resetPasswordSchema,
+} from "../validators/passResetValidators.js";
+import { success } from "zod";
 
 /*
 =========================================
@@ -31,8 +33,6 @@ export const redirectToPopupScreen = async (req, res) => {
 		});
 	}
 };
-
-
 
 /*
 =========================================
@@ -82,6 +82,23 @@ export const fetchUser = async (req, res) => {
 			await mongooseSession.commitTransaction();
 			mongooseSession.endSession();
 		}
+
+			if (user.isDeleted) {
+				return res.send(`
+			<script>
+				try {
+					if (window.opener) {
+						window.opener.postMessage(
+							{ type: "GOOGLE_AUTH_DELETED_USER", message: "Your account has been deleted. Contact admin." },
+							"http://localhost:5173"
+						);
+					}
+				} catch (e) {}
+
+				setTimeout(() => window.close(), 100);
+			</script>
+			`);
+			}
 
 		const existingSession = await Session.findOne({ userId: user._id });
 		if (existingSession) {
@@ -134,9 +151,6 @@ export const fetchUser = async (req, res) => {
 	}
 };
 
-
-
-
 /*
 =========================================
 
@@ -147,7 +161,6 @@ export const fetchUser = async (req, res) => {
 
 export const addPasswordForGoogleLoginUser = async (req, res) => {
 	try {
-
 		console.log(req.body);
 
 		const { success, data } = addPasswordSchema.safeParse(req.body);
@@ -163,17 +176,16 @@ export const addPasswordForGoogleLoginUser = async (req, res) => {
 
 		const user = req.user;
 		user.password = password;
-		await user.save()
+		await user.save();
 
 		return res.status(201).json({
 			success: true,
-			message: "Password saved successfully"
-		})
-
+			message: "Password saved successfully",
+		});
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
-			message: "Server error"
-		})
+			message: "Server error",
+		});
 	}
 };

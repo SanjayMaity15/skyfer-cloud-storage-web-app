@@ -72,6 +72,9 @@ const LoginPage = () => {
 		}
 	};
 
+
+	
+
 	useEffect(() => {
 		const handleMessage = (event) => {
 			if (event.origin !== "http://localhost:8000") return;
@@ -80,6 +83,10 @@ const LoginPage = () => {
 				dispatch(setUser(event.data.data));
 				toast.success("LoggedIn successfully");
 				navigate("/dashboard");
+			}
+
+			if (event.data.type === "GOOGLE_AUTH_DELETED_USER") {
+				toast.error(event.data.message);
 			}
 		};
 
