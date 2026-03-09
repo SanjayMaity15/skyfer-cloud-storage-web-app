@@ -8,3 +8,4 @@ const router = express.Router()
 router.post("/edit-profile", isAuth, upload.single("profilePic"),  editProfile)
 
 export default router;
+    

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 const AdminHome = () => {
 	const dispatch = useDispatch();
 	const { allUsers } = useSelector((state) => state.allUsers);
-
+	const {user} = useSelector(state => state.user)
 	const fetchAllUsers = async () => {
 		try {
 			const result = await api.get("/admin/users", {
@@ -117,12 +117,24 @@ const AdminHome = () => {
 
 	return (
 		<section>
-			<div className="text-center my-2 p-6">
-				<h2 className="text-2xl font-semibold mb-6">ADMIN PANEL</h2>
+			<div className=" my-2 p-6">
+				<div>
+					<h2 className="text-3xl font-semibold mb-6 text-center">
+						ADMIN PANEL
+					</h2>
+					<p className="text-sm font-semibold">
+						ADMIN:{" "}
+						<span className="text-secondary">{user.userName}</span>
+					</p>
+				</div>
 
-				<table className="w-full border border-gray-400 border-collapse">
+				<h2 className="text-xl font-semibold mt-6 mb-2 uppercase">
+					Active User
+				</h2>
+
+				<table className="w-full border border-gray-400 border-collapse text-center">
 					<thead className="bg-gray-100">
-						<tr className="uppercase">
+						<tr className="uppercase bg-purple-800 text-white">
 							<th className="border p-3">SI No</th>
 							<th className="border p-3">Name</th>
 							<th className="border p-3">Email</th>
@@ -138,11 +150,8 @@ const AdminHome = () => {
 						{allUsers
 							?.filter((user) => !user.isDeleted)
 							.map((user, index) => (
-								<tr
-									key={user._id}
-									className="odd:bg-purple-200 text-sm"
-								>
-									<td className="border p-3 font-bold">
+								<tr key={user._id} className="text-sm">
+									<td className="bg-purple-200 border p-3 font-bold">
 										{index + 1}
 									</td>
 									<td className="border p-3">{user.name}</td>
@@ -157,12 +166,12 @@ const AdminHome = () => {
 									</td>
 									<td className="border p-3">
 										{user.isLoggedIn ? (
-											<span className="bg-white px-3 py-1 rounded-full text-sm shadow-md flex items-center gap-1 justify-center">
+											<span className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 justify-center">
 												<span className="w-2 h-2 bg-green-600 block rounded-full animate-pulse"></span>
 												Active
 											</span>
 										) : (
-											<span className="bg-white px-3 py-1 rounded-full text-sm shadow-md flex items-center gap-1 justify-center">
+											<span className="bg-white px-3 py-1 rounded-full text-sm flex items-center gap-1 justify-center">
 												<span className="w-2 h-2 bg-red-600 block rounded-full animate-pulse"></span>
 												Inactive
 											</span>
@@ -170,7 +179,7 @@ const AdminHome = () => {
 									</td>
 									<td className="border p-3">
 										<button
-											className={`px-4 py-1 text-sm rounded-full text-white cursor-pointer ${user.isLoggedIn ? "bg-yellow-500" : "bg-gray-400 line-through"}`}
+											className={`px-4 py-1 text-sm rounded-full border  cursor-pointer ${user.isLoggedIn ? "border-purple-600 bg-purple-100 text-purple-600" : "bg-gray-100 text-black border-gray-500 line-through"}`}
 											disabled={!user.isLoggedIn}
 											onClick={() => {
 												openUserLogoutPopup(user._id);
@@ -181,7 +190,7 @@ const AdminHome = () => {
 									</td>
 									<td className="border p-3">
 										<button
-											className="px-4 py-1 text-sm bg-red-600 text-white rounded-full"
+											className="px-4 py-1 text-sm bg-red-100 text-red-600 border border-red-300 rounded-full cursor-pointer"
 											onClick={() => {
 												openUserDeletePopUp(user._id);
 											}}
@@ -194,11 +203,13 @@ const AdminHome = () => {
 					</tbody>
 				</table>
 
-				<h2 className="text-lg uppercase mt-6 ">Deleted Users</h2>
+				<h2 className="text-lg uppercase mt-6 font-semibold">
+					Deleted Users
+				</h2>
 
-				<table className="w-full border border-gray-400 border-collapse mt-6">
+				<table className="w-full border text-center border-gray-400 border-collapse mt-2">
 					<thead>
-						<tr className="uppercase">
+						<tr className="uppercase bg-purple-800 text-white">
 							<th className="border p-3">SI NO</th>
 							<th className="border p-3">name</th>
 							<th className="border p-3">email</th>
@@ -210,11 +221,18 @@ const AdminHome = () => {
 							?.filter((user) => user.isDeleted)
 							.map((user, index) => (
 								<tr key={user._id} className="text-sm">
-									<td className="border p-3">{index + 1}</td>
+									<td className="border p-3 bg-purple-200 font-bold">{index + 1}</td>
 									<td className="border p-3">{user.name}</td>
 									<td className="border p-3">{user.email}</td>
 									<td className="border p-3">
-										<button className="text-white bg-secondary px-4 py-1 rounded-full cursor-pointer" onClick={() => openUserRestorePopup(user._id)}>Restore</button>
+										<button
+											className="text-green-600 bg-green-100 border border-green-300 px-4 py-1 rounded-full cursor-pointer"
+											onClick={() =>
+												openUserRestorePopup(user._id)
+											}
+										>
+											Restore
+										</button>
 									</td>
 								</tr>
 							))}

@@ -96,20 +96,23 @@ const DashboardLayout = () => {
 
 				{/* profile */}
 				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
-					<div className="flex items-center gap-2 ">
-						{user.profilePic ? (
-							<img
-								src={user.profilePic}
-								alt={user.userName}
-								className="w-8 h-8 rounded-full cursor-pointer"
-								onClick={() => navigate("/profile")}
-							/>
-						) : (
-							<IoPersonCircleOutline
-								className="text-4xl text-gray-600 cursor-pointer"
-								onClick={() => navigate("/profile")}
-							/>
-						)}
+					<div className="flex items-center ">
+						<div className="w-12">
+							
+							{user.profilePic ? (
+								<img
+									src={user.profilePic}
+									alt={user.userName}
+									className="w-8 h-8 rounded-full cursor-pointer"
+									onClick={() => navigate("/profile")}
+								/>
+							) : (
+								<IoPersonCircleOutline
+									className="text-4xl text-gray-600 cursor-pointer"
+									onClick={() => navigate("/profile")}
+								/>
+							)}
+						</div>
 
 						<div className="flex flex-col text-xs">
 							<span className="font-semibold">
