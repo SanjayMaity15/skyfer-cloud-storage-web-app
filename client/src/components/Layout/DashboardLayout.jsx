@@ -18,7 +18,7 @@ const DashboardLayout = () => {
 	const location = useLocation();
 	console.log(user);
 	const isDashboard = location.pathname === "/dashboard";
-	const isStarred = location.pathname === "/dashboard/starred";
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	// logout user functionality
@@ -60,8 +60,11 @@ const DashboardLayout = () => {
 				`}
 			>
 				<div>
-					<button className="md:hidden relative top-2 left-2 text-xl" onClick={() => setIsMbMenuActive(prev => !prev)}>
-						<FaArrowLeft/>
+					<button
+						className="md:hidden relative top-2 left-2 text-xl"
+						onClick={() => setIsMbMenuActive((prev) => !prev)}
+					>
+						<FaArrowLeft />
 					</button>
 					{/* brand name */}
 					<Link
@@ -88,19 +91,25 @@ const DashboardLayout = () => {
 							<MdDashboard className="text-lg" />
 							Dashboard
 						</Link>
-
 					</div>
 				</div>
 
 				{/* profile */}
 				<div className="mb-6 flex flex-col gap-4 px-4">
-					<div className="flex items-center">
-						<div>
+					<div className="flex items-center gap-2 ">
+						{user.profilePic ? (
+							<img
+								src={user.profilePic}
+								alt={user.userName}
+								className="w-8 h-8 rounded-full cursor-pointer"
+								onClick={() => navigate("/profile")}
+							/>
+						) : (
 							<IoPersonCircleOutline
 								className="text-4xl text-gray-600 cursor-pointer"
 								onClick={() => navigate("/profile")}
 							/>
-						</div>
+						)}
 
 						<div className="flex flex-col text-xs">
 							<span className="font-semibold">

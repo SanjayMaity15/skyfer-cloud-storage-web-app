@@ -1,5 +1,6 @@
 import { success } from "zod";
 import { editProfileSchema } from "../validators/authValidators.js"
+import { uploadFileToCloudinary } from "../services/cloudinary.js";
 
 
 
@@ -24,10 +25,18 @@ export const editProfile = async (req, res) => {
         }
 
         const { userName, gender } = data;
+        const  profilePic  = req.file;
+
+        // console.log({userName, gender, profilePic})
+
+        const profileUrl = await uploadFileToCloudinary(profilePic.path)
+        
 
         const user = req.user;
         user.userName = userName;
         user.gender = gender;
+        user.profilePic = profileUrl
+
 
         await user.save()
 

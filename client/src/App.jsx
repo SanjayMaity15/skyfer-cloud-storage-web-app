@@ -9,7 +9,7 @@ import DashboardLayout from "./components/Layout/DashboardLayout";
 import DashboardHome from "./components/UI/DashboardHome";
 import { useEffect, useState } from "react";
 import { api } from "../api/axiosInstance";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPageLoading, setUser } from "./features/userSlice";
 import ProtectedRoutes from "./components/UI/ProtectedRoutes";
 import Profile from "./components/UI/Profile";
@@ -17,6 +17,7 @@ import Popup from "./components/UI/Popup";
 import ForgotPassword from "./components/UI/ForgotPassword";
 import EditDetails from "./components/UI/EditDetails";
 import EnablePassword from "./components/UI/EnablePassword";
+import AdminHome from "./components/UI/AdminHome";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -39,6 +40,8 @@ const App = () => {
 	useEffect(() => {
 		getCurrentLoggedInUser();
 	}, []);
+
+	const { user } = useSelector((state) => state.user);
 
 	const router = createBrowserRouter([
 		{
@@ -74,7 +77,12 @@ const App = () => {
 			children: [
 				{
 					index: true,
-					element: <DashboardHome />,
+					element:
+						user?.role === "admin" ? (
+							<AdminHome />
+						) : (
+							<DashboardHome />
+						),
 				},
 			],
 		},

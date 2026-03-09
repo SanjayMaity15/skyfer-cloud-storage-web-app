@@ -33,7 +33,7 @@ const Profile = () => {
 						onClick={() => navigate(-1)}
 					>
 						<FaArrowLeft />
-					</button>
+					</button>	
 
 					{/* profile pic */}
 					{user?.profilePic ? (

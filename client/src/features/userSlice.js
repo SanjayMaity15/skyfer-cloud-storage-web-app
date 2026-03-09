@@ -5,7 +5,7 @@ const initialState = {
 	pageLoading : true
 };
 
-export const counterSlice = createSlice({
+export const userSlice = createSlice({
 	name: "user",
 	initialState,
 	reducers: {
@@ -19,6 +19,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setUser, setPageLoading} = counterSlice.actions;
+export const { setUser, setPageLoading} = userSlice.actions;
 
-export default counterSlice.reducer;
+export default userSlice.reducer;

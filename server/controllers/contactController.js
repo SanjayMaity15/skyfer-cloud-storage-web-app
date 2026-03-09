@@ -23,7 +23,7 @@ export const sendContactUsMsg = async (req, res) => {
 			message,
         });
         
-        await sendMailUsingNodeMailer(email, "Contact form recived", "", "")
+        await sendMailUsingNodeMailer(email, "Contact form received", "", "")
 
         return res.status(201).json({
             success: true,
