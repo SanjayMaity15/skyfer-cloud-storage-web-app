@@ -23,7 +23,7 @@ export const fileUpload = async (req, res) => {
 			});
 		}
 
-		const {secure_url, public_id} = await uploadFileToCloudinary(file.path);
+		const {secure_url, public_id, resource_type} = await uploadFileToCloudinary(file.path);
 		const fileName = file.originalname;
 		const size = file.size;
 		const extension = path.extname(file.originalname);
@@ -34,6 +34,7 @@ export const fileUpload = async (req, res) => {
 			fileName,
 			size,
 			url: secure_url,
+			resource_type,
 			public_id,
 			extension,
 			parentDirId,
@@ -193,7 +194,9 @@ export const permanantDelete = async (req, res) => {
 		});
 
 		// delete from cloudinary
-		await cloudinary.uploader.destroy(file.public_id)
+		await cloudinary.uploader.destroy(file.public_id, {
+			resource_type: file.resource_type
+		})
 
 		// delete from db
 

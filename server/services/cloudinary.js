@@ -9,9 +9,10 @@ export const uploadFileToCloudinary = async (filePath) => {
         });
         fs.unlinkSync(filePath)        
 		
+        console.log(result);
  
-        const { public_id, secure_url } = result;
-		return {public_id, secure_url};
+        const { public_id, secure_url, resource_type } = result;
+		return {public_id, secure_url, resource_type};
     } catch (error) {
         fs.unlinkSync(filePath)
 		console.error(error);

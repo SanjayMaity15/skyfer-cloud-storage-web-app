@@ -431,7 +431,7 @@ const DashboardHome = () => {
 				<select
 					name="sort"
 					id="filter"
-					className="bg-white border border-gray-300 text-gray-700 text-sm rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 px-4 py-2 cursor-pointer transition duration-200 hover:border-indigo-300"
+					className="bg-white border border-gray-300 text-gray-700 text-xs rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 px-4 py-2 cursor-pointer transition duration-200 hover:border-indigo-300"
 					value={filter}
 					onChange={(e) => setFilter(e.target.value)}
 				>

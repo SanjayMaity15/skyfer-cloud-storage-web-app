@@ -16,6 +16,9 @@ const fileSchema = new Schema({
 	public_id: {
 		type: String	
 	},
+	resource_type: {
+		type: String	
+	},
 	size: {
 		type: Number,
 		required: true,
