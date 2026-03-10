@@ -2,10 +2,7 @@
 
 import mongoose from "mongoose";
 import User from "../models/User.js";
-import {
-	generateGoogleAuthURL,
-	getUserInfoUsingGoogleLogin,
-} from "../services/loginWithGoogle.js";
+import { getUserInfoUsingGoogleLogin } from "../services/loginWithGoogle.js";
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
 import {
@@ -17,39 +14,20 @@ import { success } from "zod";
 /*
 =========================================
 
-	Redirect to google longin popup Controller
-
-=========================================
-*/
-
-export const redirectToPopupScreen = async (req, res) => {
-	try {
-		const authURL = generateGoogleAuthURL();
-		res.redirect(authURL);
-	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: "Internal server error",
-		});
-	}
-};
-
-/*
-=========================================
-
 	Fetch user from google auth code Controller
 
 =========================================
 */
 
-export const fetchUser = async (req, res) => {
+export const loginWithGoogle = async (req, res) => {
 	try {
 		const mongooseSession = await mongoose.startSession();
 
-		const { code } = req.query;
-		if (!code) return res.status(400).send("No code provided");
+		const { idToken } = req.body;
+		if (!idToken) return res.status(400).send("No IdToken provided");
 
-		const userData = await getUserInfoUsingGoogleLogin(code);
+		const userData = await getUserInfoUsingGoogleLogin(idToken);
+		console.log(idToken);
 		console.log(userData);
 
 		const { email, name } = userData;
@@ -83,22 +61,12 @@ export const fetchUser = async (req, res) => {
 			mongooseSession.endSession();
 		}
 
-			if (user.isDeleted) {
-				return res.send(`
-			<script>
-				try {
-					if (window.opener) {
-						window.opener.postMessage(
-							{ type: "GOOGLE_AUTH_DELETED_USER", message: "Your account has been deleted. Contact admin." },
-							"http://localhost:5173"
-						);
-					}
-				} catch (e) {}
-
-				setTimeout(() => window.close(), 100);
-			</script>
-			`);
-			}
+		if (user.isDeleted) {
+			return res.status(401).json({
+				success: false,
+				message: "Your account has been banned contact Admin"
+			})
+		}
 
 		const existingSession = await Session.findOne({ userId: user._id });
 		if (existingSession) {
@@ -126,28 +94,17 @@ export const fetchUser = async (req, res) => {
 		// TODO: create user / session / JWT here
 
 		// send user data to opener and close popup
-		return res.send(`
-			<script>
-				try {
-				if (window.opener) {
-					window.opener.postMessage(
-					{ type: "GOOGLE_AUTH_SUCCESS", data: ${JSON.stringify(userDetails)} },
-					"http://localhost:5173" 
-					);
-				}
-				} catch (e) {}	
-
-				setTimeout(() => window.close(), 100);
-			</script>
-    `);
+		return res.status(200).json({
+			success: true,
+			message: "Loggedin successfully",
+			userDetails,
+		});
 	} catch (error) {
 		console.error("Google Auth Error:", error);
-		return res.send(`
-      <script>
-        alert("Authentication failed");
-        window.close();
-      </script>
-    `);
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
 	}
 };
 

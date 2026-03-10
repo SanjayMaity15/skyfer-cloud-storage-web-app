@@ -1,3 +1,4 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../utils/getImageUrl";
@@ -59,44 +60,17 @@ const LoginPage = () => {
 
 	// login with google
 
-	const handleLoginWithGoogle = async () => {
+	const handleLoginWithGoogle = async (idToken) => {
 		try {
-			const result = window.open(
-				`${import.meta.env.VITE_BASE_URL}/auth/google`,
-				"googleLoginPopup",
-				"width=500,height=600",
-			);
-			console.log(result);
+			const result = await api.post("/auth/google", {idToken}, {withCredentials: true})
+			dispatch(setUser(result.data.userDetails))
+			navigate("/dashboard")
+			toast.success(result?.data?.message)
 		} catch (error) {
-			console.log(error);
+			toast.error(error.response.data.message)
+			navigate("/login")
 		}
 	};
-
-
-	
-
-	useEffect(() => {
-		const handleMessage = (event) => {
-			if (event.origin !== "http://localhost:8000") return;
-
-			if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
-				dispatch(setUser(event.data.data));
-				toast.success("LoggedIn successfully");
-				navigate("/dashboard");
-			}
-
-			if (event.data.type === "GOOGLE_AUTH_DELETED_USER") {
-				toast.error(event.data.message);
-			}
-		};
-
-		window.addEventListener("message", handleMessage);
-
-		// Cleanup on unmount
-		return () => {
-			window.removeEventListener("message", handleMessage);
-		};
-	}, []);
 
 	return (
 		<div className="min-h-screen flex bg-bg-soft container">
@@ -220,18 +194,20 @@ const LoginPage = () => {
 					</div>
 
 					{/* Google Button */}
-					<button
-						className="w-full flex items-center justify-center gap-3 py-3 rounded-full bg-white shadow cursor-pointer"
-						onClick={handleLoginWithGoogle}
-					>
-						<img
-							src="https://www.svgrepo.com/show/475656/google-color.svg"
-							alt="google"
-							className="w-5 h-5"
+					<button className="flex justify-center w-full">
+						<GoogleLogin
+							onSuccess={(credentialResponse) => {
+								handleLoginWithGoogle(
+									credentialResponse.credential,
+								);
+							}}
+							
+							shape="pill"
+							onError={() => {
+								console.log("Login Failed");
+							}}
+							useOneTap
 						/>
-						<span className="text-sm font-medium text-gray-700">
-							Continue with Google
-						</span>
 					</button>
 				</div>
 			</div>

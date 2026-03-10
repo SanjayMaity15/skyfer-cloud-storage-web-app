@@ -113,7 +113,7 @@ const AdminHome = () => {
 		});
 	}
 
-	console.log(allUsers);
+	
 
 	return (
 		<section>
