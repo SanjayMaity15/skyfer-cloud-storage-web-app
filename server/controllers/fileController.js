@@ -1,6 +1,5 @@
 import File from "../models/File.js";
 import path from "path";
-import fs from "node:fs/promises";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
 

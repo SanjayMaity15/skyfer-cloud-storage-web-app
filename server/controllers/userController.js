@@ -1,8 +1,7 @@
 import { success } from "zod";
-import { editProfileSchema } from "../validators/authValidators.js"
+import { editProfileSchema } from "../validators/authValidators.js";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
-
-
+import { cloudinary } from "../config/cloudinary.config.js";
 
 /*
 =========================================
@@ -12,43 +11,46 @@ import { uploadFileToCloudinary } from "../services/cloudinary.js";
 =========================================
 */
 
-
 export const editProfile = async (req, res) => {
-    try {
-        const { success, data } = editProfileSchema.safeParse(req.body)
+	try {
+		const { success, data } = editProfileSchema.safeParse(req.body);
+		console.log("object");
+		if (!success) {
+			return res.status(400).json({
+				success: false,
+				message: "All fields must be filled",
+			});
+		}
+
+		const { userName, gender } = data;
+		const profilePic = req.file;
+        let user = req.user;
         
-        if (!success) {
-            return res.status(400).json({
-                success: false,
-                message: "All fields must be filled"
-            })
+        if (user.public_id) {
+            await cloudinary.uploader.destroy(user.public_id)
         }
+		// console.log({userName, gender, profilePic})
 
-        const { userName, gender } = data;
-        const  profilePic  = req.file;
+		const { public_id, secure_url } = await uploadFileToCloudinary(
+			profilePic.path,
+		);
 
-        // console.log({userName, gender, profilePic})
+		user.userName = userName;
+		user.gender = gender;
+		user.profilePic = secure_url;
+		user.public_id = public_id;
 
-        const profileUrl = await uploadFileToCloudinary(profilePic.path)
-        
+		console.log(user);
+		await user.save();
 
-        const user = req.user;
-        user.userName = userName;
-        user.gender = gender;
-        user.profilePic = profileUrl
-
-
-        await user.save()
-
-        return res.status(200).json({
-            success: true,
-            message : "Profile updated successfully"
-        })
-
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Server error"
-        })
-    }
-}
+		return res.status(200).json({
+			success: true,
+			message: "Profile updated successfully",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};

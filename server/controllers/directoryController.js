@@ -27,7 +27,6 @@ export const createDirectory = async (req, res) => {
 			parentDirId,
 		};
 
-		console.log(dirData);
 
 		const { success, data } = directorySchema.safeParse(dirData);
 		if (!success) {
@@ -239,7 +238,7 @@ export const deleteDirectory = async (req, res) => {
 			_id: { $in: [...files.map(({ _id }) => _id)] },
 		});
 
-		console.log(files)
+		
 
 		for (const { fileName } of files) {
 			console.log(fileName)

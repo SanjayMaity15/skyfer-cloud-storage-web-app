@@ -8,7 +8,7 @@ export const uploadFileToCloudinary = async (filePath) => {
             resource_type: "auto"
         });
         fs.unlinkSync(filePath)        
-		console.log(result);
+		
  
         const { public_id, secure_url } = result;
 		return {public_id, secure_url};
