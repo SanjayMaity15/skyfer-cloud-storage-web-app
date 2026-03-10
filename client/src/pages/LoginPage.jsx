@@ -62,13 +62,17 @@ const LoginPage = () => {
 
 	const handleLoginWithGoogle = async (idToken) => {
 		try {
-			const result = await api.post("/auth/google", {idToken}, {withCredentials: true})
-			dispatch(setUser(result.data.userDetails))
-			navigate("/dashboard")
-			toast.success(result?.data?.message)
+			const result = await api.post(
+				"/auth/google",
+				{ idToken },
+				{ withCredentials: true },
+			);
+			dispatch(setUser(result.data.userDetails));
+			navigate("/dashboard");
+			toast.success(result?.data?.message);
 		} catch (error) {
-			toast.error(error.response.data.message)
-			navigate("/login")
+			toast.error(error.response.data.message);
+			navigate("/login");
 		}
 	};
 
@@ -194,21 +198,23 @@ const LoginPage = () => {
 					</div>
 
 					{/* Google Button */}
-					<button className="flex justify-center w-full">
+					<div className="flex justify-center w-full">
 						<GoogleLogin
 							onSuccess={(credentialResponse) => {
 								handleLoginWithGoogle(
 									credentialResponse.credential,
 								);
 							}}
-							
 							shape="pill"
+							text="continue_with"
+							size="large"
 							onError={() => {
-								console.log("Login Failed");
+								toast.error("Login failed");
+								navigate("/login");
 							}}
 							useOneTap
 						/>
-					</button>
+					</div>
 				</div>
 			</div>
 		</div>

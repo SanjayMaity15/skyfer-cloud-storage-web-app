@@ -629,7 +629,7 @@ const DashboardHome = () => {
 				</h2>
 				<div className="h-0.5 bg-gray-300 mb-2" />
 				<div className="flex flex-col gap-2">
-					{filterFiles?.map((file) => {
+					{filterFiles?.filter((file) => !file.isDeleted).map((file) => {
 						const {
 							icon: FileIcon,
 							color,

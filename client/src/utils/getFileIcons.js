@@ -27,6 +27,7 @@ import { VscJson } from "react-icons/vsc";
 
 // Return icon component based on extension
 export const getFileIcon = (fileExt) => {
+		
 	const extension = fileExt.slice(1);
 	const iconMap = {
 		// PDF

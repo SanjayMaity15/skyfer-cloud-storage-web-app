@@ -13,6 +13,9 @@ const fileSchema = new Schema({
 		type: String,
 		required: true
 	},
+	public_id: {
+		type: String	
+	},
 	size: {
 		type: Number,
 		required: true,
@@ -25,6 +28,10 @@ const fileSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Directory",
 	},
+	isDeleted: {
+		type: Boolean,
+		default: false
+	}
 }, {
     timestamps: true,
     optimisticConcurrency: true

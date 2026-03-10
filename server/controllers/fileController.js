@@ -1,9 +1,8 @@
 import File from "../models/File.js";
 import path from "path";
-import fs from "node:fs/promises"
+import fs from "node:fs/promises";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
-
-
+import { cloudinary } from "../config/cloudinary.config.js";
 
 /*
 =========================================
@@ -25,7 +24,7 @@ export const fileUpload = async (req, res) => {
 			});
 		}
 
-		const uploadUrl = await uploadFileToCloudinary(file.path)
+		const {secure_url, public_id} = await uploadFileToCloudinary(file.path);
 		const fileName = file.originalname;
 		const size = file.size;
 		const extension = path.extname(file.originalname);
@@ -35,7 +34,8 @@ export const fileUpload = async (req, res) => {
 		const fileRes = await File.create({
 			fileName,
 			size,
-			url : uploadUrl,
+			url: secure_url,
+			public_id,
 			extension,
 			parentDirId,
 			owner,
@@ -52,8 +52,6 @@ export const fileUpload = async (req, res) => {
 		});
 	}
 };
-
-
 
 /*
 =========================================
@@ -119,7 +117,7 @@ export const renameFile = async (req, res) => {
 		});
 
 		file.fileName = newFileName;
-		await file.save()
+		await file.save();
 
 		return res.status(200).json({
 			success: true,
@@ -132,8 +130,6 @@ export const renameFile = async (req, res) => {
 		});
 	}
 };
-
-
 
 /*
 =========================================
@@ -148,16 +144,14 @@ export const deleteFile = async (req, res) => {
 		const { id } = req.params;
 		const user = req.user;
 
-		let file = await File.findOneAndDelete({
+		let file = await File.findOneAndUpdate({
 			_id: id,
 			owner: user._id,
-		});
-
-		await fs.rm(`${process.cwd()}/storage/${file.fileName}`);
+		}, {isDeleted: true});
 
 		return res.status(200).json({
 			success: true,
-			message: "File Deleted successfully",		
+			message: "File Deleted successfully",
 		});
 	} catch (error) {
 		return res.status(500).json({
@@ -166,3 +160,75 @@ export const deleteFile = async (req, res) => {
 		});
 	}
 };
+
+export const recoverDeletedFile = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const user = req.user;
+
+		let file = await File.findOneAndUpdate({
+			_id: id,
+			owner: user._id,
+		}, {isDeleted: false});
+
+		return res.status(200).json({
+			success: true,
+			message: "File recover successfully",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+export const permanantDelete = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const user = req.user;
+
+		let file = await File.findOne({
+			_id: id,
+			owner: user._id,
+		});
+
+		// delete from cloudinary
+		await cloudinary.uploader.destroy(file.public_id)
+
+		// delete from db
+
+		await file.deleteOne()
+
+		return res.status(200).json({
+			success: true,
+			message: "File Deleted successfully",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+
+// get deleted file
+
+export const getDeletedFile = async (req, res) => {
+	try {
+		const files = await File.find({ owner: req.user._id, isDeleted: true })
+		
+		return res.status(200).json({
+			success: false,
+			message: "Data fetch successfully",
+			files
+		})
+		
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error"
+		})
+	}
+}

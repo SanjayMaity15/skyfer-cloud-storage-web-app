@@ -18,6 +18,7 @@ import ForgotPassword from "./components/UI/ForgotPassword";
 import EditDetails from "./components/UI/EditDetails";
 import EnablePassword from "./components/UI/EnablePassword";
 import AdminHome from "./components/UI/AdminHome";
+import Trash from "./components/UI/Trash";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -84,6 +85,10 @@ const App = () => {
 							<DashboardHome />
 						),
 				},
+				{
+					path: "trash",
+					element: <Trash/>
+				}
 			],
 		},
 		{

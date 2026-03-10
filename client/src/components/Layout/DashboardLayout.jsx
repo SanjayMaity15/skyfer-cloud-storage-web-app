@@ -8,7 +8,7 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { setUser } from "../../features/userSlice";
 import Popup from "../UI/Popup";
-import { FaArrowLeft, FaBars } from "react-icons/fa";
+import { FaArrowLeft, FaBars, FaTrashAlt } from "react-icons/fa";
 
 const DashboardLayout = () => {
 	// get user data from redux store
@@ -18,7 +18,8 @@ const DashboardLayout = () => {
 	const location = useLocation();
 	console.log(user);
 	const isDashboard = location.pathname === "/dashboard";
-
+	const isTrash = location.pathname === "/dashboard/trash";
+	console.log(location.pathname);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	// logout user functionality
@@ -92,13 +93,24 @@ const DashboardLayout = () => {
 							Dashboard
 						</Link>
 					</div>
+
+					{user?.role === "user" && (
+						<div className="flex flex-col gap-1">
+							<Link
+								to="trash"
+								className={`flex items-center gap-2 px-4 py-3 ${isTrash && "bg-primary/10 text-primary border-r-4 border-primary"}`}
+							>
+								<FaTrashAlt className="text-sm" />
+								Trash
+							</Link>
+						</div>
+					)}
 				</div>
 
 				{/* profile */}
 				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
 					<div className="flex items-center ">
 						<div className="w-12">
-							
 							{user.profilePic ? (
 								<img
 									src={user.profilePic}

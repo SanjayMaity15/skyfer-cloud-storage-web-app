@@ -116,6 +116,7 @@ export const getDirectory = async (req, res) => {
 				name: file.fileName,
 				extension: file.extension,
 				size: file.size,
+				isDeleted: file.isDeleted,
 				createdAt: file.createdAt,
 				updatedAt: file.updatedAt,
 			})),
