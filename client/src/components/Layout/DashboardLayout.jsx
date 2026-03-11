@@ -86,7 +86,7 @@ const DashboardLayout = () => {
 					<div className="flex flex-col mt-6 gap-1">
 						<Link
 							to="."
-							className={`flex items-center gap-2 px-4 py-3 ${isDashboard && "bg-primary/10 text-primary border-r-4 border-primary"}`}
+							className={`flex items-center gap-2 px-4 py-3 ${isDashboard && "bg-primary/20 text-primary border-r-4 border-primary"}`}
 						>
 							<MdDashboard className="text-lg" />
 							Dashboard
@@ -97,7 +97,7 @@ const DashboardLayout = () => {
 						<div className="flex flex-col gap-1">
 							<Link
 								to="trash"
-								className={`flex items-center gap-2 px-4 py-3 ${isTrash && "bg-primary/10 text-primary border-r-4 border-primary"}`}
+								className={`flex items-center gap-2 px-4 py-3 ${isTrash && "bg-primary/20 text-primary border-r-4 border-primary"}`}
 							>
 								<FaTrashAlt className="text-sm" />
 								Trash
@@ -135,11 +135,11 @@ const DashboardLayout = () => {
 
 					<div>
 						<button
-							className="flex items-center gap-1 bg-red-100 text-red-600 px-6 rounded-full text-sm py-2 tracking-wider cursor-pointer"
+							className="flex items-center gap-1 bg-red-100 text-red-600 px-6 rounded-full text-sm py-2 tracking-wider cursor-pointer border"
 							onClick={() => setIsOpenPopup(true)}
 						>
-							Logout
 							<MdLogout />
+							Logout
 						</button>
 					</div>
 

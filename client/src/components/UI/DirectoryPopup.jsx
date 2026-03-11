@@ -20,7 +20,7 @@ const DirectoryPopup = ({
 
 	return (
 		<section
-			className="fixed inset-0 z-50 flex justify-center items-center bg-black/60"
+			className="fixed inset-0 z-50 flex justify-center items-center bg-black/80"
 			onClick={onCancel}
 		>
 			<div

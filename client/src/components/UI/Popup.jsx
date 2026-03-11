@@ -9,7 +9,7 @@ const Popup = ({ isOpen, heading, text, btn1, btn2, onCancel, onConfirm }) => {
 
 	return (
 		<section
-			className="flex fixed w-screen top-0 left-0 backdrop:blur-sm z-50  justify-center items-center h-screen bg-black/60"
+			className="flex fixed w-screen top-0 left-0 backdrop:blur-sm z-50  justify-center items-center h-screen bg-black/80"
 			onClick={() => {
 				onCancel()
 			}}
@@ -27,13 +27,13 @@ const Popup = ({ isOpen, heading, text, btn1, btn2, onCancel, onConfirm }) => {
 
 				<div className="flex gap-2 justify-center">
 					<button
-						className="text-red-600 bg-red-100 px-6 py-2 rounded-full hover:bg-red-200/80 cursor-pointer tracking-wider w-30"
+						className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700/80 cursor-pointer tracking-wider w-30"
 						onClick={() => onCancel()}
 					>
 						{btn1}
 					</button>
 					<button
-						className="text-green-600 hover:bg-green-200/80 cursor-pointer bg-green-100 px-6 py-2 rounded-full tracking-wider w-30 text-center"
+						className="bg-green-600 hover:bg-green-700/80 cursor-pointer text-white px-6 py-2 rounded-full tracking-wider w-30 text-center"
 						disabled={loading}
 						onClick={async () => {
 							setLoading(true);

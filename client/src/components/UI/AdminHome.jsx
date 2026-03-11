@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 const AdminHome = () => {
 	const dispatch = useDispatch();
 	const { allUsers } = useSelector((state) => state.allUsers);
-	const {user} = useSelector(state => state.user)
+	const { user } = useSelector((state) => state.user);
 	const fetchAllUsers = async () => {
 		try {
 			const result = await api.get("/admin/users", {
@@ -111,9 +111,7 @@ const AdminHome = () => {
 			btn1: "Cancel",
 			btn2: "Restore",
 		});
-	}
-
-	
+	};
 
 	return (
 		<section>
@@ -124,7 +122,7 @@ const AdminHome = () => {
 					</h2>
 					<p className="text-sm font-semibold">
 						ADMIN:{" "}
-						<span className="text-secondary">{user.userName}</span>
+						<span className="text-primary">{user.userName}</span>
 					</p>
 				</div>
 
@@ -134,7 +132,7 @@ const AdminHome = () => {
 
 				<table className="w-full border border-gray-400 border-collapse text-center">
 					<thead className="bg-gray-100">
-						<tr className="uppercase bg-purple-800 text-white">
+						<tr className="uppercase bg-linear-to-r from-secondary  to-primary text-white">
 							<th className="border p-3">SI No</th>
 							<th className="border p-3">Name</th>
 							<th className="border p-3">Email</th>
@@ -209,7 +207,7 @@ const AdminHome = () => {
 
 				<table className="w-full border text-center border-gray-400 border-collapse mt-2">
 					<thead>
-						<tr className="uppercase bg-purple-800 text-white">
+						<tr className="uppercase bg-linear-to-r from-primary to-secondary text-white">
 							<th className="border p-3">SI NO</th>
 							<th className="border p-3">name</th>
 							<th className="border p-3">email</th>
@@ -221,7 +219,9 @@ const AdminHome = () => {
 							?.filter((user) => user.isDeleted)
 							.map((user, index) => (
 								<tr key={user._id} className="text-sm">
-									<td className="border p-3 bg-purple-200 font-bold">{index + 1}</td>
+									<td className="border p-3 bg-purple-200 font-bold">
+										{index + 1}
+									</td>
 									<td className="border p-3">{user.name}</td>
 									<td className="border p-3">{user.email}</td>
 									<td className="border p-3">

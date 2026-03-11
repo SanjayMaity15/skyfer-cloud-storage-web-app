@@ -251,7 +251,7 @@ export const getCurrentUser = async (req, res) => {
 			updatedAt: user.updatedAt,
 			gender: user.gender
 		};
-		console.log({ userDetails });
+		
 		return res.status(200).json({
 			success: true,
 			user: userDetails,

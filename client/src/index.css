@@ -5,37 +5,24 @@
 @import "tailwindcss";
 
 @theme {
-  --font-poppins: "Poppins", sans-serif;
-  --font-lobster: "Lobster", cursive;
-  
-  --color-primary: #DB2777;
-  --color-secondary: #7c3aed;
-  --color-skyfer-violet: #6C63FF;
+	--font-poppins: "Poppins", sans-serif;
+	--font-lobster: "Lobster", cursive;
 
-
-  --color-success: #22C55E;
-  --color-warning: #FACC15;
-  --color-danger: #EF4444;
-
-  --color-border: #E5E7EB;
-  --color-bg-soft: #F3f4f6;
-
-  --color-soft-blue: #E0F2FE;
-  --color-soft-green: #DCFCE7;
-  --color-soft-purple: #F3E8FF;
+	--color-primary: #be185d;
+	--color-secondary: #6b21a8;
+	--color-bg-soft: #f3f4f6;
 }
 
-.container{
-    @apply max-w-7xl mx-auto 
+
+
+.container {
+	@apply max-w-7xl mx-auto;
 }
 
-body{
-  @apply bg-bg-soft font-poppins text-gray-800
+body {
+	@apply bg-bg-soft font-poppins text-gray-800;
 }
 
 ::selection {
-  @apply bg-pink-200 text-pink-600
+	@apply bg-pink-200 text-pink-600;
 }
-
-
-

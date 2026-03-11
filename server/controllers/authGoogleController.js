@@ -91,6 +91,8 @@ export const loginWithGoogle = async (req, res) => {
 		res.cookie("SID", payload, {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
+			sameSite: "none",
+			secure: true
 		});
 
 		// TODO: create user / session / JWT here

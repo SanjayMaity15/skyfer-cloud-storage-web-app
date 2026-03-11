@@ -8,13 +8,13 @@ export default function WhySkyfer() {
 	return (
 		<section className="py-24 bg-gray-50">
 			<div className="max-w-7xl mx-auto px-6 text-center">
-				<p className="text-pink-500 font-semibold tracking-wide">
+				<p className="text-green-700 font-semibold tracking-wide">
 					WHY SKYFER?
 				</p>
 
 				<h2 className="text-4xl font-bold mt-2">
 					Engineered for{" "}
-					<span className="text-pink-500">Scale & Security</span>
+					<span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary">Scale & Security</span>
 				</h2>
 
 				<p className="text-gray-500 mt-4 mb-12 max-w-xl mx-auto">

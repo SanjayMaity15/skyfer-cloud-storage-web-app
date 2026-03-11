@@ -74,7 +74,7 @@ const LoginPage = () => {
 	return (
 		<div className="min-h-screen flex bg-bg-soft container">
 			{/* LEFT SIDE */}
-			<div className="hidden md:flex w-1/2 bg-linear-to-br from-primary/80 to-secondary/80 text-white flex-col justify-start gap-4 items-start p-12 rounded-r-full">
+			<div className="hidden md:flex w-1/2 bg-linear-to-br from-primary to-secondary text-white flex-col justify-start gap-4 items-start p-12 rounded-r-full">
 				{/* Logo */}
 				<div className="flex items-center justify-start mt-6">
 					<img

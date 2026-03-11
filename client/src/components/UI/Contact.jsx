@@ -46,13 +46,13 @@ export default function Contact() {
 				<div className="grid lg:grid-cols-2 gap-16 items-start">
 					{/* Left Content */}
 					<div>
-						<p className="text-pink-500 font-semibold tracking-wider">
+						<p className="text-green-700 font-semibold tracking-wider">
 							CONTACT SKYFER
 						</p>
 
 						<h2 className="text-4xl font-bold mt-3 leading-tight">
 							Let’s talk about your{" "}
-							<span className="text-pink-500">
+							<span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-secondary">
 								cloud storage needs
 							</span>
 						</h2>
@@ -174,7 +174,7 @@ export default function Contact() {
 							</div>
 							<button
 								type="submit"
-								className="w-full bg-linear-to-r from-pink-500 to-purple-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+								className="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
 								disabled={loading}
 							>
 								{loading ? (
