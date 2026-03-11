@@ -47,10 +47,10 @@ export const sendForgotPassOTP = async (req, res) => {
 		await Otp.findOneAndUpdate(
 			{ email },
 			{ $set: { email, otp } },
-			{ upsert: true, new: true },
+			{ upsert: true, returnDocument: "after" },
 		);
 
-		await sendMailUsingNodeMailer(email, "Skyfer Password Reset OTP", "reset password" ,otp);
+		 sendMailUsingNodeMailer(email, "Skyfer Password Reset OTP", "reset password" ,otp);
 
 		return res.status(200).json({
 			success: true,

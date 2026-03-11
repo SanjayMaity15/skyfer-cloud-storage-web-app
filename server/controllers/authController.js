@@ -206,7 +206,7 @@ export const sendOTP = async (req, res) => {
 		await Otp.findOneAndUpdate(
 			{ email },
 			{ $set: { email, otp } },
-			{ upsert: true, new: true },
+			{ upsert: true, returnDocument: "after" },
 		);
 
 		await sendMailUsingNodeMailer(
