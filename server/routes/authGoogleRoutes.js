@@ -5,7 +5,7 @@ import { isAuth } from '../middlewares/isAuth.js'
 const router = express.Router()
 
 
-router.post("/google", loginWithGoogle)
+router.post("/", loginWithGoogle)
 router.post("/add-password", isAuth, addPasswordForGoogleLoginUser)
 
 export default router

@@ -58,7 +58,7 @@ const LoginPage = () => {
 	const handleLoginWithGoogle = async (idToken) => {
 		try {
 			const result = await api.post(
-				"/auth/google",
+				"/google",
 				{ idToken },
 				{ withCredentials: true },
 			);

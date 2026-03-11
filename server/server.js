@@ -45,7 +45,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/reset", passResetRoutes);
-app.use("/api/auth", googleLoginRoutes);
+app.use("/api/google", googleLoginRoutes);
 app.use("/api/user", userRoutes)
 app.use("/api/dir", dirRoutes)
 app.use("/api/file", fileRoutes)

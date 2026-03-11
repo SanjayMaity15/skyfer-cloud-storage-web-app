@@ -33,7 +33,7 @@ const EnablenewPass = () => {
 
 		try {
 			setLoading(true);
-			const result = await api.post("/auth/add-password", data, {
+			const result = await api.post("/google/add-password", data, {
 				withCredentials: true,
 			});
 			toast.success(result?.data?.message);

@@ -4,8 +4,12 @@ dotenv.config();
 
 // Create a transporter using Ethereal test credentials.
 // For production, replace with your actual SMTP server details.
+
+
 const transporter = nodemailer.createTransport({
 	host: "smtp.gmail.com",
+	port: 465,
+	secure: true,
 	auth: {
 		user: process.env.EMAIL_USER,
 		pass: process.env.EMAIL_APP_PASS,
