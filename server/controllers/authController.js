@@ -212,7 +212,6 @@ export const sendOTP = async (req, res) => {
 		await sendMailUsingNodeMailer(
 			email,
 			"Skyfer Registration OTP For Verification",
-			"registration",
 			otp,
 		);
 		return res.status(200).json({
@@ -249,9 +248,9 @@ export const getCurrentUser = async (req, res) => {
 			isSecure: user.isSecure,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
-			gender: user.gender
+			gender: user.gender,
 		};
-		
+
 		return res.status(200).json({
 			success: true,
 			user: userDetails,
