@@ -2,11 +2,11 @@ import multer from "multer";
 import dotenv from "dotenv"
 dotenv.config()
 
-const storagePath = process.env.STORAGE_PATH;
+
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, storagePath);
+		cb(null, "storage/");
 	},
 	filename: function (req, file, cb) {
 		
