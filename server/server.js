@@ -24,7 +24,7 @@ dotenv.config();
 // createing instance of app
 const app = express();
 app.disable("x-powered-by");
-app.set("trust proxy", 1);
+
 // config cors , parser, cookie parser
 
 app.use(
