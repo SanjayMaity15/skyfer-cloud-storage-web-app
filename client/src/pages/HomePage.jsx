@@ -1,7 +1,7 @@
-import React from "react";
+
 import HeroSection from "../components/UI/HeroSection";
 import Navbar from "../components/UI/Navbar";
-import Features from "../components/UI/WhySkyfer";
+
 import HowSkyferWorks from "../components/UI/SkyferWorks";
 import SkyferFeaturesGrid from "../components/UI/FeatureGrid";
 import WhySkyfer from "../components/UI/WhySkyfer";

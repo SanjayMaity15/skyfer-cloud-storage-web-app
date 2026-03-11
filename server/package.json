@@ -11,7 +11,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "server": "node --watch server.js"
+    "server": "node --watch server.js",
+    "start" : "node server.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

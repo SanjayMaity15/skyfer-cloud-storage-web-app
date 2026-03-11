@@ -57,7 +57,7 @@ export const sendForgotPassOTP = async (req, res) => {
 			message: "OTP send successfully in registered email",
 		});
 	} catch (error) {
-		console.log(error);
+		
 		return res.status(500).json({
 			success: false,
 			message: error.message || "Failed to send OTP",

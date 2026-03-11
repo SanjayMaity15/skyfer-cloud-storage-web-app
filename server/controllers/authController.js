@@ -70,10 +70,9 @@ export const register = async (req, res) => {
 
 		return res.status(201).json({
 			success: true,
-			message: "Registration successfull"
+			message: "Registration successfull",
 		});
 	} catch (error) {
-		console.log(error);
 		await mongooseSession.abortTransaction();
 		mongooseSession.endSession();
 		return res.status(500).json({
@@ -104,7 +103,7 @@ export const login = async (req, res) => {
 
 		const { email, password } = data;
 
-		const user = await User.findOne({ email })
+		const user = await User.findOne({ email });
 
 		if (!user) {
 			return res.status(401).json({
@@ -116,8 +115,8 @@ export const login = async (req, res) => {
 		if (user.isDeleted) {
 			return res.status(401).json({
 				success: false,
-				message: "You account has been banned contact Admin"
-			})
+				message: "You account has been banned contact Admin",
+			});
 		}
 
 		if (user.password === null) {
@@ -151,13 +150,17 @@ export const login = async (req, res) => {
 			profilePic: user.profilePic,
 			role: user.role,
 			rootDirId: user.rootDirId,
-			isSecure: user.isSecure
+			isSecure: user.isSecure,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
+			gender: user.gender,
 		};
-
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
 			httpOnly: true,
 			maxAge: 30 * 24 * 60 * 60 * 1000,
+			sameSite: "none",
+			secure: true,
 		});
 
 		return res.status(200).json({
@@ -206,13 +209,17 @@ export const sendOTP = async (req, res) => {
 			{ upsert: true, new: true },
 		);
 
-		await sendMailUsingNodeMailer(email, "Skyfer Registration OTP For Verification", "registration", otp);
+		await sendMailUsingNodeMailer(
+			email,
+			"Skyfer Registration OTP For Verification",
+			"registration",
+			otp,
+		);
 		return res.status(200).json({
 			success: true,
 			message: "OTP Send Successfully",
 		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).json({
 			success: false,
 			message: error.message || "Failed to send OTP",
@@ -230,10 +237,24 @@ export const sendOTP = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
 	try {
-		
+		const user = await User.findById(req.user._id);
+
+		const userDetails = {
+			_id: user._id,
+			userName: user.userName,
+			email: user.email,
+			profilePic: user.profilePic,
+			role: user.role,
+			rootDirId: user.rootDirId,
+			isSecure: user.isSecure,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
+			gender: user.gender
+		};
+		console.log({ userDetails });
 		return res.status(200).json({
 			success: true,
-			user: req.user,
+			user: userDetails,
 		});
 	} catch (error) {
 		return res.status(500).json({

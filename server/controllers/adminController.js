@@ -8,8 +8,6 @@ export const getAllUser = async (req, res) => {
 		const allUsers = await User.find({ role: "user" });
 		const session = await Session.find({});
 
-		console.log(allUsers);
-		console.log(session);
 
 		const users = allUsers.map((user) => {
 			const isLoggedIn = session.some(
@@ -27,7 +25,7 @@ export const getAllUser = async (req, res) => {
 			};
 		});
 
-		console.log(users);
+
 
 		return res.status(200).json({
 			success: true,
@@ -46,7 +44,6 @@ export const getAllUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
 	try {
 		const { id } = req.params;
-		console.log(id);
 
 		await Session.findOneAndDelete({ userId: id });
 

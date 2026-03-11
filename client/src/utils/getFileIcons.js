@@ -212,6 +212,6 @@ export const getFileIcon = (fileExt) => {
 		},
 	};
 
-	console.log(extension);
+	
 	return iconMap[extension] || { icon: FaFileAlt, color: "text-gray-500" };
 };

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { resetPasswordSchema } from "../../../validators/passResetValidators";
-import { api } from "../../../api/axiosInstance";
+import  { useState } from "react";
+import { resetPasswordSchema } from "../../validators/passResetValidators";
+import { api } from "../../api/axiosInstance";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ButtonLoader from "./ButtonLoader";
 
 const EnablenewPass = () => {
@@ -10,8 +10,11 @@ const EnablenewPass = () => {
 	const [confirmPass, setConfirmPass] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState({});
-  const navigate = useNavigate()
+	const navigate = useNavigate();
+	const location = useLocation()
 
+	const {isSecure} = location.state;
+	
 
 	const handleAddnewPass = async () => {
 		const { success, data, error } = resetPasswordSchema.safeParse({
@@ -28,23 +31,27 @@ const EnablenewPass = () => {
 			return;
 		}
 
-    try {
-      setLoading(true)
-      const result = await api.post("/auth/google/add-password", data, { withCredentials: true })
-      toast.success(result?.data?.message)
-      setLoading(false)
-      navigate(-1)
-    } catch (error) {
-      setLoading(false)
-      toast.error(error?.response?.data?.message)
-    }
+		try {
+			setLoading(true);
+			const result = await api.post("/auth/google/add-password", data, {
+				withCredentials: true,
+			});
+			toast.success(result?.data?.message);
+			setLoading(false);
+			navigate(-1);
+		} catch (error) {
+			setLoading(false);
+			toast.error(error?.response?.data?.message);
+		}
 	};
 
 	return (
 		<div className="h-screen flex justify-center items-center">
 			<div className="w-md py-8 bg-white/50 flex flex-col gap-4 rounded-2xl shadow-md p-4">
 				<h4 className="capitalize text-center mt-4 text-xl font-semibold">
-					Create or Change Password
+					{
+						isSecure ? "Change Password" : "Add Password"
+					}
 				</h4>
 
 				<div className="flex flex-col gap-4 mt-4 px-12">

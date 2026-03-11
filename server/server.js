@@ -24,16 +24,13 @@ dotenv.config();
 // createing instance of app
 const app = express();
 app.disable("x-powered-by");
+app.set("trust proxy", 1);
 // config cors , parser, cookie parser
 
 app.use(
 	cors({
 		origin: process.env.FRONTEND_URL,
-		// origin: [
-		// 	"http://localhost:5173",
-		// 	"http://10.180.53.153:5173",
-		// ],
-		methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 		credentials: true,
 	}),
 );
@@ -61,7 +58,7 @@ app.get("/", (req, res) => {
 });
 
 // server listen
-app.listen(PORT, "0.0.0.0" ,async () => {
+app.listen(PORT ,async () => {
 	await connectDatabase();
 	console.log(`---SERVER IS RUNNING AT PORT ${PORT}---`);
 });

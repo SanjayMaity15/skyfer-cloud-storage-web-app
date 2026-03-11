@@ -1,29 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../utils/getImageUrl";
-import { registrationSchema } from "../../validators/authValidator";
-import {  useState } from "react";
-import { api } from "../../api/axiosInstance";
+import { registrationSchema } from "../validators/authValidator";
+import { useState } from "react";
+import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { toast } from "react-toastify";
-
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
-	const { register, handleSubmit } = useForm({
-		defaultValues: {
-			userName: "Sanjay Maity",
-			email: "sanjaydummy18@gmail.com",
-			password: "123456",
-		},
-	});
+	const { register, handleSubmit } = useForm();
 	const [showPass, setShowPass] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	// naviagte
 	const navigate = useNavigate();
-	
+
 	// Error state
 	const [errors, setErrors] = useState({});
 
@@ -106,7 +99,7 @@ const RegisterPage = () => {
 						<div>
 							<input
 								type="text"
-								placeholder="Enter full name..."
+								placeholder="John Doe"
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("userName")}
 							/>
@@ -120,7 +113,7 @@ const RegisterPage = () => {
 						<div>
 							<input
 								type="email"
-								placeholder="Enter email Address..."
+								placeholder="johndoe@example.com"
 								className="w-full p-2  px-4 rounded-full bg-white shadow-md  focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("email")}
 							/>
@@ -134,8 +127,8 @@ const RegisterPage = () => {
 						<div className="relative">
 							<input
 								type={showPass ? "text" : "password"}
-								placeholder="Enter password..."
-								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
+								placeholder=".........."
+								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none placeholder:font-bold placeholder:text-2xl"
 								{...register("password")}
 							/>
 

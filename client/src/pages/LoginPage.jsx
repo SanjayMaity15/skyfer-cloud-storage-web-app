@@ -2,9 +2,9 @@ import { GoogleLogin } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getImageUrl } from "../utils/getImageUrl";
-import { loginSchema } from "../../validators/authValidator";
-import { useEffect, useState } from "react";
-import { api } from "../../api/axiosInstance";
+import { loginSchema } from "../validators/authValidator";
+import {  useState } from "react";
+import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/userSlice";
@@ -12,12 +12,7 @@ import { toast } from "react-toastify";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
-	const { register, handleSubmit } = useForm({
-		defaultValues: {
-			email: "sanjaydummy18@gmail.com",
-			password: "123456",
-		},
-	});
+	const { register, handleSubmit } = useForm();
 
 	const dispatch = useDispatch();
 
@@ -123,7 +118,7 @@ const LoginPage = () => {
 						<div>
 							<input
 								type="email"
-								placeholder="Enter email Address..."
+								placeholder="johndoe@example.com"
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								{...register("email")}
 							/>
@@ -137,8 +132,8 @@ const LoginPage = () => {
 						<div className="relative">
 							<input
 								type={showPass ? "text" : "password"}
-								placeholder="Enter password..."
-								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
+								placeholder="........."
+								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none placeholder:text-2xl placeholder:font-bold"
 								{...register("password")}
 							/>
 							<button

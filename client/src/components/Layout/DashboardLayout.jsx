@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { api } from "../../../api/axiosInstance";
+import { api } from "../../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { getImageUrl } from "../../utils/getImageUrl";
 import { MdDashboard, MdLogout, MdOutlineStarBorder } from "react-icons/md";
@@ -16,10 +16,10 @@ const DashboardLayout = () => {
 	const [isOpenPopup, setIsOpenPopup] = useState(false);
 	const [isMbMenuActive, setIsMbMenuActive] = useState(false);
 	const location = useLocation();
-	console.log(user);
+	
 	const isDashboard = location.pathname === "/dashboard";
 	const isTrash = location.pathname === "/dashboard/trash";
-	console.log(location.pathname);
+	
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	// logout user functionality
@@ -39,7 +39,6 @@ const DashboardLayout = () => {
 		}
 	};
 
-	console.log(isMbMenuActive);
 	return (
 		<div className="flex h-screen relative">
 			<button

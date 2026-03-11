@@ -1,6 +1,5 @@
 import { useState } from "react";
 import ButtonLoader from "./ButtonLoader";
-import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa";
 
 const DirectoryPopup = ({

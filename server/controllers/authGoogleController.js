@@ -6,10 +6,9 @@ import { getUserInfoUsingGoogleLogin } from "../services/loginWithGoogle.js";
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
 import {
-	addPasswordSchema,
-	resetPasswordSchema,
+	addPasswordSchema
 } from "../validators/passResetValidators.js";
-import { success } from "zod";
+
 
 /*
 =========================================
@@ -27,8 +26,7 @@ export const loginWithGoogle = async (req, res) => {
 		if (!idToken) return res.status(400).send("No IdToken provided");
 
 		const userData = await getUserInfoUsingGoogleLogin(idToken);
-		console.log(idToken);
-		console.log(userData);
+
 
 		const { email, name } = userData;
 
@@ -83,6 +81,10 @@ export const loginWithGoogle = async (req, res) => {
 			profilePic: user.profilePic,
 			role: user.role,
 			rootDirId: user.rootDirId,
+			isSecure: user.isSecure,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt,
+			gender: user.gender,
 		};
 
 		const payload = session._id.toString();
@@ -118,7 +120,7 @@ export const loginWithGoogle = async (req, res) => {
 
 export const addPasswordForGoogleLoginUser = async (req, res) => {
 	try {
-		console.log(req.body);
+
 
 		const { success, data } = addPasswordSchema.safeParse(req.body);
 

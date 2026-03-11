@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import ButtonLoader from "./ButtonLoader";
 
 const Popup = ({ isOpen, heading, text, btn1, btn2, onCancel, onConfirm }) => {

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { OTP_LENGTH } from "../../constant/constant";
+import { OTP_LENGTH } from "../constant/constant";
 import { useLocation, useNavigate } from "react-router-dom";
-import { api } from "../../api/axiosInstance";
+import { api } from "../api/axiosInstance";
 import ButtonLoader from "../components/UI/ButtonLoader";
 import { toast } from "react-toastify";
 
@@ -56,7 +56,7 @@ const OtpPage = () => {
 			const result = await api.post("/auth/register", registrationData, {
 				withCredentials: true,
 			});
-			console.log(result);
+			
 			toast.success(result?.data?.message);
 			setLoading(false);
 			navigate("/login");

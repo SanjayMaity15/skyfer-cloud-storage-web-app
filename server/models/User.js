@@ -51,7 +51,7 @@ const userSchema = new Schema(
 		virtuals: {
 			isSecure: {
 				get() {
-					return this.password !== null 
+					return typeof this.password === "string" && this.password.length > 0
 				}
 			}
 		},

@@ -1,8 +1,8 @@
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { contactFormSchema } from "../../../validators/contactFormValidation";
+import { contactFormSchema } from "../../validators/contactFormValidation";
 import { useState } from "react";
-import { api } from "../../../api/axiosInstance";
+import { api } from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 import ButtonLoader from "./ButtonLoader";
 
@@ -11,7 +11,7 @@ export default function Contact() {
 	const [errors, setErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 
-	const handleContactForm = async(formData) => {
+	const handleContactForm = async (formData) => {
 		const { success, data, error } = contactFormSchema.safeParse(formData);
 
 		if (!success) {
@@ -30,15 +30,15 @@ export default function Contact() {
 			setLoading(true);
 			const result = await api.post("/contact/send", data);
 			toast.success(result?.data?.message);
-            setLoading(false);
-            reset()
+			setLoading(false);
+			reset();
 		} catch (error) {
 			setLoading(false);
 			toast.error(error?.response?.data?.message);
 		}
 	};
 
-	console.log(errors);
+
 
 	return (
 		<section className="py-24 bg-gray-50">
@@ -86,7 +86,7 @@ export default function Contact() {
 								<div>
 									<p className="font-semibold">Phone</p>
 									<p className="text-gray-500 text-sm">
-										+91 90000 00000
+										+91 9876543210
 									</p>
 								</div>
 							</div>

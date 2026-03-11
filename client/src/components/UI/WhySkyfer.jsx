@@ -3,7 +3,7 @@ import { whySkyfer } from "../../utils/whySkyfer";
 
 export default function WhySkyfer() {
 	
-	console.log(whySkyfer)
+	
 
 	return (
 		<section className="py-24 bg-gray-50">

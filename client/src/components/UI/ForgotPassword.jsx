@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import { OTP_LENGTH } from "../../../constant/constant";
+import { OTP_LENGTH } from "../../constant/constant";
 import {
 	passResetEmailSchema,
 	resetPasswordSchema,
-} from "../../../validators/passResetValidators";
-import { api } from "../../../api/axiosInstance";
+} from "../../validators/passResetValidators";
+import { api } from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 import ButtonLoader from "./ButtonLoader";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -18,8 +18,8 @@ const ForgotPassword = () => {
 
 	const [newPass, setNewPass] = useState("");
 	const [confirmPass, setConfirmPass] = useState("");
-	const [showPass1, setShowPass1] = useState(false)
-	const [showPass2, setShowPass2] = useState(false)
+	const [showPass1, setShowPass1] = useState(false);
+	const [showPass2, setShowPass2] = useState(false);
 
 	const [errors, setErrors] = useState({});
 
@@ -161,7 +161,7 @@ const ForgotPassword = () => {
 					<div className="flex flex-col mt-4 px-12">
 						<input
 							type="email"
-							placeholder="Enter registered email"
+							placeholder="johndoe@example.com"
 							className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 							onChange={(e) =>
 								setEmailForPassReset(e.target.value)
@@ -201,7 +201,7 @@ const ForgotPassword = () => {
 					</h3>
 					<div className="flex flex-col items-center text-sm text-gray-500 mt-2">
 						<p>Enter OTP send to your </p>
-						<p> {"sanjay@gmail.com"}</p>
+						<p> {emailForPassReset}</p>
 					</div>
 
 					<div className="flex justify-center gap-4 mt-6">
@@ -271,7 +271,7 @@ const ForgotPassword = () => {
 						<div className="relative">
 							{" "}
 							<input
-								type={showPass2 ? "text": "password"}
+								type={showPass2 ? "text" : "password"}
 								placeholder="Confirm password"
 								className="w-full p-2 px-4 rounded-full bg-white shadow-md focus:ring-1 focus:ring-primary focus:outline-none"
 								onChange={(e) => setConfirmPass(e.target.value)}

@@ -1,15 +1,16 @@
 import { cloudinary } from "../config/cloudinary.config.js";
 import fs from "fs";
+import dotenv from "dotenv"
+dotenv.config()
 
 export const uploadFileToCloudinary = async (filePath) => {
 	try {
 		const result = await cloudinary.uploader.upload(filePath, {
-            folder: "Skyfer",
-            resource_type: "auto"
-        });
+			folder: process.env.CLOUDINARY_FOLDER,
+			resource_type: "auto",
+		});
         fs.unlinkSync(filePath)        
 		
-        console.log(result);
  
         const { public_id, secure_url, resource_type } = result;
 		return {public_id, secure_url, resource_type};

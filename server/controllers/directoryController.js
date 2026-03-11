@@ -121,7 +121,7 @@ export const getDirectory = async (req, res) => {
 			})),
 		});
 	} catch (error) {
-		console.log(error);
+		
 		return res.status(500).json({ message: "Server error" });
 	}
 };
@@ -241,7 +241,7 @@ export const deleteDirectory = async (req, res) => {
 		
 
 		for (const { fileName } of files) {
-			console.log(fileName)
+
 			await fs.rm(`${process.cwd()}/storage/${fileName}`);
 		}
 

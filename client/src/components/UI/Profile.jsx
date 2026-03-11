@@ -1,10 +1,8 @@
-import React from "react";
-import { BsArrowLeft } from "react-icons/bs";
+
 import {
 	CiCalendar,
 	CiLock,
 	CiStopwatch,
-	CiTimer,
 	CiWarning,
 } from "react-icons/ci";
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
@@ -13,7 +11,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { IoMdKey } from "react-icons/io";
 import { IoFemale, IoMale, IoPersonCircleOutline } from "react-icons/io5";
 import { MdPerson, MdSecurity } from "react-icons/md";
-import { TbCircleKey } from "react-icons/tb";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -33,7 +31,7 @@ const Profile = () => {
 						onClick={() => navigate(-1)}
 					>
 						<FaArrowLeft />
-					</button>	
+					</button>
 
 					{/* profile pic */}
 					{user?.profilePic ? (
@@ -213,7 +211,11 @@ const Profile = () => {
 							{user?.isSecure ? (
 								<button
 									className="flex items-center px-6 py-2 gap-1 bg-green-100 rounded-full text-green-700 cursor-pointer hover:bg-green-200 transition-colors duration-200"
-									onClick={() => navigate("/add-password")}
+									onClick={() =>
+										navigate("/add-password", {
+											state: { isSecure: user.isSecure },
+										})
+									}
 								>
 									<CiLock />
 									Change Password
@@ -221,7 +223,11 @@ const Profile = () => {
 							) : (
 								<button
 									className="flex items-center px-6 py-2 gap-1 bg-red-100 rounded-full text-red-700 cursor-pointer hover:bg-red-200 transition-colors duration-200"
-									onClick={() => navigate("/add-password")}
+									onClick={() =>
+										navigate("/add-password", {
+											state: { isSecure: user.isSecure },
+										})
+									}
 								>
 									<CiLock />
 									Enable protection

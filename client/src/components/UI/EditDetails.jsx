@@ -2,11 +2,9 @@ import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import ButtonLoader from "./ButtonLoader";
-import { editProfileSchema } from "../../../validators/authValidator";
-import { api } from "../../../api/axiosInstance";
+import { editProfileSchema } from "../../validators/authValidator";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { CgProfile } from "react-icons/cg";
 import { IoCameraOutline, IoPersonCircleOutline } from "react-icons/io5";
 import axios from "axios";
 
@@ -26,7 +24,7 @@ const EditDetails = () => {
 	const [profilePreview, setProfilePreview] = useState(user.profilePic || "");
 
 	const handleEditDetails = async (editData) => {
-		console.log(editData);
+		
 		const { success, data, error } = editProfileSchema.safeParse(editData);
 
 		if (!success) {
@@ -45,7 +43,7 @@ const EditDetails = () => {
 			formData.append("profilePic", file);
 			formData.append("gender", data.gender);
 
-			console.log(formData);
+			
 			setLoading(true);
 			const result = await axios.post(
 				`${import.meta.env.VITE_BASE_URL}/user/edit-profile`,
@@ -56,14 +54,12 @@ const EditDetails = () => {
 			setLoading(false);
 			navigate(-1);
 		} catch (error) {
-			console.log(error);
+			
 			toast.error(error?.response?.data?.message);
 			setLoading(false);
 			navigate(-1);
 		}
 	};
-
-	
 
 	return (
 		<div className="min-h-screen flex pt-16 md:pt-0 md:items-center justify-center  p-6">
@@ -89,7 +85,7 @@ const EditDetails = () => {
 										alt=""
 										className="w-16 h-16 rounded-full"
 									/>
-									<IoCameraOutline className="absolute top-[70%] left-[75%] text-xl"/>
+									<IoCameraOutline className="absolute top-[70%] left-[75%] text-xl" />
 								</div>
 							) : (
 								<div>

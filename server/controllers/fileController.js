@@ -190,7 +190,7 @@ export const permanantDelete = async (req, res) => {
 
 		let file = await File.findOne({
 			_id: id,
-			owner: user._id,
+			owner: user._id,	
 		});
 
 		// delete from cloudinary

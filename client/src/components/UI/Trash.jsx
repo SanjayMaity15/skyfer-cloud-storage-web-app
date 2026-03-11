@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { api } from "../../../api/axiosInstance";
+import  { useEffect, useState } from "react";
+import { api } from "../../api/axiosInstance";
 import { getFileIcon } from "../../utils/getFileIcons";
 import { toast } from "react-toastify";
 import ButtonLoader from "./ButtonLoader";
@@ -58,7 +58,7 @@ const Trash = () => {
 		fetchTrashFile();
 	}, []);
 
-	console.log(trashFiles);
+	
 
 	return (
 		<section>

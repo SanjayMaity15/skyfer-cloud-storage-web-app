@@ -18,7 +18,7 @@ import { MdOutlineCreate, MdOutlineCreateNewFolder } from "react-icons/md";
 import DirectoryPopup from "./DirectoryPopup";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../../api/axiosInstance";
+import { api } from "../../api/axiosInstance";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRef } from "react";
@@ -50,7 +50,7 @@ const DashboardHome = () => {
 		files: [],
 	});
 
-	console.log(currentDir._id);
+
 	// breadcrums
 	const [path, setPath] = useState([]);
 
@@ -329,12 +329,13 @@ const DashboardHome = () => {
 
 	const handleFilePreview = async (fileId) => {
 		try {
+			const result = await api.get(`/file/view/${fileId}`, {
+				withCredentials: true,
+			});
 
-			const result = await api.get(`/file/view/${fileId}`, { withCredentials: true })
-			console.log(result)
 			window.open(result.data.data, "_blank");
 		} catch (error) {
-			console.log(error);
+			toast.error("File preview not available")
 		}
 	};
 
@@ -345,7 +346,7 @@ const DashboardHome = () => {
 				`${import.meta.env.VITE_BASE_URL}/file/view/${fileId}?action=download`,
 			);
 		} catch (error) {
-			console.log(error);
+			toast.error("File download failed")
 		}
 	};
 
@@ -629,128 +630,136 @@ const DashboardHome = () => {
 				</h2>
 				<div className="h-0.5 bg-gray-300 mb-2" />
 				<div className="flex flex-col gap-2">
-					{filterFiles?.filter((file) => !file.isDeleted).map((file) => {
-						const {
-							icon: FileIcon,
-							color,
-							bg,
-							border,
-						} = getFileIcon(file.extension);
+					{filterFiles
+						?.filter((file) => !file.isDeleted)
+						.map((file) => {
+							const {
+								icon: FileIcon,
+								color,
+								bg,
+								border,
+							} = getFileIcon(file.extension);
 
-						return (
-							<div
-								key={file._id}
-								className=" rounded-sm shadow-2xs bg-white md:p-2 p-4 md:items-center flex-col md:flex-row flex justify-between gap-4 relative"
-								title={`${file.name}\n${convertBytes(file.size)}\n${timeFormat(file.createdAt)}`}
-							>
-								<div className="flex items-center justify-between gap-5">
-									<div className="flex items-center gap-2">
-										<div
-											className={`${bg} ${border} p-2 rounded-full border`}
-										>
-											<FileIcon
-												className={`text-2xl ${color}`}
-											/>
-										</div>
-										<div className="flex flex-col">
-											<span className="text-sm font-semibold hover:underline hover:text-indigo-700 cursor-pointer">
-												{truncateFileName(file.name)}
-											</span>
-											<span className="text-xs text-gray-500">
-												{convertBytes(file.size)}
-											</span>
-										</div>
-									</div>
-
-									<button
-										className="md:hidden cursor-pointer"
-										onClick={() => {
-											setCurrentFile(file._id);
-											setThreeDots2((prev) => !prev);
-										}}
-									>
-										<BsThreeDotsVertical />
-									</button>
-								</div>
-
-								<div>
-									<p className="md:hidden text-xs text-primary bg-pink-100 px-4 py-1 rounded-full border border-pink-300 font-semibold text-center">
-										Created At :{" "}
-										{timeFormat(file.createdAt)}
-									</p>
-								</div>
-
-								<div className="flex items-center justify-between gap-4">
-									<div className="flex justify-center w-full gap-2">
-										<p className="hidden md:flex text-xs text-primary bg-pink-100 px-4 py-1 rounded-full border border-pink-300 font-semibold text-center">
-											Created At :{" "}
-											{new Date(
-												file.createdAt,
-											).toLocaleString("en-GB", {
-												day: "2-digit",
-												month: "2-digit",
-												year: "numeric",
-											})}
-										</p>
-
-										<button
-											className="bg-indigo-100 text-indigo-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-indigo-200 transition-colors duration-200"
-											onClick={() =>
-												handleFilePreview(file._id)
-											}
-										>
-											<FaRegEye className="text-sm" />
-											Preview
-										</button>
-										<button
-											className="bg-green-100 text-green-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-green-200 transition-colors duration-200"
-											onClick={() =>
-												handleFileDownload(file._id)
-											}
-										>
-											<IoCloudDownloadOutline className="text-sm" />
-											Download
-										</button>
-									</div>
-
-									<button
-										className="md:flex hidden cursor-pointer"
-										onClick={() => {
-											setCurrentFile(file._id);
-											setThreeDots2((prev) => !prev);
-										}}
-									>
-										<BsThreeDotsVertical />
-									</button>
-
-									{file._id === currentFile &&
-										threeDotes2 && (
-											<div className="absolute right-0 top-15 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden animate-fadeIn">
-												<button
-													onClick={() => {
-														openFileRenamePopup();
-														setThreeDots2(false);
-													}}
-													className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer"
-												>
-													Rename
-												</button>
-
-												<button
-													onClick={() => {
-														openFileDeletePopup();
-														setThreeDots2(false);
-													}}
-													className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150 cursor-pointer"
-												>
-													Delete
-												</button>
+							return (
+								<div
+									key={file._id}
+									className=" rounded-sm shadow-2xs bg-white md:p-2 p-4 md:items-center flex-col md:flex-row flex justify-between gap-4 relative"
+									title={`${file.name}\n${convertBytes(file.size)}\n${timeFormat(file.createdAt)}`}
+								>
+									<div className="flex items-center justify-between gap-5">
+										<div className="flex items-center gap-2">
+											<div
+												className={`${bg} ${border} p-2 rounded-full border`}
+											>
+												<FileIcon
+													className={`text-2xl ${color}`}
+												/>
 											</div>
-										)}
+											<div className="flex flex-col">
+												<span className="text-sm font-semibold hover:underline hover:text-indigo-700 cursor-pointer">
+													{truncateFileName(
+														file.name,
+													)}
+												</span>
+												<span className="text-xs text-gray-500">
+													{convertBytes(file.size)}
+												</span>
+											</div>
+										</div>
+
+										<button
+											className="md:hidden cursor-pointer"
+											onClick={() => {
+												setCurrentFile(file._id);
+												setThreeDots2((prev) => !prev);
+											}}
+										>
+											<BsThreeDotsVertical />
+										</button>
+									</div>
+
+									<div>
+										<p className="md:hidden text-xs text-primary bg-pink-100 px-4 py-1 rounded-full border border-pink-300 font-semibold text-center">
+											Created At :{" "}
+											{timeFormat(file.createdAt)}
+										</p>
+									</div>
+
+									<div className="flex items-center justify-between gap-4">
+										<div className="flex justify-center w-full gap-2">
+											<p className="hidden md:flex text-xs text-primary bg-pink-100 px-4 py-1 rounded-full border border-pink-300 font-semibold text-center">
+												Created At :{" "}
+												{new Date(
+													file.createdAt,
+												).toLocaleString("en-GB", {
+													day: "2-digit",
+													month: "2-digit",
+													year: "numeric",
+												})}
+											</p>
+
+											<button
+												className="bg-indigo-100 text-indigo-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-indigo-200 transition-colors duration-200"
+												onClick={() =>
+													handleFilePreview(file._id)
+												}
+											>
+												<FaRegEye className="text-sm" />
+												Preview
+											</button>
+											<button
+												className="bg-green-100 text-green-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-green-200 transition-colors duration-200"
+												onClick={() =>
+													handleFileDownload(file._id)
+												}
+											>
+												<IoCloudDownloadOutline className="text-sm" />
+												Download
+											</button>
+										</div>
+
+										<button
+											className="md:flex hidden cursor-pointer"
+											onClick={() => {
+												setCurrentFile(file._id);
+												setThreeDots2((prev) => !prev);
+											}}
+										>
+											<BsThreeDotsVertical />
+										</button>
+
+										{file._id === currentFile &&
+											threeDotes2 && (
+												<div className="absolute right-0 top-15 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden animate-fadeIn">
+													<button
+														onClick={() => {
+															openFileRenamePopup();
+															setThreeDots2(
+																false,
+															);
+														}}
+														className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer"
+													>
+														Rename
+													</button>
+
+													<button
+														onClick={() => {
+															openFileDeletePopup();
+															setThreeDots2(
+																false,
+															);
+														}}
+														className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-150 cursor-pointer"
+													>
+														Delete
+													</button>
+												</div>
+											)}
+									</div>
 								</div>
-							</div>
-						);
-					})}
+							);
+						})}
 				</div>
 			</div>
 			{/* directory popup */}

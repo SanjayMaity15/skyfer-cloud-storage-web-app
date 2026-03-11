@@ -14,7 +14,7 @@ import { cloudinary } from "../config/cloudinary.config.js";
 export const editProfile = async (req, res) => {
 	try {
 		const { success, data } = editProfileSchema.safeParse(req.body);
-		console.log("object");
+
 		if (!success) {
 			return res.status(400).json({
 				success: false,
@@ -29,7 +29,7 @@ export const editProfile = async (req, res) => {
         if (user.public_id) {
             await cloudinary.uploader.destroy(user.public_id)
         }
-		// console.log({userName, gender, profilePic})
+
 
 		const { public_id, secure_url } = await uploadFileToCloudinary(
 			profilePic.path,
@@ -40,7 +40,7 @@ export const editProfile = async (req, res) => {
 		user.profilePic = secure_url;
 		user.public_id = public_id;
 
-		console.log(user);
+
 		await user.save();
 
 		return res.status(200).json({
