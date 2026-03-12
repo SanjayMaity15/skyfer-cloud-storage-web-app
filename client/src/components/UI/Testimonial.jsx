@@ -8,7 +8,9 @@ import Rating from "./Rating";
 export default function Testimonial() {
 	return (
 		<div className="max-w-7xl mx-auto relative py-16">
-			<h3 className="text-center text-4xl font-semibold mb-6">Testimonial</h3>
+			<h3 className="text-center text-4xl font-semibold mb-6">
+				Testimonial
+			</h3>
 			<div className="flex justify-between items-center gap-8">
 				{/* Prev Button */}
 				<button className="testimonial-prev  bg-black text-white shadow px-4 py-2 rounded cursor-pointer ml-2">
@@ -20,6 +22,14 @@ export default function Testimonial() {
 				<Swiper
 					slidesPerView={3}
 					spaceBetween={30}
+					breakpoints={{
+						768: {
+							slidesPerView: 2,
+						},
+						1024: {
+							slidesPerView: 3
+						}
+					}}
 					modules={[Navigation]}
 					navigation={{
 						nextEl: ".testimonial-next",
@@ -38,8 +48,10 @@ export default function Testimonial() {
 										{data.name}
 									</h3>
 								</div>
-								<p className="mt-2 text-sm text-gray-500">{data.message}</p>
-								<Rating rating={data.rating}/>
+								<p className="mt-2 text-sm text-gray-500">
+									{data.message}
+								</p>
+								<Rating rating={data.rating} />
 							</div>
 						</SwiperSlide>
 					))}
