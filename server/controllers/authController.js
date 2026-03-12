@@ -1,6 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 import bcrypt from "bcrypt";
-import { sendMailUsingNodeMailer } from "../services/sendMailNodeMailer.js";
+
 import Otp from "../models/Otp.js";
 import User from "../models/User.js";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../validators/authValidators.js";
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
+import { sendMailUsingResend } from "../services/sendMailUsingResend.js";
 
 /*
 =========================================
@@ -209,7 +210,7 @@ export const sendOTP = async (req, res) => {
 			{ upsert: true, returnDocument: "after" },
 		);
 
-		await sendMailUsingNodeMailer(
+		await sendMailUsingResend(
 			email,
 			"Skyfer Registration OTP For Verification",
 			otp,

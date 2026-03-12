@@ -1,6 +1,5 @@
 // forgot pass send otp in registerd user email
 
-import { sendMailUsingNodeMailer } from "../services/sendMailNodeMailer.js";
 import Otp from "../models/Otp.js";
 import User from "../models/User.js";
 import {
@@ -8,6 +7,7 @@ import {
 	passResetEmailSchema,
 	resetPasswordSchema,
 } from "../validators/passResetValidators.js";
+import { sendMailUsingResend } from "../services/sendMailUsingResend.js";
 
 
 
@@ -50,7 +50,7 @@ export const sendForgotPassOTP = async (req, res) => {
 			{ upsert: true, returnDocument: "after" },
 		);
 
-		 await sendMailUsingNodeMailer(email, "Skyfer Password Reset OTP" ,otp);
+		 await sendMailUsingResend(email, "Skyfer Password Reset OTP" ,otp);
 
 		return res.status(200).json({
 			success: true,

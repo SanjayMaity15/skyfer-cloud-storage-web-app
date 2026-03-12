@@ -1,7 +1,8 @@
-import { success } from "zod";
+
 import Contact from "../models/Contact.js";
-import { sendMailUsingNodeMailer } from "../services/sendMailNodeMailer.js";
+
 import { contactFormSchema } from "../validators/contactValidators.js";
+import { sendMailUsingResend } from "../services/sendMailUsingResend.js";
 
 export const sendContactUsMsg = async (req, res) => {
 	try {
@@ -23,7 +24,7 @@ export const sendContactUsMsg = async (req, res) => {
 			message,
         });
         
-        await sendMailUsingNodeMailer(email, "Contact form received", "", "")
+        await sendMailUsingResend(email, "Contact form received",  "")
 
         return res.status(201).json({
             success: true,
