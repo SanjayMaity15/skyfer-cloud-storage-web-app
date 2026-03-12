@@ -116,7 +116,9 @@ export const renameFile = async (req, res) => {
 			owner: user._id,
 		});
 
-		file.fileName = newFileName;
+		console.log(newFileName);
+
+		file.fileName = `${newFileName}${file.extension}`;
 		await file.save();
 
 		return res.status(200).json({
