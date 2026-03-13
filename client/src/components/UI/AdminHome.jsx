@@ -177,7 +177,7 @@ const AdminHome = () => {
 									</td>
 									<td className="border p-3">
 										<button
-											className={`px-4 py-1 text-sm rounded-full border  cursor-pointer ${user.isLoggedIn ? "border-purple-600 bg-purple-100 text-purple-600" : "bg-gray-100 text-black border-gray-500 line-through"}`}
+											className={`px-4 py-1 text-sm rounded-full border  cursor-pointer ${user.isLoggedIn ? "border-purple-600 bg-purple-100 text-purple-600 hover:bg-purple-200" : "bg-gray-100 text-black border-gray-500 line-through"}`}
 											disabled={!user.isLoggedIn}
 											onClick={() => {
 												openUserLogoutPopup(user._id);
@@ -188,7 +188,7 @@ const AdminHome = () => {
 									</td>
 									<td className="border p-3">
 										<button
-											className="px-4 py-1 text-sm bg-red-100 text-red-600 border border-red-300 rounded-full cursor-pointer"
+											className="px-4 py-1 text-sm bg-red-100 text-red-600 border border-red-300 hover:bg-red-200 rounded-full cursor-pointer"
 											onClick={() => {
 												openUserDeletePopUp(user._id);
 											}}

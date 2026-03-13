@@ -152,25 +152,18 @@ const Profile = () => {
 
 					{/* security alert section */}
 					<div
-						className={`shadow-md h-full rounded-2xl bg-linear-to-bl  ${user?.isSecure ? "bg-green-100" : "from-red-100"} via-40% via-white  to-white p-8 flex flex-col justify-between mb-6 md:mb-0`}
+						className={`shadow-md h-full rounded-2xl bg-linear-to-bl  ${user?.isSecure ? "bg-green-100" : "from-red-100"} via-40% via-white  to-white p-8 flex flex-col gap-5 justify-between mb-6 md:mb-0`}
 					>
 						<div>
 							<div className="flex justify-between">
 								<div className="flex flex-col gap-2">
-									<div className="flex items-center gap-2">
+									<div className="md:flex items-center gap-2">
 										<MdSecurity
-											className={`${user?.isSecure ? "text-green-600" : "text-red-600"} text-2xl`}
+											className={`${user?.isSecure ? "text-green-600" : "text-red-600"} md:text-2xl text-4xl`}
 										/>
-
-										<span className="text-2xl font-semibold">
-											Security Center
-										</span>
 									</div>
-									<p className="text-sm text-gray-400">
-										Manage your account security & access
-										permission
-									</p>
 								</div>
+
 								<div>
 									{user?.isSecure ? (
 										<button className="shadow-md bg-white flex items-center text-xs px-3 py-1 rounded-full text-green-600 font-semibold gap-1">
@@ -185,6 +178,13 @@ const Profile = () => {
 									)}
 								</div>
 							</div>
+
+							<span className="text-2xl font-semibold">
+								Security Center
+							</span>
+							<p className="text-sm text-gray-400">
+								Manage your account security & access permission
+							</p>
 
 							<div className="flex mt-4 gap-4">
 								<div className="p-4 rounded-full shadow-md bg-bg-soft">

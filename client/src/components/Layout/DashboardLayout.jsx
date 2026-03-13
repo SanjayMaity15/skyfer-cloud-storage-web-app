@@ -148,7 +148,7 @@ const DashboardLayout = () => {
 
 					<div>
 						<button
-							className="flex items-center gap-1 bg-red-100 text-red-600 px-6 rounded-full text-sm py-2 tracking-wider cursor-pointer border"
+							className="flex items-center gap-1 bg-red-100 text-red-600 hover:bg-red-200 px-6 rounded-full text-sm py-2 tracking-wider cursor-pointer border"
 							onClick={() => setIsOpenPopup(true)}
 						>
 							<MdLogout />

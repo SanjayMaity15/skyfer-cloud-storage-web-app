@@ -10,7 +10,15 @@ const Rating = ({ rating }) => {
       <div className='flex mt-4'>
           {
               Array.from({ length: RATING_LENGTH }).map((_, index) => {
-                  return index < rating ? <FaStar className='text-yellow-400'/> :<CiStar/>
+                  return (
+						<div key={index}>
+							{index < rating ? (
+								<FaStar className="text-yellow-400" />
+							) : (
+								<CiStar />
+							)}
+						</div>
+					);
               })
           }
     </div>
