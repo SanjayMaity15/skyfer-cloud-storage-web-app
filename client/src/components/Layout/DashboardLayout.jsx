@@ -41,10 +41,12 @@ const DashboardLayout = () => {
 		}
 	};
 
+	
+
 	return (
 		<div className="flex h-screen relative">
 			<button
-				className={`absolute md:hidden top-8 left-4 text-xl ${isMbMenuActive && "hidden"}`}
+				className={`absolute md:hidden top-9 left-4 text-2xl ${isMbMenuActive && "hidden"}`}
 				onClick={() => setIsMbMenuActive((prev) => !prev)}
 			>
 				<FaBars />
@@ -52,7 +54,7 @@ const DashboardLayout = () => {
 
 			<aside
 				className={`
-					fixed top-0 left-0 h-screen w-3/4 bg-white z-50 flex flex-col justify-between
+					fixed top-0 left-0 h-screen w-2/4 bg-white z-50 flex flex-col justify-between
 					transform transition-transform duration-300 ease-in-out
 					${isMbMenuActive ? "translate-x-0" : "-translate-x-full"}
 					
@@ -110,10 +112,15 @@ const DashboardLayout = () => {
 
 				{/* profile */}
 				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
-					<div className="flex justify-center bg-green-200 py-1 rounded-full border">
-						
-						<span className="flex items-center gap-2 text-xs">Used {convertBytes(user.storageUsed)} of {MAX_STORAGE} MB <FaDatabase/></span>
-					</div>
+					{user?.role === "user" && (
+						<div className="flex justify-center bg-green-200 py-1 rounded-full border">
+							<span className="flex items-center gap-2 text-xs">
+								Used {convertBytes(user.storageUsed)} of{" "}
+								{MAX_STORAGE} MB <FaDatabase />
+							</span>
+						</div>
+					)}
+
 					<div className="flex items-center">
 						<div className="w-12">
 							{user.profilePic ? (

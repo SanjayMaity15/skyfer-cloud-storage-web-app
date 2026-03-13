@@ -7,7 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import OtpPage from "./pages/OtpPage";
 import DashboardLayout from "./components/Layout/DashboardLayout";
 import DashboardHome from "./components/UI/DashboardHome";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { api } from "./api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { setPageLoading, setUser } from "./features/userSlice";
@@ -18,9 +18,11 @@ import EditDetails from "./components/UI/EditDetails";
 import EnablePassword from "./components/UI/EnablePassword";
 import AdminHome from "./components/UI/AdminHome";
 import Trash from "./components/UI/Trash";
+import AuthLoader from "./components/UI/AuthLoader";
 
 const App = () => {
 	const dispatch = useDispatch();
+
 	// get current loggedin user
 
 	const getCurrentLoggedInUser = async () => {
@@ -51,7 +53,11 @@ const App = () => {
 			children: [
 				{
 					index: true,
-					element: <HomePage />,
+					element: (
+						<AuthLoader>
+							<HomePage />
+						</AuthLoader>
+					),
 				},
 				{
 					path: "/login",
@@ -86,8 +92,8 @@ const App = () => {
 				},
 				{
 					path: "trash",
-					element: <Trash/>
-				}
+					element: <Trash />,
+				},
 			],
 		},
 		{
