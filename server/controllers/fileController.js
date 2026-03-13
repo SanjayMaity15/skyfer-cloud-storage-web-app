@@ -1,4 +1,5 @@
 import File from "../models/File.js";
+import fs from "fs"
 import path from "path";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
@@ -23,8 +24,12 @@ export const fileUpload = async (req, res) => {
 				message: "Something went wrong",
 			});
 		}
+		
 
 		if (user.storageUsed + file.size > MAX_STORAGE) {
+
+			fs.unlinkSync(file.path)
+
 			return res.status(400).json({
 				success: false,
 				message: "Storage limit exceeded.",
