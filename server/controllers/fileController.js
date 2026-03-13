@@ -2,6 +2,7 @@ import File from "../models/File.js";
 import path from "path";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
+import { MAX_STORAGE } from "../constant/constant.js";
 
 /*
 =========================================
@@ -23,7 +24,15 @@ export const fileUpload = async (req, res) => {
 			});
 		}
 
-		const {secure_url, public_id, resource_type} = await uploadFileToCloudinary(file.path);
+		if (user.storageUsed + file.size > MAX_STORAGE) {
+			return res.status(400).json({
+				success: false,
+				message: "Storage limit exceeded.",
+			});
+		}
+
+		const { secure_url, public_id, resource_type } =
+			await uploadFileToCloudinary(file.path);
 		const fileName = file.originalname;
 		const size = file.size;
 		const extension = path.extname(file.originalname);
@@ -40,6 +49,9 @@ export const fileUpload = async (req, res) => {
 			parentDirId,
 			owner,
 		});
+
+		user.storageUsed += size;
+		user.save();
 
 		return res.status(200).json({
 			success: true,
@@ -116,8 +128,6 @@ export const renameFile = async (req, res) => {
 			owner: user._id,
 		});
 
-		console.log(newFileName);
-
 		file.fileName = `${newFileName}${file.extension}`;
 		await file.save();
 
@@ -146,10 +156,16 @@ export const deleteFile = async (req, res) => {
 		const { id } = req.params;
 		const user = req.user;
 
-		let file = await File.findOneAndUpdate({
-			_id: id,
-			owner: user._id,
-		}, {isDeleted: true});
+		let file = await File.findOneAndUpdate(
+			{
+				_id: id,
+				owner: user._id,
+			},
+			{ isDeleted: true },
+		);
+
+		user.storageUsed = Math.max(0, user.storageUsed - file.size);
+		await user.save();	
 
 		return res.status(200).json({
 			success: true,
@@ -168,10 +184,22 @@ export const recoverDeletedFile = async (req, res) => {
 		const { id } = req.params;
 		const user = req.user;
 
-		let file = await File.findOneAndUpdate({
+		let file = await File.findOne({
 			_id: id,
 			owner: user._id,
-		}, {isDeleted: false});
+		});
+
+		if (user.storageUsed + file.size > MAX_STORAGE) {
+			return res.status(400).json({
+				success: false,
+				message: "Your storage limit exceeded.",
+			});
+		}
+
+		await file.updateOne({ isDeleted: false });
+
+		user.storageUsed += file.size;
+		await user.save();
 
 		return res.status(200).json({
 			success: true,
@@ -192,17 +220,17 @@ export const permanantDelete = async (req, res) => {
 
 		let file = await File.findOne({
 			_id: id,
-			owner: user._id,	
+			owner: user._id,
 		});
 
 		// delete from cloudinary
 		await cloudinary.uploader.destroy(file.public_id, {
-			resource_type: file.resource_type
-		})
+			resource_type: file.resource_type,
+		});
 
 		// delete from db
 
-		await file.deleteOne()
+		await file.deleteOne();
 
 		return res.status(200).json({
 			success: true,
@@ -216,23 +244,21 @@ export const permanantDelete = async (req, res) => {
 	}
 };
 
-
 // get deleted file
 
 export const getDeletedFile = async (req, res) => {
 	try {
-		const files = await File.find({ owner: req.user._id, isDeleted: true })
-		
+		const files = await File.find({ owner: req.user._id, isDeleted: true });
+
 		return res.status(200).json({
 			success: false,
 			message: "Data fetch successfully",
-			files
-		})
-		
+			files,
+		});
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
-			message: "Server error"
-		})
+			message: "Server error",
+		});
 	}
-}
+};

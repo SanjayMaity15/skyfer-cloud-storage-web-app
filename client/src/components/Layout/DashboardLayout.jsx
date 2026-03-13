@@ -8,7 +8,9 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { setUser } from "../../features/userSlice";
 import Popup from "../UI/Popup";
-import { FaArrowLeft, FaBars, FaTrashAlt } from "react-icons/fa";
+import { FaArrowLeft, FaBars, FaDatabase, FaTrashAlt } from "react-icons/fa";
+import { convertBytes } from "../../utils/digitalUnitConverter";
+import { MAX_STORAGE } from "../../constant/constant";
 
 const DashboardLayout = () => {
 	// get user data from redux store
@@ -108,6 +110,10 @@ const DashboardLayout = () => {
 
 				{/* profile */}
 				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
+					<div className="flex justify-center bg-green-200 py-1 rounded-full border">
+						
+						<span className="flex items-center gap-2 text-xs">Used {convertBytes(user.storageUsed)} of {MAX_STORAGE} MB <FaDatabase/></span>
+					</div>
 					<div className="flex items-center">
 						<div className="w-12">
 							{user.profilePic ? (

@@ -85,6 +85,7 @@ export const loginWithGoogle = async (req, res) => {
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
 			gender: user.gender,
+			storageUsed: user.storageUsed,
 		};
 
 		const payload = session._id.toString();

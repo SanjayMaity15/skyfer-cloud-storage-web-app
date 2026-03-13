@@ -1,0 +1,1 @@
+export const MAX_STORAGE = 200 * 1024 * 1024

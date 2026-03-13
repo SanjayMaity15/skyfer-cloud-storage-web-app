@@ -42,6 +42,10 @@ const userSchema = new Schema(
 		isDeleted: {
 			type: Boolean,
 			default: false
+		},
+		storageUsed: {
+			type: Number,
+			default: 0
 		}
 		
 	},
