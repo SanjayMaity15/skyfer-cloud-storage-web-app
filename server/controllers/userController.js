@@ -1,4 +1,4 @@
-import { success } from "zod";
+
 import { editProfileSchema } from "../validators/authValidators.js";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
@@ -10,36 +10,36 @@ import { cloudinary } from "../config/cloudinary.config.js";
 
 =========================================
 */
-
 export const editProfile = async (req, res) => {
 	try {
-		const { success, data } = editProfileSchema.safeParse(req.body);
+		const { success, data, error } = editProfileSchema.safeParse(req.body);
 
 		if (!success) {
 			return res.status(400).json({
 				success: false,
-				message: "All fields must be filled",
+				message: error.issues[0].message,
 			});
 		}
 
 		const { userName, gender } = data;
 		const profilePic = req.file;
-        let user = req.user;
-        
-        if (user.public_id) {
-            await cloudinary.uploader.destroy(user.public_id)
-        }
-
-
-		const { public_id, secure_url } = await uploadFileToCloudinary(
-			profilePic.path,
-		);
+		const user = req.user;
 
 		user.userName = userName;
 		user.gender = gender;
-		user.profilePic = secure_url;
-		user.public_id = public_id;
 
+		if (profilePic) {
+			if (user.public_id) {
+				await cloudinary.uploader.destroy(user.public_id);
+			}
+
+			const { public_id, secure_url } = await uploadFileToCloudinary(
+				profilePic.path,
+			);
+
+			user.profilePic = secure_url;
+			user.public_id = public_id;
+		}
 
 		await user.save();
 
@@ -48,6 +48,7 @@ export const editProfile = async (req, res) => {
 			message: "Profile updated successfully",
 		});
 	} catch (error) {
+		console.error(error);
 		return res.status(500).json({
 			success: false,
 			message: "Server error",

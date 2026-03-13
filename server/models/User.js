@@ -22,7 +22,8 @@ const userSchema = new Schema(
 			default: null,
 		},
 		public_id: {
-			type: String
+			type: String,
+			default: null
 		},
 		gender: {
 			type: String,

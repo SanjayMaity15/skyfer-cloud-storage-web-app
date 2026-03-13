@@ -54,7 +54,7 @@ const DashboardLayout = () => {
 
 			<aside
 				className={`
-					fixed top-0 left-0 h-screen w-2/4 bg-white z-50 flex flex-col justify-between
+					fixed top-0 left-0 h-screen w-3/4 bg-white z-50 flex flex-col justify-between
 					transform transition-transform duration-300 ease-in-out
 					${isMbMenuActive ? "translate-x-0" : "-translate-x-full"}
 					
@@ -138,11 +138,11 @@ const DashboardLayout = () => {
 							)}
 						</div>
 
-						<div className="flex flex-col text-xs -ml-3">
+						<div className="flex flex-col text-xs md:-ml-2">
 							<span className="font-semibold">
 								{user?.userName}
 							</span>
-							<span>{user?.email}</span>
+							<span className="hidden sm:block">{user?.email}</span>
 						</div>
 					</div>
 

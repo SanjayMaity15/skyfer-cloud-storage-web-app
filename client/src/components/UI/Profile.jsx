@@ -35,7 +35,7 @@ const Profile = () => {
 
 					{/* profile pic */}
 					{user?.profilePic ? (
-						<div className="p-1 border-2 border-gray-400 rounded-full">
+						<div className="p-1 border-2 border-green-400 rounded-full">
 							<img
 								src={user?.profilePic}
 								alt={user.userName}
@@ -91,7 +91,7 @@ const Profile = () => {
 					</div>
 
 					<button
-						className="flex mt-12 items-center gap-2 bg-green-100 px-6 py-2 rounded-full text-green-700 cursor-pointer hover:bg-green-200 transition-colors duration-300"
+						className="flex mt-12 items-center gap-2 bg-green-100 px-6 py-2 rounded-full text-green-700 cursor-pointer hover:bg-green-200 transition-all border hover:scale-95 duration-200"
 						onClick={() => navigate("/edit-profile")}
 					>
 						Edit Details
@@ -159,7 +159,7 @@ const Profile = () => {
 								<div className="flex flex-col gap-2">
 									<div className="md:flex items-center gap-2">
 										<MdSecurity
-											className={`${user?.isSecure ? "text-green-600" : "text-red-600"} md:text-2xl text-4xl`}
+											className={`${user?.isSecure ? "text-green-600" : "text-red-600"} text-4xl`}
 										/>
 									</div>
 								</div>
@@ -210,7 +210,7 @@ const Profile = () => {
 						<div className="flex justify-end">
 							{user?.isSecure ? (
 								<button
-									className="flex items-center px-6 py-2 gap-1 bg-green-100 rounded-full text-green-700 cursor-pointer hover:bg-green-200 transition-colors duration-200"
+									className="flex items-center px-6 py-2 gap-1 bg-green-100 rounded-full text-green-700 cursor-pointer hover:bg-green-200 transition-all duration-200 border hover:scale-95"
 									onClick={() =>
 										navigate("/add-password", {
 											state: { isSecure: user.isSecure },
@@ -222,7 +222,7 @@ const Profile = () => {
 								</button>
 							) : (
 								<button
-									className="flex items-center px-6 py-2 gap-1 bg-red-100 rounded-full text-red-700 cursor-pointer hover:bg-red-200 transition-colors duration-200"
+									className="flex items-center px-6 py-2 gap-1 bg-red-100 rounded-full text-red-700 cursor-pointer hover:bg-red-200 transition-all duration-200 border hover:scale-95"
 									onClick={() =>
 										navigate("/add-password", {
 											state: { isSecure: user.isSecure },
