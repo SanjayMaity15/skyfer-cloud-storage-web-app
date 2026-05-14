@@ -1,5 +1,6 @@
 // get all users
 
+import Plan from "../models/Plan.js";
 import Session from "../models/Session.js";
 import User from "../models/User.js";
 
@@ -107,6 +108,30 @@ export const restoreUser = async (req, res) => {
 
 export const addPlan = async (req, res) => {
 	try {
+		
+		const { planName, price, billingCycle, features, storageLimit, razorpayPlanId } = req.body;
+
+		if (!planName || !price || !billingCycle || !features || !storageLimit || !razorpayPlanId) {
+			return res.status(400).json({
+				message: "Not enough field"
+			})
+		}
+
+		const createdPlan = await Plan.create({
+			planName,
+			price,
+			billingCycle,
+			features,
+			storageLimit,
+			razorpayPlanId
+		})
+
+		res.status(200).json({
+			success: true,
+			message: "Plan created successfully",
+			data: createdPlan
+		})
+
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
