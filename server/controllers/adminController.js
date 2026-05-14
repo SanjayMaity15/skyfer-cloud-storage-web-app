@@ -8,7 +8,6 @@ export const getAllUser = async (req, res) => {
 		const allUsers = await User.find({ role: "user" });
 		const session = await Session.find({});
 
-
 		const users = allUsers.map((user) => {
 			const isLoggedIn = session.some(
 				(session) => session.userId.toString() === user._id.toString(),
@@ -24,8 +23,6 @@ export const getAllUser = async (req, res) => {
 				isLoggedIn,
 			};
 		});
-
-
 
 		return res.status(200).json({
 			success: true,
@@ -98,6 +95,18 @@ export const restoreUser = async (req, res) => {
 			success: true,
 			message: "User restore successfully",
 		});
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+// add plan
+
+export const addPlan = async (req, res) => {
+	try {
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
