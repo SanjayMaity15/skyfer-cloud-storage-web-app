@@ -8,6 +8,7 @@ import WhySkyfer from "../components/UI/WhySkyfer";
 import Footer from "../components/UI/Footer";
 import Contact from "../components/UI/Contact";
 import Testimonial from "../components/UI/Testimonial";
+import Plans from "../components/UI/Plan";
 
 const HomePage = () => {
 	return (
@@ -17,6 +18,7 @@ const HomePage = () => {
 			<SkyferFeaturesGrid/>
 			<WhySkyfer/>
 			<HowSkyferWorks />
+			<Plans/>
 			<Contact />
 			<Testimonial/>
 			<Footer/>
