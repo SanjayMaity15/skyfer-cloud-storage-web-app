@@ -14,16 +14,45 @@ const formatStorage = (bytes) => {
 };
 
 const PlanCard = ({ plan, onSelect }) => {
-	console.log(plan);
+    console.log(plan);
+    
+    const loadRazorpayScript = () => {
+		return new Promise((resolve) => {
+			const existingScript = document.getElementById("razorpay-script");
+
+			if (existingScript) {
+				resolve(true);
+				return;
+			}
+
+			const script = document.createElement("script");
+			script.id = "razorpay-script";
+			script.src = "https://checkout.razorpay.com/v1/checkout.js";
+			script.async = true;
+
+			script.onload = () => resolve(true);
+			script.onerror = () => resolve(false);
+
+			document.body.appendChild(script);
+		});
+	};
+
 
 	async function handlePlanSelect(plan) {
 		const razorpayPlanId = plan.razorpayPlanId;
 
-        const response = await api.post("/subscription/create", { razorpayPlanId }, { withCredentials: true })
-        
-        const { subscriptionId } = response.data;
-		
+		const response = await api.post(
+			"/subscription/create",
+			{ razorpayPlanId },
+			{ withCredentials: true },
+		);
+
+		const { subscriptionId } = response.data;
 	}
+
+	useEffect(() => {
+		loadRazorpayScript();
+	}, []);
 
 	return (
 		<div
