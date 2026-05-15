@@ -3,7 +3,8 @@ import fs from "fs"
 import path from "path";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
-import { MAX_STORAGE } from "../constant/constant.js";
+import Subscription from "../models/Subscription.js";
+
 
 /*
 =========================================
@@ -18,6 +19,8 @@ export const fileUpload = async (req, res) => {
 		const user = req.user;
 		const file = req.file;
 
+		console.log({file})
+
 		if (!user || !file) {
 			return res.status(400).json({
 				success: false,
@@ -25,19 +28,38 @@ export const fileUpload = async (req, res) => {
 			});
 		}
 		
+		if (!user.subscriptionStatus === "free") {
+			
+			const subscription = await Subscription.findOne({
+				userId: req.user._id,
+			});
 
-		if (user.storageUsed + file.size > MAX_STORAGE) {
+			const now = new Date();
+			console.log({now, endDate: subscription.endAt})
 
-			fs.unlinkSync(file.path)
+			if (
+				!subscription ||
+				subscription.status !== "active" ||
+				subscription.endAt < now
+			) {
+				return res.status(403).json({
+					success: false,
+					message: "Subscription expired",
+				});
+			}
+		}
+
+		if (user.storageUsed + file.size > user.storageLimit) {
+			fs.unlinkSync(file.path);
 
 			return res.status(400).json({
 				success: false,
-				message: "Storage limit exceeded.",
+				message: "Failed to upload storage limit exceeded.",
 			});
 		}
 
 		const { secure_url, public_id, resource_type } =
-			await uploadFileToCloudinary(file.path);
+		await uploadFileToCloudinary(file.path);
 		const fileName = file.originalname;
 		const size = file.size;
 		const extension = path.extname(file.originalname);
@@ -194,7 +216,7 @@ export const recoverDeletedFile = async (req, res) => {
 			owner: user._id,
 		});
 
-		if (user.storageUsed + file.size > MAX_STORAGE) {
+		if (user.storageUsed + file.size > user.storageLimit) {
 			return res.status(400).json({
 				success: false,
 				message: "Your storage limit exceeded.",

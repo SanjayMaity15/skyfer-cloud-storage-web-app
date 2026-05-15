@@ -50,7 +50,7 @@ const userSchema = new Schema(
 
 		storageLimit: {
 			type: Number,
-			default: 0,
+			default: 209715200,
 		},
 
 		subscriptionStatus: {

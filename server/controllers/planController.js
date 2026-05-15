@@ -2,9 +2,7 @@ import Plan from "../models/Plan.js";
 
 export const getAllPlans =  async (req, res) => {
 	try {
-		const plans = await Plan.find({
-			razorpayPlanId: "plan_SpWlqxhFdPbGVE",
-		});
+		const plans = await Plan.find({});
 
 		res.json({
 			success: true,

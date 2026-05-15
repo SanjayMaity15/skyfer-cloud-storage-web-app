@@ -124,7 +124,7 @@ export const skyferWebhookRazorpay = async (req, res) => {
 					startAt: sub.start_at
 						? new Date(sub.start_at * 1000)
 						: null,
-					endAt: sub.end_at ? new Date(sub.end_at * 1000) : null,
+					endAt: sub.current_end ? new Date(sub.current_end * 1000) : null,
 					nextChargeAt: sub.charge_at
 						? new Date(sub.charge_at * 1000)
 						: null,
@@ -159,8 +159,8 @@ export const skyferWebhookRazorpay = async (req, res) => {
 					lastPaymentAt: new Date(),
 
 					// 🔥 extend end date
-					endAt: payment.end_at
-						? new Date(payment.end_at * 1000)
+					endAt: payment.current_end
+						? new Date(payment.current_end * 1000)
 						: null,
 				},
 			);
@@ -202,8 +202,8 @@ export const skyferWebhookRazorpay = async (req, res) => {
 				},
 				{
 					status: "cancelled",
-					endAt: subscription.end_at
-						? new Date(subscription.end_at * 1000)
+					endAt: subscription.current_end
+						? new Date(subscription.current_end * 1000)
 						: null,
 				},
 			);

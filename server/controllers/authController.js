@@ -155,7 +155,8 @@ export const login = async (req, res) => {
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
 			gender: user.gender,
-			storageUsed: user.storageUsed
+			storageUsed: user.storageUsed,
+			storageLimit: user.storageLimit
 		};
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
@@ -252,6 +253,7 @@ export const getCurrentUser = async (req, res) => {
 			updatedAt: user.updatedAt,
 			gender: user.gender,
 			storageUsed: user.storageUsed,
+			storageLimit: user.storageLimit,
 		};
 
 		return res.status(200).json({
