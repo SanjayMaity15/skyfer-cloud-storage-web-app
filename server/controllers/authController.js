@@ -11,6 +11,7 @@ import {
 import Directory from "../models/Directory.js";
 import Session from "../models/Session.js";
 import { sendMailUsingResend } from "../services/sendMailUsingResend.js";
+import Subscription from "../models/Subscription.js";
 
 /*
 =========================================
@@ -240,6 +241,7 @@ export const sendOTP = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
 	try {
 		const user = await User.findById(req.user._id);
+		const sub = await Subscription.findOne({userId: req.user._id})
 
 		const userDetails = {
 			_id: user._id,
@@ -254,6 +256,7 @@ export const getCurrentUser = async (req, res) => {
 			gender: user.gender,
 			storageUsed: user.storageUsed,
 			storageLimit: user.storageLimit,
+			planExpire: sub.endAt
 		};
 
 		return res.status(200).json({
