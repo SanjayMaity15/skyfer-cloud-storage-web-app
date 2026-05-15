@@ -1,17 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "../../api/axiosInstance";
-
-const formatStorage = (bytes) => {
-	if (bytes >= 1024 * 1024 * 1024) {
-		return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
-	}
-
-	if (bytes >= 1024 * 1024) {
-		return `${(bytes / (1024 * 1024)).toFixed(0)} MB`;
-	}
-
-	return `${bytes} bytes`;
-};
+import { convertBytes } from "../../utils/digitalUnitConverter";
 
 const PlanCard = ({ plan, onSelect }) => {
     console.log(plan);
@@ -35,7 +24,33 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			document.body.appendChild(script);
 		});
-	};
+    };
+    
+    async function openRazorPayPopup(subscriptionId) {
+            const options = {
+				key: import.meta.env.VITE_RAZORPAY_KEY,
+
+				subscription_id: subscriptionId,
+
+				name: "Skyfer",
+
+				description: "Premium Plan",
+
+				// handler: async function (response) {
+				// 	await axios.post(
+				// 		"/api/payment/verify-subscription",
+
+				// 		response,
+				// 	);
+
+				// 	alert("Subscription Started");
+				// },
+			};
+
+			const razorpay = new Razorpay(options);
+
+			razorpay.open();
+    }
 
 
 	async function handlePlanSelect(plan) {
@@ -47,7 +62,10 @@ const PlanCard = ({ plan, onSelect }) => {
 			{ withCredentials: true },
 		);
 
-		const { subscriptionId } = response.data;
+        const { subscriptionId } = response.data;
+        
+
+        openRazorPayPopup(subscriptionId)
 	}
 
 	useEffect(() => {
@@ -108,7 +126,7 @@ const PlanCard = ({ plan, onSelect }) => {
 			{/* STORAGE */}
 			<p className="mt-4 text-gray-700">
 				<span className="font-semibold">Storage:</span>{" "}
-				{formatStorage(plan.storageLimit)}
+				{convertBytes(plan.storageLimit)}
 			</p>
 
 			{/* FEATURES */}

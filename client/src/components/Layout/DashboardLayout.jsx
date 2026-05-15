@@ -12,6 +12,7 @@ import { FaArrowLeft, FaBars, FaDatabase, FaTrashAlt } from "react-icons/fa";
 import { convertBytes } from "../../utils/digitalUnitConverter";
 import { MAX_STORAGE } from "../../constant/constant";
 import { GrUpgrade } from "react-icons/gr";
+import { timeFormat } from "../../utils/timeFormat";
 
 
 const DashboardLayout = () => {
@@ -43,7 +44,7 @@ const DashboardLayout = () => {
 		}
 	};
 
-	
+	console.log(user);
 
 	return (
 		<div className="flex h-screen relative">
@@ -116,15 +117,20 @@ const DashboardLayout = () => {
 				<div className="mb-6 flex flex-col gap-4 px-4 overflow-hidden">
 					{user?.role === "user" && (
 						<div className="flex justify-center bg-green-200 py-1 rounded-full border">
-							<span className="flex items-center gap-2 text-xs">
+							<span className="flex items-center gap-2 text-[10px]">
 								Used {convertBytes(user.storageUsed)} of{" "}
-								{MAX_STORAGE} MB <FaDatabase />
+								{convertBytes(user.storageLimit)} <FaDatabase />
 							</span>
 						</div>
 					)}
 
-					<Link to={"/subscription"} className=" bg-blue-500 py-1 text-xs rounded-full text-white border flex justify-center items-center  gap-1">
-						<GrUpgrade/> Upgrade
+					<p className=" bg-yellow-600 py-1 text-[10px] rounded-full text-white border flex justify-center items-center  gap-1">Plan expire at {timeFormat(user.planExpire)}</p>
+
+					<Link
+						to={"/subscription"}
+						className=" bg-blue-500 py-1 text-xs rounded-full text-white border flex justify-center items-center  gap-1"
+					>
+						<GrUpgrade /> Upgrade plan
 					</Link>
 
 					<div className="flex items-center">

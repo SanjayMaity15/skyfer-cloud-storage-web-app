@@ -23,6 +23,7 @@ import Plans from "./components/UI/Plan";
 
 const App = () => {
 	const dispatch = useDispatch();
+	  const { pageLoading } = useSelector((state) => state.user);
 
 	// get current loggedin user
 
@@ -45,6 +46,7 @@ const App = () => {
 	}, []);
 
 	const { user } = useSelector((state) => state.user);
+
 
 	const router = createBrowserRouter([
 		{
