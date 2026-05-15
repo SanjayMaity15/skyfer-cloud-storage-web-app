@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { api } from "../../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 import { convertBytes } from "../../utils/digitalUnitConverter";
 
 const PlanCard = ({ plan, onSelect }) => {
-    console.log(plan);
-    
-    const loadRazorpayScript = () => {
+	const navigate = useNavigate();
+
+	const loadRazorpayScript = () => {
 		return new Promise((resolve) => {
 			const existingScript = document.getElementById("razorpay-script");
 
@@ -24,34 +25,35 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			document.body.appendChild(script);
 		});
-    };
-    
-    async function openRazorPayPopup(subscriptionId) {
-            const options = {
-				key: import.meta.env.VITE_RAZORPAY_KEY,
+	};
 
-				subscription_id: subscriptionId,
+	async function openRazorPayPopup(subscriptionId) {
+		const options = {
+			key: import.meta.env.VITE_RAZORPAY_KEY,
 
-				name: "Skyfer",
+			subscription_id: subscriptionId,
 
-				description: "Premium Plan",
+			name: "Skyfer",
 
-				// handler: async function (response) {
-				// 	await axios.post(
-				// 		"/api/payment/verify-subscription",
+			// description: "Premium Plan",
 
-				// 		response,
-				// 	);
+			// handler: async function (response) {
+			// 	await axios.post(
+			// 		"/api/payment/verify-subscription",
 
-				// 	alert("Subscription Started");
-				// },
-			};
+			// 		response,
+			// 	);
 
-			const razorpay = new Razorpay(options);
+			// 	alert("Subscription Started");
+			// },
+		};
 
-			razorpay.open();
-    }
+		const razorpay = new Razorpay(options);
 
+		razorpay.open();
+
+		navigate("/dashboard")
+	}
 
 	async function handlePlanSelect(plan) {
 		const razorpayPlanId = plan.razorpayPlanId;
@@ -62,10 +64,9 @@ const PlanCard = ({ plan, onSelect }) => {
 			{ withCredentials: true },
 		);
 
-        const { subscriptionId } = response.data;
-        
+		const { subscriptionId } = response.data;
 
-        openRazorPayPopup(subscriptionId)
+		openRazorPayPopup(subscriptionId);
 	}
 
 	useEffect(() => {
