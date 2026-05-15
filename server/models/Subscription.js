@@ -27,6 +27,10 @@ const subscriptionSchema = new mongoose.Schema(
 		lastPaymentId: {
 			type: String,
 		},
+		paymentVerified: {
+			type: String,
+			default: false,
+		},
 
 		amount: {
 			type: Number,

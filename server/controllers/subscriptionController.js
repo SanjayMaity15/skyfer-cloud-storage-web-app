@@ -1,6 +1,6 @@
 import { razorpay } from "../config/razorpay.js";
 import Plan from "../models/Plan.js";
-import Subscription from "../models/Subscription.js"
+import Subscription from "../models/Subscription.js";
 import crypto from "node:crypto";
 import User from "../models/User.js";
 
@@ -61,6 +61,70 @@ export const createSubscription = async (req, res) => {
 	}
 };
 
+/*
+========================================
+VERIFY PAYMENT
+========================================
+*/
+
+export const verifySubscriptionPayment = async (req, res) => {
+	try {
+		const {
+			razorpay_payment_id,
+			razorpay_subscription_id,
+			razorpay_signature,
+		} = req.body;
+
+		// 1. create signature string
+		const body = razorpay_payment_id + "|" + razorpay_subscription_id;
+
+		const expectedSignature = crypto
+			.createHmac("sha256", process.env.RAZORPAY_API_SECRET)
+			.update(body.toString())
+			.digest("hex");
+
+		// 2. verify signature
+		if (expectedSignature !== razorpay_signature) {
+			return res.status(400).json({
+				success: false,
+				message: "Invalid signature",
+			});
+		}
+
+		// 3. find subscription in DB
+		const subscription = await Subscription.findOne({
+			subscriptionId: razorpay_subscription_id,
+		});
+
+		if (!subscription) {
+			return res.status(404).json({
+				success: false,
+				message: "Subscription not found",
+			});
+		}
+
+		// 4. OPTIONAL: mark payment verified (do NOT activate here)
+		await Subscription.findOneAndUpdate(
+			{ subscriptionId: razorpay_subscription_id },
+			{
+				lastPaymentId: razorpay_payment_id,
+				paymentVerified: true,
+			},
+		);
+
+		return res.status(200).json({
+			success: true,
+			message: "Payment verified successfully",
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
 export const skyferWebhookRazorpay = async (req, res) => {
 	try {
 		/*
@@ -89,8 +153,8 @@ export const skyferWebhookRazorpay = async (req, res) => {
 
 		const event = JSON.parse(body);
 
-		const subscription = event.payload.subscription.entity;
-		console.log(subscription);
+		
+		
 		/*
     ========================================
     SUBSCRIPTION ACTIVATED
@@ -124,7 +188,9 @@ export const skyferWebhookRazorpay = async (req, res) => {
 					startAt: sub.start_at
 						? new Date(sub.start_at * 1000)
 						: null,
-					endAt: sub.current_end ? new Date(sub.current_end * 1000) : null,
+					endAt: sub.current_end
+						? new Date(sub.current_end * 1000)
+						: null,
 					nextChargeAt: sub.charge_at
 						? new Date(sub.charge_at * 1000)
 						: null,
