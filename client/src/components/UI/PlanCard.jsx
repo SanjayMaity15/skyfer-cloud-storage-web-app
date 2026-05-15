@@ -1,4 +1,5 @@
 import React from "react";
+import { api } from "../../api/axiosInstance";
 
 const formatStorage = (bytes) => {
 	if (bytes >= 1024 * 1024 * 1024) {
@@ -13,6 +14,17 @@ const formatStorage = (bytes) => {
 };
 
 const PlanCard = ({ plan, onSelect }) => {
+	console.log(plan);
+
+	async function handlePlanSelect(plan) {
+		const razorpayPlanId = plan.razorpayPlanId;
+
+        const response = await api.post("/subscription/create", { razorpayPlanId }, { withCredentials: true })
+        
+        const { subscriptionId } = response.data;
+		
+	}
+
 	return (
 		<div
 			className="
@@ -42,7 +54,11 @@ const PlanCard = ({ plan, onSelect }) => {
 					{plan.planName}
 				</h2>
 
-				{plan.billingCycle === "yearly" && <p className="bg-green-100 px-4 py-1 rounded-full text-xs border border-green-500">2 Month off</p>}
+				{plan.billingCycle === "yearly" && (
+					<p className="bg-green-100 px-4 py-1 rounded-full text-xs border border-green-500">
+						2 Month off
+					</p>
+				)}
 			</div>
 
 			{/* PRICE */}
@@ -73,7 +89,7 @@ const PlanCard = ({ plan, onSelect }) => {
 						key={i}
 						className="flex items-center gap-2 text-gray-600"
 					>
-						<span className="text-primary">✔</span>
+						<span className="text-green-600">✔</span>
 						<span>{f}</span>
 					</div>
 				))}
@@ -81,19 +97,8 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			{/* BUTTON */}
 			<button
-				onClick={() => onSelect(plan)}
-				className="
-          mt-6
-          w-full
-          rounded-xl
-          bg-primary
-          cursor-pointer
-          text-white
-          py-3
-          font-semibold
-          hover:bg-secondary
-          transition
-        "
+				onClick={() => handlePlanSelect(plan)}
+				className="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer mt-6"
 			>
 				Get Started
 			</button>

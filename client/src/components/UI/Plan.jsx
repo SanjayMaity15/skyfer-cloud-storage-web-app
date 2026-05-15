@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PlanCard from "./PlanCard";
+import { api } from "../../api/axiosInstance";
 
 const Plans = () => {
 	const [plans, setPlans] = useState([]);
@@ -11,7 +12,7 @@ const Plans = () => {
 	useEffect(() => {
 		const getPlans = async () => {
 			try {
-				const res = await axios.get("http://localhost:8000/api/plans");
+				const res = await api.get("/plans")
 
 				setPlans(res.data.data);
 			} catch (err) {

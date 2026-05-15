@@ -11,6 +11,8 @@ import Popup from "../UI/Popup";
 import { FaArrowLeft, FaBars, FaDatabase, FaTrashAlt } from "react-icons/fa";
 import { convertBytes } from "../../utils/digitalUnitConverter";
 import { MAX_STORAGE } from "../../constant/constant";
+import { GrUpgrade } from "react-icons/gr";
+
 
 const DashboardLayout = () => {
 	// get user data from redux store
@@ -121,6 +123,10 @@ const DashboardLayout = () => {
 						</div>
 					)}
 
+					<Link to={"/subscription"} className=" bg-blue-500 py-1 text-xs rounded-full text-white border flex justify-center items-center  gap-1">
+						<GrUpgrade/> Upgrade
+					</Link>
+
 					<div className="flex items-center">
 						<div className="w-12">
 							{user.profilePic ? (
@@ -142,7 +148,9 @@ const DashboardLayout = () => {
 							<span className="font-semibold">
 								{user?.userName}
 							</span>
-							<span className="hidden sm:block">{user?.email}</span>
+							<span className="hidden sm:block">
+								{user?.email}
+							</span>
 						</div>
 					</div>
 

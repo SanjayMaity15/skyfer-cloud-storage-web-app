@@ -19,6 +19,7 @@ import EnablePassword from "./components/UI/EnablePassword";
 import AdminHome from "./components/UI/AdminHome";
 import Trash from "./components/UI/Trash";
 import AuthLoader from "./components/UI/AuthLoader";
+import Plans from "./components/UI/Plan";
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -115,6 +116,10 @@ const App = () => {
 		{
 			path: "/add-password",
 			element: <EnablePassword />,
+		},
+		{
+			path: "/subscription",
+			element: <Plans />,
 		},
 	]);
 
