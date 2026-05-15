@@ -15,7 +15,6 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			default: null,
-			
 		},
 		profilePic: {
 			type: String,
@@ -23,11 +22,11 @@ const userSchema = new Schema(
 		},
 		public_id: {
 			type: String,
-			default: null
+			default: null,
 		},
 		gender: {
 			type: String,
-			enum:["male", "female"],
+			enum: ["male", "female"],
 			default: null,
 		},
 		rootDirId: {
@@ -42,13 +41,23 @@ const userSchema = new Schema(
 		},
 		isDeleted: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		storageUsed: {
 			type: Number,
-			default: 0
-		}
-		
+			default: 0,
+		},
+
+		storageLimit: {
+			type: Number,
+			default: 0,
+		},
+
+		subscriptionStatus: {
+			type: String,
+			enum: ["free", "paused", "active", "expired", "cancelled"],
+			default: "free",
+		},
 	},
 	{
 		timestamps: true,
@@ -56,13 +65,16 @@ const userSchema = new Schema(
 		virtuals: {
 			isSecure: {
 				get() {
-					return typeof this.password === "string" && this.password.length > 0
-				}
-			}
+					return (
+						typeof this.password === "string" &&
+						this.password.length > 0
+					);
+				},
+			},
 		},
 		toJSON: {
-			virtuals: true
-		}
+			virtuals: true,
+		},
 	},
 );
 

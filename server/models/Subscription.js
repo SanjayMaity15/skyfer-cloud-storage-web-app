@@ -8,17 +8,24 @@ const subscriptionSchema = new mongoose.Schema(
 			required: true,
 		},
 
-		// Your internal plan identifier
 		planId: {
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Plan",
 			required: true,
 		},
 
-		// Razorpay subscription id
 		subscriptionId: {
 			type: String,
 			required: true,
 			unique: true,
+		},
+
+		customerId: {
+			type: String,
+		},
+
+		lastPaymentId: {
+			type: String,
 		},
 
 		amount: {
@@ -32,10 +39,9 @@ const subscriptionSchema = new mongoose.Schema(
 				"created",
 				"authenticated",
 				"active",
-				"pending",
-				"halted",
+                "paused",
+                "failed",
 				"cancelled",
-				"completed",
 				"expired",
 			],
 			default: "created",
@@ -46,20 +52,14 @@ const subscriptionSchema = new mongoose.Schema(
 			default: "INR",
 		},
 
-		startAt: {
-			type: Date,
-		},
+		startAt: Date,
+		endAt: Date,
+		nextChargeAt: Date,
+		paymentMethod: String,
 
-		endAt: {
-			type: Date,
-		},
-
-		nextChargeAt: {
-			type: Date,
-		},
-
-		paymentMethod: {
-			type: String,
+		cancelAtPeriodEnd: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	{
@@ -68,5 +68,4 @@ const subscriptionSchema = new mongoose.Schema(
 );
 
 const Subscription = mongoose.model("Subscription", subscriptionSchema);
-
 export default Subscription;
