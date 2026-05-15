@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../api/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,17 +14,16 @@ import { MAX_STORAGE } from "../../constant/constant";
 import { GrUpgrade } from "react-icons/gr";
 import { timeFormat } from "../../utils/timeFormat";
 
-
 const DashboardLayout = () => {
 	// get user data from redux store
 	const { user } = useSelector((state) => state.user);
 	const [isOpenPopup, setIsOpenPopup] = useState(false);
 	const [isMbMenuActive, setIsMbMenuActive] = useState(false);
 	const location = useLocation();
-	
+
 	const isDashboard = location.pathname === "/dashboard";
 	const isTrash = location.pathname === "/dashboard/trash";
-	
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	// logout user functionality
@@ -124,7 +123,11 @@ const DashboardLayout = () => {
 						</div>
 					)}
 
-					<p className=" bg-yellow-600 py-1 text-[10px] rounded-full text-white border flex justify-center items-center  gap-1">Plan expire at {timeFormat(user.planExpire)}</p>
+					{user.planExpire && (
+						<p className=" bg-yellow-600 py-1 text-[10px] rounded-full text-white border flex justify-center items-center  gap-1">
+							Plan expire at {timeFormat(user.planExpire)}
+						</p>
+					)}
 
 					<Link
 						to={"/subscription"}

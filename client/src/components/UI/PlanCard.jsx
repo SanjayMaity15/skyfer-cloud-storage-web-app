@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { api } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { convertBytes } from "../../utils/digitalUnitConverter";
+import { toast } from "react-toastify";
 
 const PlanCard = ({ plan, onSelect }) => {
 	const navigate = useNavigate();
@@ -37,22 +38,26 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			// description: "Premium Plan",
 
-			// handler: async function (response) {
-			// 	await axios.post(
-			// 		"/api/payment/verify-subscription",
+			handler: async function (response) {
+				try {
+					const { data } = await api.post(
+						"/subscription/verify-payment",
+						response,
+						{ withCredentials: true },
+					);
 
-			// 		response,
-			// 	);
-
-			// 	alert("Subscription Started");
-			// },
+					console.log(data);
+					toast.success("Payment successfully verified");
+					navigate("/dashboard");
+				} catch (error) {
+					console.log(error);
+				}
+			},
 		};
 
 		const razorpay = new Razorpay(options);
 
 		razorpay.open();
-
-		navigate("/dashboard")
 	}
 
 	async function handlePlanSelect(plan) {
