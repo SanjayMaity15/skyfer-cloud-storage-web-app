@@ -7,8 +7,6 @@ import User from "../models/User.js";
 export const createSubscription = async (req, res) => {
 	try {
 		const { razorpayPlanId } = req.body;
-		// console.log(req.user);
-		// console.log(razorpayPlanId);
 
 		let selectedPlan = await Plan.findOne({
 			razorpayPlanId,
@@ -21,6 +19,18 @@ export const createSubscription = async (req, res) => {
 				message: "Plan not found",
 			});
 		}
+		
+		const subscriptionAlreadyOwn = await Subscription.findOne({
+			userId: req.user._id,
+			planId: selectedPlan._id,
+		});
+
+		if (subscriptionAlreadyOwn) {
+			return res.status(400).json({
+				message: "Already have this subscription plan"
+			})
+		}
+
 
 		const razorpaySubscription = await razorpay.subscriptions.create({
 			plan_id: razorpayPlanId,
