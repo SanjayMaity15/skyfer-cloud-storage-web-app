@@ -23,7 +23,6 @@ import Plans from "./components/UI/Plan";
 
 const App = () => {
 	const dispatch = useDispatch();
-	  const { pageLoading } = useSelector((state) => state.user);
 
 	// get current loggedin user
 
@@ -33,6 +32,7 @@ const App = () => {
 				withCredentials: true,
 			});
 
+			console.log(result.data.user)
 			dispatch(setUser(result?.data?.user));
 			dispatch(setPageLoading(false));
 		} catch (error) {

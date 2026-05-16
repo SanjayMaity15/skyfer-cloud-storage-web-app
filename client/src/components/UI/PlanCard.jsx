@@ -7,7 +7,7 @@ import ButtonLoader from "./ButtonLoader";
 
 const PlanCard = ({ plan, onSelect }) => {
 	const navigate = useNavigate();
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 	const loadRazorpayScript = () => {
 		return new Promise((resolve) => {
 			const existingScript = document.getElementById("razorpay-script");
@@ -37,7 +37,7 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			name: "Skyfer",
 
-			// description: "Premium Plan",
+			currency: "INR",	
 
 			handler: async function (response) {
 				try {
@@ -63,7 +63,7 @@ const PlanCard = ({ plan, onSelect }) => {
 
 	async function handlePlanSelect(plan) {
 		try {
-			setLoading(true)
+			setLoading(true);
 
 			const razorpayPlanId = plan.razorpayPlanId;
 
@@ -77,10 +77,10 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			openRazorPayPopup(subscriptionId);
 
-			setLoading(false)
+			setLoading(false);
 		} catch (error) {
-			setLoading(false)
-			toast.warn(error.response.data.message)
+			setLoading(false);
+			toast.warn(error.response.data.message);
 		}
 	}
 

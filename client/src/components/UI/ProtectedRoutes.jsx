@@ -8,7 +8,7 @@ const ProtectedRoutes = ({ children }) => {
 	
 
 	if (pageLoading) {
-		return <PageLoader />;
+		return <PageLoader />;	
 	}
 
 	if (!user) {
