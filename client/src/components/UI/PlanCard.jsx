@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { convertBytes } from "../../utils/digitalUnitConverter";
 import { toast } from "react-toastify";
+import ButtonLoader from "./ButtonLoader";
 
 const PlanCard = ({ plan, onSelect }) => {
 	const navigate = useNavigate();
-
+	const [loading, setLoading] = useState(false)
 	const loadRazorpayScript = () => {
 		return new Promise((resolve) => {
 			const existingScript = document.getElementById("razorpay-script");
@@ -61,17 +62,26 @@ const PlanCard = ({ plan, onSelect }) => {
 	}
 
 	async function handlePlanSelect(plan) {
-		const razorpayPlanId = plan.razorpayPlanId;
+		try {
+			setLoading(true)
 
-		const response = await api.post(
-			"/subscription/create",
-			{ razorpayPlanId },
-			{ withCredentials: true },
-		);
+			const razorpayPlanId = plan.razorpayPlanId;
 
-		const { subscriptionId } = response.data;
+			const response = await api.post(
+				"/subscription/create",
+				{ razorpayPlanId },
+				{ withCredentials: true },
+			);
 
-		openRazorPayPopup(subscriptionId);
+			const { subscriptionId } = response.data;
+
+			openRazorPayPopup(subscriptionId);
+
+			setLoading(false)
+		} catch (error) {
+			setLoading(false)
+			toast.warn(error.response.data.message)
+		}
 	}
 
 	useEffect(() => {
@@ -151,9 +161,10 @@ const PlanCard = ({ plan, onSelect }) => {
 			{/* BUTTON */}
 			<button
 				onClick={() => handlePlanSelect(plan)}
+				disabled={loading}
 				className="w-full bg-linear-to-r from-primary to-secondary text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer mt-6"
 			>
-				Get Started
+				{loading ? <ButtonLoader /> : "Get Started"}
 			</button>
 		</div>
 	);
