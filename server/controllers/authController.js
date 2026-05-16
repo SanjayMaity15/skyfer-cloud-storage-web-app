@@ -157,7 +157,7 @@ export const login = async (req, res) => {
 			updatedAt: user.updatedAt,
 			gender: user.gender,
 			storageUsed: user.storageUsed,
-			storageLimit: user.storageLimit
+			storageLimit: user.storageLimit,
 		};
 		const payload = session._id.toString();
 		res.cookie("SID", payload, {
@@ -241,7 +241,8 @@ export const sendOTP = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
 	try {
 		const user = await User.findById(req.user._id);
-		const sub = await Subscription.findOne({userId: req.user._id})
+		
+		const sub = await Subscription.findOne({ userId: req.user._id });
 
 		const userDetails = {
 			_id: user._id,
@@ -256,7 +257,7 @@ export const getCurrentUser = async (req, res) => {
 			gender: user.gender,
 			storageUsed: user.storageUsed,
 			storageLimit: user.storageLimit,
-			planExpire: sub.endAt
+			planExpire: sub ? sub.endAt : null,
 		};
 
 		return res.status(200).json({

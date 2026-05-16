@@ -23,6 +23,7 @@ export const createSubscription = async (req, res) => {
 		const subscriptionAlreadyOwn = await Subscription.findOne({
 			userId: req.user._id,
 			planId: selectedPlan._id,
+			status: "active"
 		});
 
 		if (subscriptionAlreadyOwn) {
@@ -42,7 +43,6 @@ export const createSubscription = async (req, res) => {
 			},
 		});
 
-		console.log(razorpaySubscription);
 
 		const subscription = await Subscription.create({
 			userId: req.user._id,
@@ -63,7 +63,7 @@ export const createSubscription = async (req, res) => {
 			subscriptionId: razorpaySubscription.id,
 		});
 	} catch (error) {
-		console.log(error);
+		
 		res.status(500).json({
 			message: "Server error",
 			error,
@@ -127,7 +127,7 @@ export const verifySubscriptionPayment = async (req, res) => {
 			message: "Payment verified successfully",
 		});
 	} catch (err) {
-		console.log(err);
+		
 		return res.status(500).json({
 			success: false,
 			message: "Server error",
@@ -179,14 +179,12 @@ export const skyferWebhookRazorpay = async (req, res) => {
 			});
 
 			if (!dbSub) {
-				console.log("Subscription not found in DB");
 				return res.status(200).json({ success: true });
 			}
 
 			const plan = await Plan.findById(dbSub.planId);
 
 			if (!plan) {
-				console.log("Plan not found");
 				return res.status(200).json({ success: true });
 			}
 

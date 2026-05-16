@@ -19,7 +19,6 @@ export const fileUpload = async (req, res) => {
 		const user = req.user;
 		const file = req.file;
 
-		console.log({file})
 
 		if (!user || !file) {
 			return res.status(400).json({
@@ -35,7 +34,6 @@ export const fileUpload = async (req, res) => {
 			});
 
 			const now = new Date();
-			console.log({now, endDate: subscription.endAt})
 
 			if (
 				!subscription ||
