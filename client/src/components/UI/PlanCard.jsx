@@ -37,7 +37,7 @@ const PlanCard = ({ plan, onSelect }) => {
 
 			name: "Skyfer",
 
-			currency: "INR",	
+			currency: "INR",
 
 			handler: async function (response) {
 				try {

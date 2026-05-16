@@ -19,30 +19,30 @@ export const createSubscription = async (req, res) => {
 				message: "Plan not found",
 			});
 		}
-		
+
 		const subscriptionAlreadyOwn = await Subscription.findOne({
 			userId: req.user._id,
 			planId: selectedPlan._id,
-			status: "active"
+			status: "active",
 		});
 
 		if (subscriptionAlreadyOwn) {
 			return res.status(400).json({
-				message: "Already have this subscription plan"
-			})
+				message: "Already have this subscription plan",
+			});
 		}
 
+		const totalCount = selectedPlan.billingCycle === "yearly" ? 5 : 60; 
 
 		const razorpaySubscription = await razorpay.subscriptions.create({
 			plan_id: razorpayPlanId,
-			total_count: 60,
+			total_count: totalCount,
 			customer_notify: 1,
 			notes: {
 				userId: req.user._id.toString(),
 				planId: selectedPlan._id.toString(),
 			},
 		});
-
 
 		const subscription = await Subscription.create({
 			userId: req.user._id,
