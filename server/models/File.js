@@ -9,13 +9,12 @@ const fileSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	url: {
-		type: String,
-		required: true
+
+	isUploading: {
+		type: Boolean,
+		default: true
 	},
-	public_id: {
-		type: String	
-	},
+
 	resource_type: {
 		type: String	
 	},
