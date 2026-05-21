@@ -86,6 +86,7 @@ export const loginWithGoogle = async (req, res) => {
 			updatedAt: user.updatedAt,
 			gender: user.gender,
 			storageUsed: user.storageUsed,
+			storageLimit: user.storageLimit,
 		};
 
 		const payload = session._id.toString();
