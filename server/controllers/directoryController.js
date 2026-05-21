@@ -4,8 +4,8 @@ import Directory from "../models/Directory.js";
 import { directorySchema } from "../validators/directoryValidators.js";
 import File from "../models/File.js";
 import fs from "node:fs/promises";
-
-
+import { DeleteObjectsCommand } from "@aws-sdk/client-s3";
+import { s3 } from "../config/s3.config.js";
 
 /*
 =========================================
@@ -26,7 +26,6 @@ export const createDirectory = async (req, res) => {
 			owner: user._id.toString(),
 			parentDirId,
 		};
-
 
 		const { success, data } = directorySchema.safeParse(dirData);
 		if (!success) {
@@ -65,7 +64,6 @@ export const createDirectory = async (req, res) => {
 		});
 	}
 };
-
 
 /*
 =========================================
@@ -121,12 +119,9 @@ export const getDirectory = async (req, res) => {
 			})),
 		});
 	} catch (error) {
-		
 		return res.status(500).json({ message: "Server error" });
 	}
 };
-
-
 
 /*
 =========================================
@@ -181,8 +176,6 @@ export const renameDirectory = async (req, res) => {
 	}
 };
 
-
-
 /*
 =========================================
 
@@ -215,7 +208,7 @@ export const deleteDirectory = async (req, res) => {
 				.lean();
 
 			let files = await File.find({ parentDirId: id })
-				.select("_id fileName")
+				.select("_id fileName extension")
 				.lean();
 
 			for (const { _id } of directories) {
@@ -240,10 +233,24 @@ export const deleteDirectory = async (req, res) => {
 
 		
 
-		for (const { fileName } of files) {
+		const keys = files.map(({ _id, extension }) => ({
+			Key: `${_id}${extension}`,
+		}));
 
-			await fs.rm(`${process.cwd()}/storage/${fileName}`);
-		}
+		
+
+		const command = new DeleteObjectsCommand({
+			Bucket: process.env.S3_BUCKET_NAME,
+
+			Delete: {
+				Objects: keys,
+				Quiet: false, // set true to skip individual delete responses
+			},
+		});
+
+		const result = await s3.send(command);
+
+		
 
 		return res.status(200).json({
 			success: true,
@@ -256,8 +263,6 @@ export const deleteDirectory = async (req, res) => {
 		});
 	}
 };
-
-
 
 /*
 =========================================

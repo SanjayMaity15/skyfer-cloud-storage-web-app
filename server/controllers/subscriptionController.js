@@ -213,7 +213,7 @@ export const skyferWebhookRazorpay = async (req, res) => {
 				subscriptionStatus: "active",
 			});
 
-			console.log("Subscription activated + storage updated");
+			
 		}
 
 		/*
@@ -258,7 +258,7 @@ export const skyferWebhookRazorpay = async (req, res) => {
 				},
 			);
 
-			console.log("Payment failed");
+			
 		}
 
 		/*
@@ -282,14 +282,14 @@ export const skyferWebhookRazorpay = async (req, res) => {
 				},
 			);
 
-			console.log("Subscription cancelled");
+			
 		}
 
 		return res.status(200).json({
 			success: true,
 		});
 	} catch (err) {
-		console.log(err);
+		
 
 		return res.status(500).json({
 			success: false,

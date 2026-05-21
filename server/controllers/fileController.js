@@ -1,10 +1,17 @@
 import File from "../models/File.js";
-import fs from "fs"
+import fs from "fs";
 import path from "path";
 import { uploadFileToCloudinary } from "../services/cloudinary.js";
 import { cloudinary } from "../config/cloudinary.config.js";
 import Subscription from "../models/Subscription.js";
-
+import {
+	DeleteObjectCommand,
+	HeadObjectCommand,
+	PutObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getObject, s3 } from "../config/s3.config.js";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { createCloudFrontGetObjectSignedUrl } from "../config/cloudfront.config.js";
 
 /*
 =========================================
@@ -12,23 +19,21 @@ import Subscription from "../models/Subscription.js";
 		File upload Controller
 
 =========================================
+
 */
 
-export const fileUpload = async (req, res) => {
+export const fileUploadInitiate = async (req, res) => {
 	try {
+		const { name, size, type, parentDirId } = req.body;
 		const user = req.user;
-		const file = req.file;
 
-
-		if (!user || !file) {
+		if (!name || !size || !parentDirId) {
 			return res.status(400).json({
-				success: false,
-				message: "Something went wrong",
+				message: "All info not present",
 			});
 		}
-		
+
 		if (!user.subscriptionStatus === "free") {
-			
 			const subscription = await Subscription.findOne({
 				userId: req.user._id,
 			});
@@ -47,40 +52,78 @@ export const fileUpload = async (req, res) => {
 			}
 		}
 
-		if (user.storageUsed + file.size > user.storageLimit) {
-			fs.unlinkSync(file.path);
-
+		if (user.storageUsed + size > user.storageLimit) {
 			return res.status(400).json({
 				success: false,
 				message: "Failed to upload storage limit exceeded.",
 			});
 		}
 
-		const { secure_url, public_id, resource_type } =
-		await uploadFileToCloudinary(file.path);
-		const fileName = file.originalname;
-		const size = file.size;
-		const extension = path.extname(file.originalname);
-		const parentDirId = req.params.id || user.rootDirId.toString();
-		const owner = user._id;
+		const extension = path.extname(name);
 
 		const fileRes = await File.create({
-			fileName,
+			fileName: name,
 			size,
-			url: secure_url,
-			resource_type,
-			public_id,
+			resource_type: type,
 			extension,
 			parentDirId,
-			owner,
+			owner: user._id,
 		});
 
-		user.storageUsed += size;
+		const key = `${fileRes._id}${extension}`;
+
+		const command = new PutObjectCommand({
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+			ContentType: type,
+		});
+
+		const uploadUrl = await getSignedUrl(s3, command, {
+			expiresIn: 300,
+			signableHeaders: new Set(["host"]),
+		});
+
+		res.status(200).json({ uploadUrl, key });
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			message: "Server error",
+		});
+	}
+};
+
+export const verifyFileUploadComplete = async (req, res) => {
+	try {
+		const { key } = req.body;
+		const user = req.user;
+
+		const command = new HeadObjectCommand({
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
+		});
+
+		const { ContentLength } = await s3.send(command);
+
+		const fileId = key.split(".")[0];
+
+		const fileData = await File.findById(fileId);
+
+		if (fileData.size !== ContentLength) {
+			return res.status(500).json({
+				success: false,
+				message: "Could not able to upload file. Due to size mismatch",
+			});
+		}
+
+		fileData.isUploading = false;
+		await fileData.save();
+
+		user.storageUsed += fileData.size;
 		user.save();
 
-		return res.status(200).json({
+		return res.status(201).json({
 			success: true,
-			message: "File uploaded successfully",
+			message: "file upload succesfully",
 		});
 	} catch (error) {
 		return res.status(500).json({
@@ -89,6 +132,7 @@ export const fileUpload = async (req, res) => {
 		});
 	}
 };
+
 
 /*
 =========================================
@@ -113,19 +157,20 @@ export const sendFileToUser = async (req, res) => {
 			});
 		}
 
+		const key = `${file._id}${file.extension}`;
+		const fileName = file.fileName;
+
 		if (action === "download") {
-			const downloadUrl = file.url.replace(
-				"/upload/",
-				"/upload/fl_attachment/",
-			);
+			const downloadUrl = await getObject(key, true, fileName);
 
 			return res.redirect(downloadUrl);
+		} else {
+			const previewUrl = createCloudFrontGetObjectSignedUrl(key)
+			return res.status(200).json({
+				success: true,
+				data: previewUrl,
+			});
 		}
-
-		return res.status(200).json({
-			success: true,
-			data: file.url,
-		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({
@@ -190,7 +235,7 @@ export const deleteFile = async (req, res) => {
 		);
 
 		user.storageUsed = Math.max(0, user.storageUsed - file.size);
-		await user.save();	
+		await user.save();
 
 		return res.status(200).json({
 			success: true,
@@ -249,9 +294,16 @@ export const permanantDelete = async (req, res) => {
 		});
 
 		// delete from cloudinary
-		await cloudinary.uploader.destroy(file.public_id, {
-			resource_type: file.resource_type,
+		const key = `${file._id}${file.extension}`;
+
+		
+
+		const command = new DeleteObjectCommand({
+			Bucket: process.env.S3_BUCKET_NAME,
+			Key: key,
 		});
+
+		const result = await s3.send(command);
 
 		// delete from db
 
