@@ -9,8 +9,6 @@ const router = express.Router()
 
 router.post("/upload/initiate", isAuth, fileUploadInitiate)
 router.post("/upload/complete", isAuth, verifyFileUploadComplete)
-// router.post("/upload", isAuth, upload.single("file"), fileUpload)
-// router.post("/upload/:id", isAuth, upload.single("file"), fileUpload)
 router.get("/view/:id", isAuth, sendFileToUser)
 router.post("/rename/:id", isAuth, renameFile)
 router.delete("/delete/:id", isAuth, deleteFile)
