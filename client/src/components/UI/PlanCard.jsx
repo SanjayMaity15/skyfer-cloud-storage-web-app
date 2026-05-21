@@ -47,7 +47,6 @@ const PlanCard = ({ plan, onSelect }) => {
 						{ withCredentials: true },
 					);
 
-					console.log(data);
 					toast.success("Payment successfully verified");
 					navigate("/dashboard");
 				} catch (error) {

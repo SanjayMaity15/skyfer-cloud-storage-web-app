@@ -50,7 +50,6 @@ const DashboardHome = () => {
 		files: [],
 	});
 
-
 	// breadcrums
 	const [path, setPath] = useState([]);
 
@@ -298,28 +297,49 @@ const DashboardHome = () => {
 
 	const handleFileUpload = async (e) => {
 		const file = e.target.files[0];
-		const formData = new FormData();
-		formData.append("file", file);
+
+		const filedata = {
+			name: file.name,
+			size: file.size,
+			type: file.type,
+			parentDirId: currentDir._id,
+		};
 
 		try {
 			setUploadProgress(0);
-			const result = await axios.post(
-				`${import.meta.env.VITE_BASE_URL}/file/upload/${currentDir._id}`,
-				formData,
-				{
-					onUploadProgress: (progressEvent) => {
-						const percentCompleted = Math.round(
-							(progressEvent.loaded * 100) / progressEvent.total,
-						);
-						setUploadProgress(percentCompleted);
-					},
-					withCredentials: true,
-				},
+			const { data } = await axios.post(
+				`${import.meta.env.VITE_BASE_URL}/file/upload/initiate`,
+				filedata,
+				{ withCredentials: true },
 			);
+
+			const { uploadUrl, key } = data;
+
+			const { status, statusText } = await axios.put(uploadUrl, file, {
+				headers: {
+					"Content-Type": file.type,
+				},
+
+				onUploadProgress: (e) => {
+					const percent = Math.round((e.loaded * 100) / e.total);
+
+					setUploadProgress(percent);
+				},
+			});
+
+			if (status === 200 && statusText === "OK") {
+				const res = await api.post(
+					"/file/upload/complete",
+					{ key },
+					{ withCredentials: true },
+				);
+			}
+
 			setUploadProgress(0);
-			toast.success(result?.data?.message);
+			toast.success("File uploaded successfully");
 			getDirData(currentDir._id);
 		} catch (error) {
+			
 			setUploadProgress(0);
 			toast.error(error?.response?.data?.message);
 		}
@@ -335,7 +355,7 @@ const DashboardHome = () => {
 
 			window.open(result.data.data, "_blank");
 		} catch (error) {
-			toast.error("File preview not available")
+			toast.error("File preview not available");
 		}
 	};
 
@@ -346,7 +366,7 @@ const DashboardHome = () => {
 				`${import.meta.env.VITE_BASE_URL}/file/view/${fileId}?action=download`,
 			);
 		} catch (error) {
-			toast.error("File download failed")
+			toast.error("File download failed");
 		}
 	};
 

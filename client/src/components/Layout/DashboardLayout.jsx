@@ -43,7 +43,7 @@ const DashboardLayout = () => {
 		}
 	};
 
-	console.log(user);
+	
 
 	return (
 		<div className="flex h-screen relative">

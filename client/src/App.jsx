@@ -32,7 +32,6 @@ const App = () => {
 				withCredentials: true,
 			});
 
-			console.log(result.data.user)
 			dispatch(setUser(result?.data?.user));
 			dispatch(setPageLoading(false));
 		} catch (error) {

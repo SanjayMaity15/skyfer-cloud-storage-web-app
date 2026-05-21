@@ -53,7 +53,7 @@ const Trash = () => {
 			toast.success(result?.data?.message);
 			setLoading1(false);
 		} catch (error) {
-			console.log(error?.response?.data?.message);
+			
 			toast.error(error?.response?.data?.message);
 
 			setLoading1(false);
