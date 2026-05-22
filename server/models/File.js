@@ -10,9 +10,10 @@ const fileSchema = new Schema({
 		required: true,
 	},
 
-	isUploading: {
-		type: Boolean,
-		default: true
+	isUploaded: {
+		type: String,
+		enum: ["pending", "completed", "failed"],
+		default: "pending"
 	},
 
 	resource_type: {
