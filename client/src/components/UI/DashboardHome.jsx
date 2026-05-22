@@ -38,7 +38,6 @@ const DashboardHome = () => {
 
 	const [isFileUploading, setIsFileUploading] = useState(false);
 	const [uploadController, setUploadController] = useState(null);
-	
 
 	// three dots operation
 	const [threeDotes, setThreeDots] = useState(false);
@@ -354,7 +353,7 @@ const DashboardHome = () => {
 				error.name === "CanceledError" ||
 				error.code === "ERR_CANCELED"
 			) {
-				console.log(key)
+				console.log(key);
 				const { data } = await api.post(
 					"/file/upload/cancel",
 					{ key },
@@ -373,30 +372,21 @@ const DashboardHome = () => {
 
 	// file preview
 
-	const handleFilePreview = async (fileId) => {
+	const handleFilePreviewAndDownload = async (fileId, download = false) => {
 		try {
-			const result = await api.get(`/file/view/${fileId}`, {
-				withCredentials: true,
-			});
-
-			window.open(result.data.data, "_blank");
+			if (!download) {
+				const result = await api.get(`/file/view/${fileId}`, {
+					withCredentials: true,
+				});
+				window.open(result.data.data, "_blank");
+			} else {
+				window.location.href = `${import.meta.env.VITE_BASE_URL}/file/view/${fileId}?action=download`;
+			}
 		} catch (error) {
 			toast.error("File preview not available");
 		}
 	};
 
-	// file download
-	const handleFileDownload = async (fileId) => {
-		try {
-			window.open(
-				`${import.meta.env.VITE_BASE_URL}/file/view/${fileId}?action=download`,
-			);
-		} catch (error) {
-			toast.error("File download failed");
-		}
-	};
-
-	// 	handle reanme files
 
 	const handleRenameFile = async (newFileName) => {
 		try {
@@ -760,7 +750,9 @@ const DashboardHome = () => {
 											<button
 												className="bg-indigo-100 text-indigo-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-indigo-200 transition-colors duration-200"
 												onClick={() =>
-													handleFilePreview(file._id)
+													handleFilePreviewAndDownload(
+														file._id,
+													)
 												}
 											>
 												<FaRegEye className="text-sm" />
@@ -769,7 +761,10 @@ const DashboardHome = () => {
 											<button
 												className="bg-green-100 text-green-700 font-semibold md:px-2 px-4 py-1 rounded-full text-xs flex items-center gap-1 cursor-pointer hover:bg-green-200 transition-colors duration-200"
 												onClick={() =>
-													handleFileDownload(file._id)
+													handleFilePreviewAndDownload(
+														file._id,
+														true,
+													)
 												}
 											>
 												<IoCloudDownloadOutline className="text-sm" />
