@@ -36,6 +36,10 @@ const DashboardHome = () => {
 
 	const [loadingFolderId, setLoadingFolderId] = useState(null);
 
+	const [isFileUploading, setIsFileUploading] = useState(false);
+	const [uploadController, setUploadController] = useState(null);
+	
+
 	// three dots operation
 	const [threeDotes, setThreeDots] = useState(false);
 	const [threeDotes2, setThreeDots2] = useState(false);
@@ -305,6 +309,12 @@ const DashboardHome = () => {
 			parentDirId: currentDir._id,
 		};
 
+		setIsFileUploading(true);
+		const controller = new AbortController();
+		setUploadController(controller);
+
+		let key = null;
+
 		try {
 			setUploadProgress(0);
 			const { data } = await axios.post(
@@ -313,12 +323,15 @@ const DashboardHome = () => {
 				{ withCredentials: true },
 			);
 
-			const { uploadUrl, key } = data;
+			const { uploadUrl } = data;
+			key = data.key;
 
 			const { status, statusText } = await axios.put(uploadUrl, file, {
 				headers: {
 					"Content-Type": file.type,
 				},
+
+				signal: controller.signal,
 
 				onUploadProgress: (e) => {
 					const percent = Math.round((e.loaded * 100) / e.total);
@@ -333,15 +346,28 @@ const DashboardHome = () => {
 					{ key },
 					{ withCredentials: true },
 				);
+				toast.success("File uploaded successfully");
+				getDirData(currentDir._id);
 			}
-
-			setUploadProgress(0);
-			toast.success("File uploaded successfully");
-			getDirData(currentDir._id);
 		} catch (error) {
-			
+			if (
+				error.name === "CanceledError" ||
+				error.code === "ERR_CANCELED"
+			) {
+				console.log(key)
+				const { data } = await api.post(
+					"/file/upload/cancel",
+					{ key },
+					{ withCredentials: true },
+				);
+				toast.info(data?.message);
+			} else {
+				toast.error(error?.response?.data?.message || "Upload failed");
+			}
+		} finally {
 			setUploadProgress(0);
-			toast.error(error?.response?.data?.message);
+			setUploadController(null);
+			setIsFileUploading(false);
 		}
 	};
 
@@ -466,16 +492,29 @@ const DashboardHome = () => {
 				</select>
 			</div>
 			{/* upload progress */}
-			{uploadProgress > 0 && (
-				<div className="h-4 w-[80%] md:w-[50%] mx-auto border border-green-300 rounded-full bg-green-100 mb-4">
-					<div
-						className="h-4 rounded-full bg-green-400 text-center text-xs flex items-center justify-center font-semibold text-white"
-						style={{ width: `${uploadProgress}%` }}
-					>
-						{uploadProgress}%
+			<div className="flex flex-col gap-2 mb-6">
+				{uploadProgress > 0 && (
+					<div className="h-4 w-[80%] md:w-[50%] mx-auto border border-green-400 rounded-full bg-green-200 mb-4">
+						<div
+							className="h-4 rounded-full bg-green-500 text-center text-xs flex items-center justify-center font-semibold text-white"
+							style={{ width: `${uploadProgress}%` }}
+						>
+							{uploadProgress}%
+						</div>
 					</div>
-				</div>
-			)}
+				)}
+
+				{isFileUploading && uploadProgress && (
+					<div className="flex justify-center">
+						<button
+							className="text-xs text-red-600 cursor-pointer bg-red-100 w-fit px-4 py-0.5 rounded-full border"
+							onClick={() => uploadController?.abort()}
+						>
+							Cancel upload
+						</button>
+					</div>
+				)}
+			</div>
 			{/* path */}
 			<div className="bg-white shadow-xs py-4 flex flex-col md:flex-row justify-between md:items-center px-4 gap-2">
 				<div className="flex items-center gap-2 pl-3">

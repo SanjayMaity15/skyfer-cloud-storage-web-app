@@ -129,12 +129,14 @@ const DashboardLayout = () => {
 						</p>
 					)}
 
-					<Link
-						to={"/subscription"}
-						className=" bg-blue-500 py-1 text-xs rounded-full text-white border flex justify-center items-center  gap-1"
-					>
-						<GrUpgrade /> Upgrade plan
-					</Link>
+					{user?.role === "user" && (
+						<Link
+							to={"/subscription"}
+							className=" bg-blue-500 py-1 text-xs rounded-full text-white border flex justify-center items-center  gap-1"
+						>
+							<GrUpgrade /> Upgrade plan
+						</Link>
+					)}
 
 					<div className="flex items-center">
 						<div className="w-12">
