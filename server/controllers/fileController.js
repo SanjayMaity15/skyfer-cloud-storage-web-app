@@ -115,7 +115,7 @@ export const verifyFileUploadComplete = async (req, res) => {
 			});
 		}
 
-		fileData.isUploading = false;
+		fileData.isUploaded = "completed";
 		await fileData.save();
 
 		user.storageUsed += fileData.size;
@@ -133,6 +133,30 @@ export const verifyFileUploadComplete = async (req, res) => {
 	}
 };
 
+export const cancelFileUpload = async (req, res) => {
+	try {
+		const { key } = req.body;
+		
+
+		if (!key) {
+			return res.status(400).json({
+				message: "File name missing"
+			})
+		}
+
+		const fileId = key.split(".")[0];
+
+		await File.findByIdAndDelete(fileId)
+
+		return res.status(200).json({
+			message: "upload cancelled"
+		})
+	} catch (error) {
+		return res.status(500).json({
+			message: "server error"
+		})
+	}
+}
 
 /*
 =========================================
