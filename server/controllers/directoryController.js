@@ -97,6 +97,7 @@ export const getDirectory = async (req, res) => {
 		const files = await File.find({
 			parentDirId: dirId,
 			owner: user._id,
+			isUploaded: "completed"
 		}).lean();
 
 		return res.status(200).json({
