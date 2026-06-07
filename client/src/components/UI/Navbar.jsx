@@ -15,7 +15,7 @@ const Navbar = () => {
 						className="w-25"
 					/>
 					<span className="text-3xl font-extrabold -ml-5 text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary font-lobster select-none">
-						Skyfer Cloud
+						Skyfer Cloud App
 					</span>
 				</Link>
 
