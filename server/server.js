@@ -72,7 +72,7 @@ app.use("/webhook", webhooksRoutes)
 
 // default get req
 app.get("/", (req, res) => {
-	res.send("SERVER IS RUNNING Sanjay");
+	res.send("SKYFER SERVER IS RUNNING");
 });
 
 // server listen
