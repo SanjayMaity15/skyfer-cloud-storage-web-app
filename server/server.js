@@ -61,7 +61,7 @@ app.use("/webhook", webhooksRoutes)
 
 // default get req
 app.get("/", (req, res) => {
-	res.send("SERVER IS RUNNING");
+	res.send("SERVER IS RUNNING Sanjay");
 });
 
 // server listen
